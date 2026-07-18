@@ -1,0 +1,10 @@
+firm_network,geography_original,geography_canonical,mapping_status,notes
+All,Americas,Americas,direct,
+All,Asia Pacific,Asia-Pacific,direct,
+All,Asia-Pacific,Asia-Pacific,direct,
+All,ASPAC,Asia-Pacific,direct,
+All,EMA,Europe; Middle East and Africa,combined,Preserve the source-defined region because a country bridge is unavailable
+All,EMEA,Europe; Middle East and Africa,combined,Preserve the source-defined region because a country bridge is unavailable
+All,Europe,Europe,direct,
+All,Middle East and Africa,Middle East and Africa,direct,
+All,Central and Eastern Europe,Europe,direct,

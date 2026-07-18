@@ -1,0 +1,13 @@
+firm_network,source_label,canonical_label,mapping_status,notes
+All,Audit,audit_assurance_attest,direct,Source label retained in observations
+All,Audit & Assurance,audit_assurance_attest,direct,Source label retained in observations
+All,Assurance,audit_assurance_attest,direct,Source label retained in observations
+All,Tax,tax_legal,direct,Source label retained in observations
+All,Tax & Legal,tax_legal,direct,Source label retained in observations
+All,Tax and Legal Services,tax_legal,direct,Source label retained in observations
+All,Advisory,combined_not_separable,combined,Do not split without a source-supported sub-breakdown
+All,Consulting,consulting_transformation_implementation,direct,Source label retained in observations
+All,Strategy and Transactions,strategy_deals_transactions_corporate_finance,direct,Source label retained in observations
+All,Financial Advisory,strategy_deals_transactions_corporate_finance,direct,Source label retained in observations
+All,Risk Advisory,risk_cyber_forensics_compliance_resilience,direct,Source label retained in observations
+All,Internal Services,internal_enabling_shared_other,direct,Source label retained in observations

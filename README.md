@@ -1,42 +1,41 @@
-# sv
+# FirmScope
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+An evidence-first interactive dashboard comparing Deloitte, PwC, EY and KPMG across scale, growth, business mix, geography and workforce.
 
-## Creating a project
+The interface is designed as a research product rather than a static report. Every headline, chart point and composition segment can open the underlying observation, source excerpt, reporting period, locator, quality flag and comparability score.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Highlights
 
-```sh
-# create a new project
-npx sv create my-app
-```
+- Fifteen-year revenue comparison with switchable workforce and local-currency growth views
+- FY2025 service-line and regional composition comparisons
+- Revenue-versus-workforce field and directional revenue-per-person proxy
+- Searchable evidence ledger containing 651 observations from 71 sources
+- Firm profiles and source-level evidence drawers for progressive disclosure
+- Eight-step Driver.js product tour with custom presentation and smooth section transitions
+- Responsive desktop and mobile research navigation
+- Local variable fonts, Lucide iconography and an OKLCH design-token system
 
-To recreate this project with the same configuration:
-
-```sh
-# recreate this project
-npx sv@0.16.3 create --template minimal --types ts --add prettier eslint vitest="usages:component,unit" playwright tailwindcss="plugins:typography" sveltekit-adapter="adapter:static" mcp="ide:other+setup:local" --install npm .
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Run locally
 
 ```sh
+npm install
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+The development and production commands rebuild the frontend data artifact from the canonical CSV package automatically.
 
-To create a production version of your app:
+## Quality checks
 
 ```sh
+npm run check
 npm run build
+npm run lint
 ```
 
-You can preview the production build with `npm run preview`.
+## Data flow
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+Canonical research files live in `data/`. `scripts/build-dashboard-data.mjs` validates and composes them into the typed dashboard artifact at `src/lib/data/dashboard-data.json`. The original observation and source identifiers remain intact so the UI can trace every comparison back to its evidence.
+
+## Stack
+
+Svelte 5, SvelteKit, TypeScript, Driver.js, Lucide and static-site deployment via `@sveltejs/adapter-static`.

@@ -1,0 +1,9 @@
+firm_network,source_label,canonical_label,stock_or_average,notes
+All,People,all_people,source_specific,Inspect the source definition before comparison
+All,Partners and staff,all_people,period_end,Includes partners where the source states this
+All,Headcount,all_people,source_specific,Inspect whether the source uses period-end or average
+All,Average FTE,all_people,average,Full-time-equivalent average during the fiscal year
+All,Partners,all_partners,source_specific,Do not assume equity-only
+All,Professionals,client_service_professionals,source_specific,Source definition may vary
+All,Professional support staff,internal_enabling_staff,source_specific,
+All,Other employees,employees_excluding_partners,period_end,Used only when the source separately reports partners
