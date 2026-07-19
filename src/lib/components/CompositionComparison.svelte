@@ -140,7 +140,7 @@
 	.composition {
 		position: relative;
 		display: grid;
-		gap: 26px;
+		gap: 30px;
 	}
 
 	.firm-row {
@@ -162,7 +162,7 @@
 
 	.firm-label span {
 		color: var(--text-tertiary);
-		font-size: 10px;
+		font-size: 12px;
 		line-height: 1.35;
 	}
 
@@ -172,10 +172,12 @@
 
 	.bar {
 		display: flex;
-		height: 28px;
+		height: 38px;
 		overflow: hidden;
-		border-radius: 7px;
+		border: 1.5px solid var(--ink);
+		border-radius: 0;
 		background: var(--surface-muted);
+		box-shadow: 3px 3px 0 var(--ink);
 	}
 
 	.segment {
@@ -183,8 +185,10 @@
 		min-width: 2px;
 		padding: 0;
 		border: 0;
-		border-right: 2px solid var(--surface-base);
+		border-right: 2px solid var(--ink);
 		cursor: pointer;
+		transform-origin: left;
+		animation: segment-grow 750ms var(--ease-out) both;
 		transition:
 			filter 160ms var(--ease-out),
 			transform 160ms var(--ease-out);
@@ -218,7 +222,7 @@
 		background: none;
 		color: var(--text-secondary);
 		font: inherit;
-		font-size: 10px;
+		font-size: 12px;
 		cursor: pointer;
 	}
 
@@ -231,13 +235,14 @@
 	.labels strong {
 		color: var(--ink);
 		font-family: var(--font-mono);
-		font-size: 9px;
+		font-size: 12px;
 	}
 
 	.dot {
-		width: 7px;
-		height: 7px;
-		border-radius: 2px;
+		width: 9px;
+		height: 9px;
+		border: 1px solid var(--ink);
+		border-radius: 0;
 	}
 
 	.method-note {
@@ -246,7 +251,8 @@
 		justify-content: space-between;
 		gap: 20px;
 		padding: 14px 16px;
-		border-left: 2px solid var(--accent);
+		border: 1.5px solid var(--ink);
+		border-left: 6px solid var(--accent);
 		background: var(--accent-wash);
 	}
 
@@ -261,7 +267,7 @@
 
 	.method-note span {
 		color: var(--text-secondary);
-		font-size: 10px;
+		font-size: 12px;
 	}
 
 	.method-note button {
@@ -274,7 +280,7 @@
 		background: transparent;
 		color: var(--ink);
 		font: inherit;
-		font-size: 10px;
+		font-size: 12px;
 		font-weight: 750;
 		cursor: pointer;
 	}
@@ -300,8 +306,8 @@
 		gap: 4px 12px;
 		align-items: center;
 		padding: 13px 15px;
-		border: 1px solid var(--border-subtle);
-		border-radius: var(--radius-sm);
+		border: 1.5px solid var(--ink);
+		border-radius: 0;
 		background: var(--surface-base);
 		color: var(--ink);
 		text-align: left;
@@ -326,7 +332,7 @@
 	.nested-kicker {
 		grid-column: 1 / -1;
 		color: var(--text-tertiary);
-		font-size: 9px;
+		font-size: 12px;
 	}
 
 	.nested-detail :global(svg) {
@@ -343,7 +349,8 @@
 		width: 176px;
 		gap: 4px;
 		padding: 12px;
-		border-radius: var(--radius-md);
+		border: 1.5px solid var(--ink);
+		border-radius: 0;
 		background: var(--ink);
 		color: var(--surface-base);
 		box-shadow: var(--shadow-floating);
@@ -353,7 +360,7 @@
 	.composition-tooltip span,
 	.composition-tooltip small {
 		color: var(--text-on-dark-muted);
-		font-size: 9px;
+		font-size: 12px;
 	}
 
 	.composition-tooltip strong {
@@ -363,6 +370,17 @@
 	.composition-tooltip b {
 		font-family: var(--font-mono);
 		font-size: 20px;
+	}
+
+	@keyframes segment-grow {
+		from {
+			transform: scaleX(0);
+			filter: saturate(0.5);
+		}
+		to {
+			transform: scaleX(1);
+			filter: saturate(1);
+		}
 	}
 
 	@media (max-width: 640px) {

@@ -167,10 +167,10 @@
 		display: flex;
 		align-items: center;
 		gap: 8px;
-		min-height: 40px;
+		min-height: 44px;
 		padding: 0 12px;
-		border: 1px solid var(--border-subtle);
-		border-radius: var(--radius-sm);
+		border: 1.5px solid var(--ink);
+		border-radius: 0;
 		background: var(--surface-base);
 		color: var(--text-tertiary);
 	}
@@ -193,11 +193,11 @@
 
 	kbd {
 		padding: 2px 6px;
-		border: 1px solid var(--border-subtle);
+		border: 1px solid var(--ink);
 		border-bottom-width: 2px;
-		border-radius: 4px;
+		border-radius: 0;
 		color: var(--text-tertiary);
-		font: 8px var(--font-sans);
+		font: 11px var(--font-sans);
 	}
 
 	.filter-row {
@@ -216,7 +216,7 @@
 		background: transparent;
 		color: var(--text-secondary);
 		font: inherit;
-		font-size: 10px;
+		font-size: 12px;
 		font-weight: 650;
 	}
 
@@ -226,7 +226,7 @@
 		justify-content: space-between;
 		gap: 16px;
 		color: var(--text-tertiary);
-		font-size: 9px;
+		font-size: 12px;
 	}
 
 	.result-meta > div,
@@ -256,8 +256,9 @@
 
 	.research-table {
 		overflow: hidden;
-		border: 1px solid var(--border-subtle);
-		border-radius: var(--radius-md);
+		border: 2px solid var(--ink);
+		border-radius: 0;
+		box-shadow: 4px 4px 0 var(--ink);
 	}
 
 	.table-head,
@@ -269,11 +270,11 @@
 	}
 
 	.table-head {
-		padding: 10px 14px;
-		border-bottom: 1px solid var(--border-subtle);
-		background: var(--surface-raised);
-		color: var(--text-tertiary);
-		font-size: 8px;
+		padding: 12px 14px;
+		border-bottom: 2px solid var(--ink);
+		background: var(--accent-light);
+		color: var(--ink);
+		font-size: 11px;
 		font-weight: 750;
 		letter-spacing: 0.04em;
 		text-transform: uppercase;
@@ -281,9 +282,9 @@
 
 	.table-row {
 		width: 100%;
-		padding: 12px 14px;
+		padding: 14px;
 		border: 0;
-		border-bottom: 1px solid var(--border-subtle);
+		border-bottom: 1px solid var(--ink);
 		background: var(--surface-base);
 		color: var(--ink);
 		font: inherit;
@@ -314,9 +315,10 @@
 		height: 28px;
 		flex: 0 0 auto;
 		place-items: center;
-		border-radius: 7px;
+		border: 1px solid var(--ink);
+		border-radius: 0;
 		color: var(--surface-base);
-		font-size: 9px;
+		font-size: 12px;
 		font-style: normal;
 		font-weight: 850;
 	}
@@ -333,7 +335,7 @@
 	.metric-cell strong {
 		max-width: 100%;
 		overflow: hidden;
-		font-size: 10px;
+		font-size: 12px;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
@@ -342,7 +344,7 @@
 		max-width: 100%;
 		overflow: hidden;
 		color: var(--text-tertiary);
-		font-size: 8px;
+		font-size: 11px;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
@@ -350,7 +352,7 @@
 	.value-cell {
 		overflow: hidden;
 		font-family: var(--font-mono);
-		font-size: 10px;
+		font-size: 12px;
 		font-weight: 600;
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -358,10 +360,11 @@
 
 	.quality-cell b {
 		padding: 2px 6px;
-		border-radius: 4px;
+		border: 1px solid currentColor;
+		border-radius: 0;
 		background: var(--success-wash);
 		color: var(--success);
-		font-size: 8px;
+		font-size: 11px;
 	}
 
 	.open-cell {
@@ -375,12 +378,12 @@
 		gap: 7px;
 		width: 100%;
 		padding: 11px;
-		border: 1px solid var(--border-subtle);
-		border-radius: var(--radius-sm);
+		border: 1.5px solid var(--ink);
+		border-radius: 0;
 		background: var(--surface-base);
 		color: var(--ink);
 		font: inherit;
-		font-size: 10px;
+		font-size: 12px;
 		font-weight: 750;
 		cursor: pointer;
 	}
@@ -398,7 +401,7 @@
 		border: 1px dashed var(--border-strong);
 		border-radius: var(--radius-md);
 		color: var(--text-tertiary);
-		font-size: 10px;
+		font-size: 12px;
 	}
 
 	.empty-state strong {

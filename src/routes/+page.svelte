@@ -16,6 +16,7 @@
 		Info,
 		Layers3,
 		LayoutDashboard,
+		MapPinned,
 		Menu,
 		Play,
 		ShieldCheck,
@@ -27,6 +28,7 @@
 	import dashboardData from '$lib/data/dashboard-data.json';
 	import CompositionComparison from '$lib/components/CompositionComparison.svelte';
 	import EvidenceDrawer from '$lib/components/EvidenceDrawer.svelte';
+	import OfficeAtlas from '$lib/components/OfficeAtlas.svelte';
 	import ResearchExplorer from '$lib/components/ResearchExplorer.svelte';
 	import TrendChart from '$lib/components/TrendChart.svelte';
 	import WorkforceScatter from '$lib/components/WorkforceScatter.svelte';
@@ -38,6 +40,7 @@
 		{ id: 'overview', label: 'Overview', icon: LayoutDashboard },
 		{ id: 'scale', label: 'Scale & growth', icon: ChartNoAxesCombined },
 		{ id: 'mix', label: 'Business mix', icon: Layers3 },
+		{ id: 'offices', label: 'Office atlas', icon: MapPinned },
 		{ id: 'geography', label: 'Geography', icon: Globe2 },
 		{ id: 'workforce', label: 'Workforce', icon: UsersRound },
 		{ id: 'evidence', label: 'Evidence ledger', icon: Database }
@@ -134,6 +137,15 @@
 						title: 'See how each firm earns',
 						description:
 							'The composition view respects each network’s disclosed service taxonomy, including nested Deloitte reporting.',
+						side: 'top'
+					}
+				},
+				{
+					element: '#tour-offices',
+					popover: {
+						title: 'See the physical network',
+						description:
+							'Explore 1,234 mapped locations. Directory coordinates and representative hubs are deliberately encoded differently so coverage is never overstated.',
 						side: 'top'
 					}
 				},
@@ -243,13 +255,36 @@
 
 		<nav aria-label="Dashboard sections">
 			<span class="nav-label">Explore</span>
-			{#each sections as section (section.id)}
-				<button class:active={activeSection === section.id} onclick={() => scrollTo(section.id)}>
-					<section.icon size={16} strokeWidth={activeSection === section.id ? 2.4 : 1.8} />
-					<span>{section.label}</span>
-					{#if activeSection === section.id}<ChevronRight size={13} />{/if}
-				</button>
-			{/each}
+			<button class:active={activeSection === 'overview'} onclick={() => scrollTo('overview')}>
+				<LayoutDashboard size={16} /><span>Overview</span
+				>{#if activeSection === 'overview'}<ChevronRight size={13} />{/if}
+			</button>
+			<button class:active={activeSection === 'scale'} onclick={() => scrollTo('scale')}>
+				<ChartNoAxesCombined size={16} /><span>Scale &amp; growth</span
+				>{#if activeSection === 'scale'}<ChevronRight size={13} />{/if}
+			</button>
+			<button class:active={activeSection === 'mix'} onclick={() => scrollTo('mix')}>
+				<Layers3 size={16} /><span>Business mix</span>{#if activeSection === 'mix'}<ChevronRight
+						size={13}
+					/>{/if}
+			</button>
+			<button class:active={activeSection === 'offices'} onclick={() => scrollTo('offices')}>
+				<MapPinned size={16} /><span>Office atlas</span
+				>{#if activeSection === 'offices'}<ChevronRight size={13} />{/if}
+			</button>
+			<button class:active={activeSection === 'geography'} onclick={() => scrollTo('geography')}>
+				<Globe2 size={16} /><span>Geography</span>{#if activeSection === 'geography'}<ChevronRight
+						size={13}
+					/>{/if}
+			</button>
+			<button class:active={activeSection === 'workforce'} onclick={() => scrollTo('workforce')}>
+				<UsersRound size={16} /><span>Workforce</span
+				>{#if activeSection === 'workforce'}<ChevronRight size={13} />{/if}
+			</button>
+			<button class:active={activeSection === 'evidence'} onclick={() => scrollTo('evidence')}>
+				<Database size={16} /><span>Evidence ledger</span
+				>{#if activeSection === 'evidence'}<ChevronRight size={13} />{/if}
+			</button>
 		</nav>
 
 		<div class="sidebar-brief">
@@ -327,23 +362,52 @@
 						</div>
 						<strong>{currencyShort(data.meta.latestRevenueTotal, 0)}</strong>
 						<div class="market-share-bar" aria-label="FY2025 reported revenue market share">
-							{#each data.firms as firm (firm.firm)}
-								<button
-									style:width={`${firm.marketShare}%`}
-									style:background={FIRM_COLORS[firm.firm]}
-									aria-label={`${firm.firm}: ${percent(firm.marketShare)} market share`}
-									onclick={() => (selectedFirm = firm.firm)}
-								></button>
-							{/each}
+							<button
+								style:width={`${data.firms[0].marketShare}%`}
+								style:background={FIRM_COLORS.Deloitte}
+								aria-label={`Deloitte: ${percent(data.firms[0].marketShare)} market share`}
+								onclick={() => (selectedFirm = 'Deloitte')}
+							></button>
+							<button
+								style:width={`${data.firms[1].marketShare}%`}
+								style:background={FIRM_COLORS.PwC}
+								aria-label={`PwC: ${percent(data.firms[1].marketShare)} market share`}
+								onclick={() => (selectedFirm = 'PwC')}
+							></button>
+							<button
+								style:width={`${data.firms[2].marketShare}%`}
+								style:background={FIRM_COLORS.EY}
+								aria-label={`EY: ${percent(data.firms[2].marketShare)} market share`}
+								onclick={() => (selectedFirm = 'EY')}
+							></button>
+							<button
+								style:width={`${data.firms[3].marketShare}%`}
+								style:background={FIRM_COLORS.KPMG}
+								aria-label={`KPMG: ${percent(data.firms[3].marketShare)} market share`}
+								onclick={() => (selectedFirm = 'KPMG')}
+							></button>
 						</div>
 						<div class="market-share-labels">
-							{#each data.firms as firm (firm.firm)}
-								<button onclick={() => (selectedFirm = firm.firm)}
-									><i style:background={FIRM_COLORS[firm.firm]}></i><span>{firm.firm}</span><b
-										>{percent(firm.marketShare, 0)}</b
-									></button
-								>
-							{/each}
+							<button onclick={() => (selectedFirm = 'Deloitte')}
+								><i style:background={FIRM_COLORS.Deloitte}></i><span>Deloitte</span><b
+									>{percent(data.firms[0].marketShare, 0)}</b
+								></button
+							>
+							<button onclick={() => (selectedFirm = 'PwC')}
+								><i style:background={FIRM_COLORS.PwC}></i><span>PwC</span><b
+									>{percent(data.firms[1].marketShare, 0)}</b
+								></button
+							>
+							<button onclick={() => (selectedFirm = 'EY')}
+								><i style:background={FIRM_COLORS.EY}></i><span>EY</span><b
+									>{percent(data.firms[2].marketShare, 0)}</b
+								></button
+							>
+							<button onclick={() => (selectedFirm = 'KPMG')}
+								><i style:background={FIRM_COLORS.KPMG}></i><span>KPMG</span><b
+									>{percent(data.firms[3].marketShare, 0)}</b
+								></button
+							>
 						</div>
 					</div>
 				</div>
@@ -372,26 +436,70 @@
 				</div>
 
 				<div id="tour-firm-strip" class="firm-strip">
-					{#each data.firms as firm, index (firm.firm)}
-						<button class="firm-summary" onclick={() => (selectedFirm = firm.firm)}>
-							<div class="firm-summary-head">
-								<span class="firm-badge" style:background={FIRM_COLORS[firm.firm]}
-									>{firm.firm.slice(0, 1)}</span
-								>
-								<div><strong>{firm.firm}</strong><span>#{index + 1} by reported revenue</span></div>
-								<ExternalLink size={14} />
-							</div>
-							<div class="firm-main-value">
-								<strong>{currencyShort(firm.revenue)}</strong><span>FY25 revenue</span>
-							</div>
-							<div class="firm-measures">
-								<div><span>5Y CAGR</span><strong>{percent(firm.fiveYearCagr)}</strong></div>
-								<div><span>People</span><strong>{fullNumber(firm.people)}</strong></div>
-								<div><span>Local growth</span><strong>{percent(firm.growth)}</strong></div>
-							</div>
-							<div class="firm-accent" style:background={FIRM_COLORS[firm.firm]}></div>
-						</button>
-					{/each}
+					<button class="firm-summary" onclick={() => (selectedFirm = 'Deloitte')}>
+						<div class="firm-summary-head">
+							<span class="firm-badge" style:background={FIRM_COLORS.Deloitte}>D</span>
+							<div><strong>Deloitte</strong><span>#1 by reported revenue</span></div>
+							<ExternalLink size={14} />
+						</div>
+						<div class="firm-main-value">
+							<strong>{currencyShort(data.firms[0].revenue)}</strong><span>FY25 revenue</span>
+						</div>
+						<div class="firm-measures">
+							<div><span>5Y CAGR</span><strong>{percent(data.firms[0].fiveYearCagr)}</strong></div>
+							<div><span>People</span><strong>{fullNumber(data.firms[0].people)}</strong></div>
+							<div><span>Local growth</span><strong>{percent(data.firms[0].growth)}</strong></div>
+						</div>
+						<div class="firm-accent" style:background={FIRM_COLORS.Deloitte}></div>
+					</button>
+					<button class="firm-summary" onclick={() => (selectedFirm = 'PwC')}>
+						<div class="firm-summary-head">
+							<span class="firm-badge" style:background={FIRM_COLORS.PwC}>P</span>
+							<div><strong>PwC</strong><span>#2 by reported revenue</span></div>
+							<ExternalLink size={14} />
+						</div>
+						<div class="firm-main-value">
+							<strong>{currencyShort(data.firms[1].revenue)}</strong><span>FY25 revenue</span>
+						</div>
+						<div class="firm-measures">
+							<div><span>5Y CAGR</span><strong>{percent(data.firms[1].fiveYearCagr)}</strong></div>
+							<div><span>People</span><strong>{fullNumber(data.firms[1].people)}</strong></div>
+							<div><span>Local growth</span><strong>{percent(data.firms[1].growth)}</strong></div>
+						</div>
+						<div class="firm-accent" style:background={FIRM_COLORS.PwC}></div>
+					</button>
+					<button class="firm-summary" onclick={() => (selectedFirm = 'EY')}>
+						<div class="firm-summary-head">
+							<span class="firm-badge" style:background={FIRM_COLORS.EY}>E</span>
+							<div><strong>EY</strong><span>#3 by reported revenue</span></div>
+							<ExternalLink size={14} />
+						</div>
+						<div class="firm-main-value">
+							<strong>{currencyShort(data.firms[2].revenue)}</strong><span>FY25 revenue</span>
+						</div>
+						<div class="firm-measures">
+							<div><span>5Y CAGR</span><strong>{percent(data.firms[2].fiveYearCagr)}</strong></div>
+							<div><span>People</span><strong>{fullNumber(data.firms[2].people)}</strong></div>
+							<div><span>Local growth</span><strong>{percent(data.firms[2].growth)}</strong></div>
+						</div>
+						<div class="firm-accent" style:background={FIRM_COLORS.EY}></div>
+					</button>
+					<button class="firm-summary" onclick={() => (selectedFirm = 'KPMG')}>
+						<div class="firm-summary-head">
+							<span class="firm-badge" style:background={FIRM_COLORS.KPMG}>K</span>
+							<div><strong>KPMG</strong><span>#4 by reported revenue</span></div>
+							<ExternalLink size={14} />
+						</div>
+						<div class="firm-main-value">
+							<strong>{currencyShort(data.firms[3].revenue)}</strong><span>FY25 revenue</span>
+						</div>
+						<div class="firm-measures">
+							<div><span>5Y CAGR</span><strong>{percent(data.firms[3].fiveYearCagr)}</strong></div>
+							<div><span>People</span><strong>{fullNumber(data.firms[3].people)}</strong></div>
+							<div><span>Local growth</span><strong>{percent(data.firms[3].growth)}</strong></div>
+						</div>
+						<div class="firm-accent" style:background={FIRM_COLORS.KPMG}></div>
+					</button>
 				</div>
 
 				<div class="insight-deck">
@@ -400,16 +508,52 @@
 						<h2>What separates the firms right now</h2>
 						<p>Three signals worth taking into an interview or strategy discussion.</p>
 					</div>
-					{#each data.insights as insight, index (insight.id)}
-						<button class="insight-item" onclick={() => openEvidence(insight.observationId)}>
-							<span class="insight-number">0{index + 1}</span>
-							<div>
-								<strong>{insight.title}</strong>
-								<p>{insight.body}</p>
-							</div>
-							<ArrowRight size={15} />
-						</button>
-					{/each}
+					<button class="insight-item" onclick={() => openEvidence(data.insights[0].observationId)}
+						><span class="insight-number">01</span>
+						<div>
+							<strong>{data.insights[0].title}</strong>
+							<p>{data.insights[0].body}</p>
+						</div>
+						<ArrowRight size={15} /></button
+					>
+					<button class="insight-item" onclick={() => openEvidence(data.insights[1].observationId)}
+						><span class="insight-number">02</span>
+						<div>
+							<strong>{data.insights[1].title}</strong>
+							<p>{data.insights[1].body}</p>
+						</div>
+						<ArrowRight size={15} /></button
+					>
+					<button class="insight-item" onclick={() => openEvidence(data.insights[2].observationId)}
+						><span class="insight-number">03</span>
+						<div>
+							<strong>{data.insights[2].title}</strong>
+							<p>{data.insights[2].body}</p>
+						</div>
+						<ArrowRight size={15} /></button
+					>
+				</div>
+
+				<div class="story-rail" aria-label="Dashboard narrative">
+					<div class="story-rail-intro">
+						<span>The research arc</span>
+						<strong>Read the market in three moves.</strong>
+					</div>
+					<button onclick={() => scrollTo('scale')}>
+						<span>01</span><strong>Measure the race</strong><small
+							>Scale, pace and the gap between them</small
+						><ArrowRight size={18} />
+					</button>
+					<button onclick={() => scrollTo('mix')}>
+						<span>02</span><strong>Open the engine</strong><small
+							>What each network sells and where</small
+						><ArrowRight size={18} />
+					</button>
+					<button onclick={() => scrollTo('offices')}>
+						<span>03</span><strong>Enter the footprint</strong><small
+							>Offices, regions and people behind scale</small
+						><ArrowRight size={18} />
+					</button>
 				</div>
 			</section>
 
@@ -446,7 +590,7 @@
 							>
 						</div>
 						<div class="firm-filters">
-							{#each FIRMS as firm (firm)}
+							{#each [...FIRMS] as firm (firm)}
 								<button class:active={selectedFirms.includes(firm)} onclick={() => toggleFirm(firm)}
 									><i style:background={FIRM_COLORS[firm]}></i>{firm}<Check size={11} /></button
 								>
@@ -510,10 +654,31 @@
 				</div>
 			</section>
 
+			<section id="offices" class="dashboard-section office-section">
+				<div class="section-heading">
+					<div>
+						<span class="section-index">04 / Spatial network</span>
+						<h2>The firms are global. Their disclosed footprints are not identical.</h2>
+						<p>
+							Explore the physical network behind the financial scale. This atlas preserves the
+							difference between source-level coordinates and a representative hub sample.
+						</p>
+					</div>
+					<div class="section-callout office-callout">
+						<MapPinned size={17} /><span
+							><strong>{data.officeLocations.length.toLocaleString()}</strong> mapped locations</span
+						>
+					</div>
+				</div>
+				<div id="tour-offices">
+					<OfficeAtlas locations={data.officeLocations} />
+				</div>
+			</section>
+
 			<section id="geography" class="dashboard-section geography-section">
 				<div class="section-heading">
 					<div>
-						<span class="section-index">04 / Geographic footprint</span>
+						<span class="section-index">05 / Revenue geography</span>
 						<h2>Regional fingerprints.</h2>
 						<p>
 							Americas is the largest disclosed region for three firms. KPMG’s reported EMA region
@@ -551,7 +716,7 @@
 			<section id="workforce" class="dashboard-section">
 				<div class="section-heading">
 					<div>
-						<span class="section-index">05 / Workforce lens</span>
+						<span class="section-index">06 / Workforce lens</span>
 						<h2>Scale, people and a directional productivity proxy.</h2>
 						<p>
 							Revenue per disclosed person is useful for orientation—but workforce definitions make
@@ -592,7 +757,7 @@
 			<section id="evidence" class="dashboard-section evidence-section">
 				<div class="section-heading">
 					<div>
-						<span class="section-index">06 / Evidence ledger</span>
+						<span class="section-index">07 / Evidence ledger</span>
 						<h2>Interrogate the research.</h2>
 						<p>
 							Search the complete observation ledger, inspect source excerpts and test the

@@ -137,9 +137,7 @@
 				<span>FY{hovered.point.year}</span>
 			</div>
 			<div class="tooltip-value">{displayValue(hovered.point.value)}</div>
-			<button onclick={() => onSelect(hovered!.point.observationId)}
-				>View evidence <ArrowUpRight size={14} /></button
-			>
+			<div class="tooltip-action">Click point for evidence <ArrowUpRight size={14} /></div>
 		</div>
 	{/if}
 </div>
@@ -157,7 +155,7 @@
 	}
 
 	.grid line {
-		stroke: var(--border-subtle);
+		stroke: var(--border-strong);
 		stroke-width: 1;
 		stroke-dasharray: 2 5;
 	}
@@ -166,7 +164,7 @@
 	.years text {
 		fill: var(--text-tertiary);
 		font-family: var(--font-mono);
-		font-size: 11px;
+		font-size: 14px;
 		font-variant-numeric: tabular-nums;
 	}
 
@@ -176,6 +174,9 @@
 		stroke-linejoin: round;
 		stroke-width: 3;
 		vector-effect: non-scaling-stroke;
+		stroke-dasharray: 1400;
+		stroke-dashoffset: 1400;
+		animation: line-draw 1.1s var(--ease-out) forwards;
 	}
 
 	.series-line.underlay {
@@ -191,6 +192,7 @@
 			r 160ms var(--ease-out),
 			opacity 160ms var(--ease-out);
 		vector-effect: non-scaling-stroke;
+		animation: point-enter 420ms var(--ease-out) both;
 	}
 
 	circle:not(.active) {
@@ -204,7 +206,7 @@
 	}
 
 	.end-label {
-		font-size: 11px;
+		font-size: 14px;
 		font-weight: 800;
 	}
 
@@ -213,12 +215,13 @@
 		z-index: var(--z-tooltip);
 		width: 190px;
 		padding: 12px;
-		border-radius: var(--radius-md);
+		border: 1.5px solid var(--ink);
+		border-radius: 0;
 		background: var(--ink);
 		color: var(--surface-base);
 		box-shadow: var(--shadow-floating);
 		transform: translate(-50%, calc(-100% - 14px));
-		pointer-events: auto;
+		pointer-events: none;
 	}
 
 	.tooltip-heading {
@@ -248,18 +251,29 @@
 		letter-spacing: -0.03em;
 	}
 
-	.chart-tooltip button {
+	.tooltip-action {
 		display: inline-flex;
 		align-items: center;
 		gap: 5px;
 		padding: 0;
-		border: 0;
-		background: transparent;
 		color: var(--accent-light);
-		font: inherit;
 		font-size: 11px;
 		font-weight: 700;
-		cursor: pointer;
+	}
+
+	@keyframes line-draw {
+		to {
+			stroke-dashoffset: 0;
+		}
+	}
+
+	@keyframes point-enter {
+		from {
+			opacity: 0;
+			transform: scale(0);
+			transform-origin: center;
+			transform-box: fill-box;
+		}
 	}
 
 	@media (max-width: 720px) {

@@ -101,6 +101,25 @@ export interface DashboardSource {
 	notes: string;
 }
 
+export interface OfficeLocation {
+	id: string;
+	firm: FirmName;
+	name: string;
+	type: string;
+	address: string;
+	city: string;
+	region: string;
+	country: string;
+	countryCode: string;
+	latitude: number;
+	longitude: number;
+	sourceUrl: string;
+	sourceLocator: string;
+	coordinatePrecision: 'source_coordinate' | 'city_centroid';
+	coverageTier: 'directory_complete' | 'representative_hub';
+	asOfDate: string;
+}
+
 export interface DashboardData {
 	meta: {
 		researchCutoff: string;
@@ -123,6 +142,15 @@ export interface DashboardData {
 	growthSeries: Record<FirmName, SeriesPoint[]>;
 	serviceMix: Record<FirmName, DimensionPoint[]>;
 	regionalMix: Record<FirmName, DimensionPoint[]>;
+	officeLocations: OfficeLocation[];
+	officeMeta: Record<
+		FirmName,
+		{
+			count: number;
+			coverageTier: 'directory_complete' | 'representative_hub';
+			coordinatePrecision: 'source_coordinate' | 'city_centroid';
+		}
+	>;
 	insights: Array<{
 		id: string;
 		title: string;

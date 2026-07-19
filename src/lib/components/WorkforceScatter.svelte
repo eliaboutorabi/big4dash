@@ -9,6 +9,9 @@
 
 	let { firms, onSelect = () => {} }: Props = $props();
 	let hovered = $state<FirmSummary | null>(null);
+	let inspected = $derived(
+		hovered ?? firms.find((firm) => firm.firm === 'Deloitte') ?? firms[0] ?? null
+	);
 
 	const width = 700;
 	const height = 390;
@@ -58,17 +61,29 @@
 			text-anchor="middle">Revenue (USD)</text
 		>
 
+		<g class="quadrants" aria-hidden="true">
+			<line x1={x(365_000)} x2={x(365_000)} y1={margin.top} y2={height - margin.bottom} />
+			<line
+				x1={margin.left}
+				x2={width - margin.right}
+				y1={y(56_000_000_000)}
+				y2={y(56_000_000_000)}
+			/>
+			<text x={margin.left + 12} y={margin.top + 18}>HIGH REVENUE / LEANER BASE</text>
+			<text x={width - margin.right - 12} y={height - margin.bottom - 12} text-anchor="end"
+				>LARGER PEOPLE PLATFORM</text
+			>
+		</g>
+
 		{#each firms as firm (firm.firm)}
 			<g
 				class="firm-point"
-				class:active={hovered?.firm === firm.firm}
+				class:active={inspected?.firm === firm.firm}
 				role="button"
 				tabindex="0"
 				aria-label={`${firm.firm}: ${currencyShort(firm.revenue)} revenue and ${fullNumber(firm.people)} people. Open evidence.`}
 				onpointerenter={() => (hovered = firm)}
-				onpointerleave={() => (hovered = null)}
 				onfocus={() => (hovered = firm)}
-				onblur={() => (hovered = null)}
 				onclick={() => onSelect(firm.peopleObservationId)}
 				onkeydown={(event) => {
 					if (event.key === 'Enter' || event.key === ' ') onSelect(firm.peopleObservationId);
@@ -91,14 +106,22 @@
 		{/each}
 	</svg>
 
-	{#if hovered}
-		<div class="scatter-tooltip">
-			<span>{hovered.firm}</span>
-			<strong>{currencyShort(hovered.revenue)} <small>revenue</small></strong>
-			<strong>{fullNumber(hovered.people)} <small>people</small></strong>
-			<div><b>{currencyShort(hovered.revenuePerPerson, 0)}</b> revenue / person</div>
-		</div>
-	{/if}
+	<div class="scatter-readout" aria-live="polite">
+		{#if inspected}
+			<div class="readout-firm">
+				<i style:background={FIRM_COLORS[inspected.firm]}></i><strong>{inspected.firm}</strong><span
+					>selected</span
+				>
+			</div>
+			<div><span>Revenue</span><strong>{currencyShort(inspected.revenue)}</strong></div>
+			<div><span>People</span><strong>{fullNumber(inspected.people)}</strong></div>
+			<div class="readout-proxy">
+				<span>Directional revenue / person</span><strong
+					>{currencyShort(inspected.revenuePerPerson, 0)}</strong
+				>
+			</div>
+		{/if}
+	</div>
 </div>
 
 <style>
@@ -113,7 +136,7 @@
 	}
 
 	.grid line {
-		stroke: var(--border-subtle);
+		stroke: var(--border-strong);
 		stroke-dasharray: 2 5;
 	}
 
@@ -121,12 +144,12 @@
 	.axis-label {
 		fill: var(--text-tertiary);
 		font-family: var(--font-mono);
-		font-size: 10px;
+		font-size: 16px;
 	}
 
 	.axis-label {
 		font-family: var(--font-sans);
-		font-size: 9px;
+		font-size: 14px;
 		font-weight: 700;
 		letter-spacing: 0.03em;
 	}
@@ -147,8 +170,9 @@
 	}
 
 	.firm-point .halo {
-		opacity: 0.08;
+		opacity: 0.13;
 		stroke: none;
+		animation: point-pulse 3.2s ease-in-out infinite;
 	}
 
 	.firm-point:hover circle,
@@ -159,60 +183,96 @@
 
 	.firm-point text:not(.point-label) {
 		fill: var(--surface-base);
-		font-size: 11px;
+		font-size: 14px;
 		font-weight: 850;
 		pointer-events: none;
 	}
 
 	.point-label {
 		fill: var(--ink);
-		font-size: 10px;
+		font-size: 15px;
 		font-weight: 800;
 	}
 
-	.scatter-tooltip {
-		position: absolute;
-		right: 8px;
-		top: 8px;
+	.quadrants line {
+		stroke: var(--ink);
+		stroke-dasharray: 4 7;
+		stroke-width: 1;
+		opacity: 0.3;
+	}
+
+	.quadrants text {
+		fill: var(--text-tertiary);
+		font-family: var(--font-mono);
+		font-size: 12px;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+	}
+
+	.scatter-readout {
 		display: grid;
-		min-width: 178px;
+		grid-template-columns: 1.1fr repeat(3, minmax(0, 1fr));
+		min-height: 74px;
+		margin-top: 10px;
+		border: 1.5px solid var(--ink);
+		background: var(--accent-wash);
+	}
+
+	.scatter-readout > div {
+		display: grid;
+		align-content: center;
 		gap: 4px;
-		padding: 13px 14px;
-		border-radius: var(--radius-md);
-		background: var(--ink);
-		color: var(--surface-base);
-		box-shadow: var(--shadow-floating);
+		padding: 12px 14px;
+		border-right: 1px solid var(--ink);
 	}
 
-	.scatter-tooltip > span {
-		color: var(--accent-light);
-		font-size: 10px;
-		font-weight: 800;
+	.scatter-readout > div:last-child {
+		border: 0;
 	}
 
-	.scatter-tooltip strong {
+	.scatter-readout span {
+		color: var(--text-secondary);
+		font-size: 12px;
+	}
+
+	.scatter-readout strong {
 		font-family: var(--font-mono);
 		font-size: 14px;
 	}
 
-	.scatter-tooltip small {
-		color: var(--text-on-dark-muted);
-		font-family: var(--font-sans);
-		font-size: 9px;
-		font-weight: 500;
+	.readout-firm {
+		grid-template-columns: 10px auto;
+		column-gap: 8px !important;
 	}
 
-	.scatter-tooltip div {
-		margin-top: 5px;
-		padding-top: 8px;
-		border-top: 1px solid var(--border-on-dark);
-		color: var(--text-on-dark-muted);
-		font-size: 9px;
+	.readout-firm i {
+		width: 10px;
+		height: 10px;
+		border: 1px solid var(--ink);
 	}
 
-	.scatter-tooltip b {
-		color: var(--surface-base);
-		font-family: var(--font-mono);
-		font-size: 11px;
+	.readout-firm span {
+		grid-column: 2;
+	}
+
+	@keyframes point-pulse {
+		50% {
+			transform: scale(1.16);
+			opacity: 0.05;
+		}
+	}
+
+	@media (max-width: 620px) {
+		.scatter-readout {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.scatter-readout > div:nth-child(2) {
+			border-right: 0;
+		}
+
+		.scatter-readout > div:nth-child(-n + 2) {
+			border-bottom: 1px solid var(--ink);
+		}
 	}
 </style>

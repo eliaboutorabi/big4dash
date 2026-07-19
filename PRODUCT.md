@@ -14,7 +14,7 @@ The primary audience is hiring managers, interviewers, and professionals at Big 
 
 ## Product Purpose
 
-Turn a rigorous, source-cited Big Four research package into an unusually engaging comparison tool. Success means a visitor can form a credible view of scale, growth, workforce, business mix, and geographic reach in minutes, then progressively open the definitions, revisions, and source evidence behind any number. The finished work should function both as a practical research product and as a portfolio showcase of advanced visualization and interaction design.
+Turn a rigorous, source-cited Big Four research package into an unusually engaging comparison tool. Success means a visitor can form a credible view of scale, growth, workforce, business mix, regional revenue, and the physical office footprint in minutes, then progressively open the definitions, revisions, coordinate provenance, and source evidence behind any number. The finished work should function both as a practical research product and as a portfolio showcase of advanced visualization and interaction design.
 
 ## Positioning
 

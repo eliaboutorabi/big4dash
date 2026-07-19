@@ -37,6 +37,9 @@ const coverage = readCsv('05_coverage_matrix.csv');
 const serviceCrosswalk = readCsv('06_service_line_crosswalk.csv');
 const geographyCrosswalk = readCsv('06_geography_crosswalk.csv');
 const workforceCrosswalk = readCsv('06_workforce_crosswalk.csv');
+const officeLocations = fs.existsSync(path.join(DATA, '10_office_locations.csv'))
+	? readCsv('10_office_locations.csv')
+	: [];
 
 const supersededIds = new Set(
 	observations.map((row) => row.supersedes_observation_id).filter(Boolean)
@@ -247,6 +250,41 @@ const compactSources = sources.map((row) => ({
 	notes: row.notes
 }));
 
+const compactOfficeLocations = officeLocations
+	.map((row) => ({
+		id: row.site_id,
+		firm: row.firm_network,
+		name: row.site_name,
+		type: row.office_type,
+		address: row.street_address,
+		city: row.city,
+		region: row.state_province,
+		country: row.country,
+		countryCode: row.country_iso2,
+		latitude: number(row.latitude),
+		longitude: number(row.longitude),
+		sourceUrl: row.source_url,
+		sourceLocator: row.source_locator,
+		coordinatePrecision: row.coordinate_precision,
+		coverageTier: row.coverage_tier,
+		asOfDate: row.as_of_date
+	}))
+	.filter((row) => row.latitude != null && row.longitude != null);
+
+const officeMeta = Object.fromEntries(
+	FIRMS.map((firm) => {
+		const rows = compactOfficeLocations.filter((row) => row.firm === firm);
+		return [
+			firm,
+			{
+				count: rows.length,
+				coverageTier: rows[0]?.coverageTier ?? 'representative_hub',
+				coordinatePrecision: rows[0]?.coordinatePrecision ?? 'city_centroid'
+			}
+		];
+	})
+);
+
 const firmRevenueSorted = [...firmSummaries].sort((a, b) => (b.revenue ?? 0) - (a.revenue ?? 0));
 const firmGrowthSorted = [...firmSummaries].sort(
 	(a, b) => (b.fiveYearCagr ?? 0) - (a.fiveYearCagr ?? 0)
@@ -278,6 +316,8 @@ const payload = {
 	growthSeries,
 	serviceMix,
 	regionalMix,
+	officeLocations: compactOfficeLocations,
+	officeMeta,
 	insights: [
 		{
 			id: 'scale-leader',
