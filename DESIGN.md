@@ -26,7 +26,7 @@ The light and dark themes share the same semantic token names. Text, frames, inv
 
 Dark-mode elevation follows four explicit levels: the canvas is darkest, flat structural bands use the default surface and a border, raised analytical objects use a lighter elevated surface with a 4px zero-blur offset shadow, and overlays use the lightest surface with an 8px hard shadow or a directional hard drawer edge. Small highlighted controls use a 2px offset; focal calls to action may use the honey shadow. Shadow geometry never changes arbitrarily between themes, and soft atmospheric shadows are not part of the neo-brutalist vocabulary.
 
-The FirmScope mark is a contiguous four-color field with an editorial numeral 4 spanning the firms. The colors touch as one market; the numeral names the category without becoming a fifth, unrelated brand color.
+The FirmScope mark is a contiguous two-by-two field with one firm color anchored in each corner and an upright numeral 4 centered over their shared intersection. The colors touch as one market; the numeral names the category without becoming a fifth, unrelated brand color.
 
 ## Interaction principles
 
