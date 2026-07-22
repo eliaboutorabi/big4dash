@@ -116,7 +116,7 @@ export interface OfficeLocation {
 	sourceUrl: string;
 	sourceLocator: string;
 	coordinatePrecision: 'source_coordinate' | 'city_centroid';
-	coverageTier: 'directory_complete' | 'representative_hub';
+	coverageTier: 'directory_complete' | 'directory_mapped' | 'representative_hub';
 	asOfDate: string;
 }
 
@@ -147,7 +147,7 @@ export interface DashboardData {
 		FirmName,
 		{
 			count: number;
-			coverageTier: 'directory_complete' | 'representative_hub';
+			coverageTier: 'directory_complete' | 'directory_mapped' | 'representative_hub';
 			coordinatePrecision: 'source_coordinate' | 'city_centroid';
 		}
 	>;

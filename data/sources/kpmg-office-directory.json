@@ -1,0 +1,2625 @@
+{
+	"sourceIndexUrl": "https://kpmg.com/xx/en/misc/request-for-proposal.html",
+	"retrievedAt": "2026-07-18",
+	"coordinateMethod": "Official KPMG country-directory city labels joined to GeoNames city centroids",
+	"sourcePageCount": 76,
+	"mappedRecordCount": 327,
+	"records": [
+		{
+			"city": "Buenos Aires",
+			"country": "Argentina",
+			"countryCode": "AR",
+			"latitude": -34.61315,
+			"longitude": -58.37723,
+			"sourceUrl": "https://kpmg.com/ar/es/about/oficinas.html"
+		},
+		{
+			"city": "Córdoba",
+			"country": "Argentina",
+			"countryCode": "AR",
+			"latitude": -31.40648,
+			"longitude": -64.18853,
+			"sourceUrl": "https://kpmg.com/ar/es/about/oficinas.html"
+		},
+		{
+			"city": "Rosario",
+			"country": "Argentina",
+			"countryCode": "AR",
+			"latitude": -32.94682,
+			"longitude": -60.63932,
+			"sourceUrl": "https://kpmg.com/ar/es/about/oficinas.html"
+		},
+		{
+			"city": "Yerevan",
+			"country": "Armenia",
+			"countryCode": "AM",
+			"latitude": 40.17765,
+			"longitude": 44.5126,
+			"sourceUrl": "https://kpmg.com/am/en/about/offices.html"
+		},
+		{
+			"city": "Adelaide",
+			"country": "Australia",
+			"countryCode": "AU",
+			"latitude": -34.92866,
+			"longitude": 138.59863,
+			"sourceUrl": "https://kpmg.com/au/en/about/offices.html"
+		},
+		{
+			"city": "Brisbane",
+			"country": "Australia",
+			"countryCode": "AU",
+			"latitude": -27.46794,
+			"longitude": 153.02809,
+			"sourceUrl": "https://kpmg.com/au/en/about/offices.html"
+		},
+		{
+			"city": "Canberra",
+			"country": "Australia",
+			"countryCode": "AU",
+			"latitude": -35.28346,
+			"longitude": 149.12807,
+			"sourceUrl": "https://kpmg.com/au/en/about/offices.html"
+		},
+		{
+			"city": "Darwin",
+			"country": "Australia",
+			"countryCode": "AU",
+			"latitude": -12.46113,
+			"longitude": 130.84185,
+			"sourceUrl": "https://kpmg.com/au/en/about/offices.html"
+		},
+		{
+			"city": "Geelong",
+			"country": "Australia",
+			"countryCode": "AU",
+			"latitude": -38.14711,
+			"longitude": 144.36069,
+			"sourceUrl": "https://kpmg.com/au/en/about/offices.html"
+		},
+		{
+			"city": "Gold Coast",
+			"country": "Australia",
+			"countryCode": "AU",
+			"latitude": -28.00029,
+			"longitude": 153.43088,
+			"sourceUrl": "https://kpmg.com/au/en/about/offices.html"
+		},
+		{
+			"city": "Hobart",
+			"country": "Australia",
+			"countryCode": "AU",
+			"latitude": -42.87936,
+			"longitude": 147.32941,
+			"sourceUrl": "https://kpmg.com/au/en/about/offices.html"
+		},
+		{
+			"city": "Melbourne",
+			"country": "Australia",
+			"countryCode": "AU",
+			"latitude": -37.814,
+			"longitude": 144.96332,
+			"sourceUrl": "https://kpmg.com/au/en/about/offices.html"
+		},
+		{
+			"city": "Newcastle",
+			"country": "Australia",
+			"countryCode": "AU",
+			"latitude": -32.92953,
+			"longitude": 151.7801,
+			"sourceUrl": "https://kpmg.com/au/en/about/offices.html"
+		},
+		{
+			"city": "Parramatta",
+			"country": "Australia",
+			"countryCode": "AU",
+			"latitude": -33.8178,
+			"longitude": 151.00348,
+			"sourceUrl": "https://kpmg.com/au/en/about/offices.html"
+		},
+		{
+			"city": "Perth",
+			"country": "Australia",
+			"countryCode": "AU",
+			"latitude": -31.95224,
+			"longitude": 115.8614,
+			"sourceUrl": "https://kpmg.com/au/en/about/offices.html"
+		},
+		{
+			"city": "Sydney",
+			"country": "Australia",
+			"countryCode": "AU",
+			"latitude": -33.86785,
+			"longitude": 151.20732,
+			"sourceUrl": "https://kpmg.com/au/en/about/offices.html"
+		},
+		{
+			"city": "Townsville",
+			"country": "Australia",
+			"countryCode": "AU",
+			"latitude": -19.26639,
+			"longitude": 146.80569,
+			"sourceUrl": "https://kpmg.com/au/en/about/offices.html"
+		},
+		{
+			"city": "Wollongong",
+			"country": "Australia",
+			"countryCode": "AU",
+			"latitude": -34.424,
+			"longitude": 150.89345,
+			"sourceUrl": "https://kpmg.com/au/en/about/offices.html"
+		},
+		{
+			"city": "Salzburg",
+			"country": "Austria",
+			"countryCode": "AT",
+			"latitude": 47.79941,
+			"longitude": 13.04399,
+			"sourceUrl": "https://kpmg.com/at/en/about/offices.html"
+		},
+		{
+			"city": "Vienna",
+			"country": "Austria",
+			"countryCode": "AT",
+			"latitude": 48.20849,
+			"longitude": 16.37208,
+			"sourceUrl": "https://kpmg.com/at/en/about/offices.html"
+		},
+		{
+			"city": "Bridgetown",
+			"country": "Barbados",
+			"countryCode": "BB",
+			"latitude": 13.10732,
+			"longitude": -59.62021,
+			"sourceUrl": "https://kpmg.com/bb/en/about/offices.html"
+		},
+		{
+			"city": "Antwerp",
+			"country": "Belgium",
+			"countryCode": "BE",
+			"latitude": 51.22047,
+			"longitude": 4.40026,
+			"sourceUrl": "https://kpmg.com/be/en/about/offices.html"
+		},
+		{
+			"city": "Brussels",
+			"country": "Belgium",
+			"countryCode": "BE",
+			"latitude": 50.85045,
+			"longitude": 4.34878,
+			"sourceUrl": "https://kpmg.com/be/en/about/offices.html"
+		},
+		{
+			"city": "Gent",
+			"country": "Belgium",
+			"countryCode": "BE",
+			"latitude": 51.05,
+			"longitude": 3.71667,
+			"sourceUrl": "https://kpmg.com/be/en/about/offices.html"
+		},
+		{
+			"city": "Hasselt",
+			"country": "Belgium",
+			"countryCode": "BE",
+			"latitude": 50.93106,
+			"longitude": 5.33781,
+			"sourceUrl": "https://kpmg.com/be/en/about/offices.html"
+		},
+		{
+			"city": "Kortrijk",
+			"country": "Belgium",
+			"countryCode": "BE",
+			"latitude": 50.82803,
+			"longitude": 3.26487,
+			"sourceUrl": "https://kpmg.com/be/en/about/offices.html"
+		},
+		{
+			"city": "Liège",
+			"country": "Belgium",
+			"countryCode": "BE",
+			"latitude": 50.63373,
+			"longitude": 5.56749,
+			"sourceUrl": "https://kpmg.com/be/en/about/offices.html"
+		},
+		{
+			"city": "Louvain-la-Neuve",
+			"country": "Belgium",
+			"countryCode": "BE",
+			"latitude": 50.66829,
+			"longitude": 4.61443,
+			"sourceUrl": "https://kpmg.com/be/en/about/offices.html"
+		},
+		{
+			"city": "Tournai",
+			"country": "Belgium",
+			"countryCode": "BE",
+			"latitude": 50.60715,
+			"longitude": 3.38932,
+			"sourceUrl": "https://kpmg.com/be/en/about/offices.html"
+		},
+		{
+			"city": "Hamilton",
+			"country": "Bermuda",
+			"countryCode": "BM",
+			"latitude": 32.2949,
+			"longitude": -64.78303,
+			"sourceUrl": "https://kpmg.com/bm/en/about/offices.html"
+		},
+		{
+			"city": "Banja Luka",
+			"country": "Bosnia and Herzegovina",
+			"countryCode": "BA",
+			"latitude": 44.77879,
+			"longitude": 17.20629,
+			"sourceUrl": "https://kpmg.com/ba/en/about/offices.html"
+		},
+		{
+			"city": "Sarajevo",
+			"country": "Bosnia and Herzegovina",
+			"countryCode": "BA",
+			"latitude": 43.84864,
+			"longitude": 18.35644,
+			"sourceUrl": "https://kpmg.com/ba/en/about/offices.html"
+		},
+		{
+			"city": "Sofia",
+			"country": "Bulgaria",
+			"countryCode": "BG",
+			"latitude": 42.69751,
+			"longitude": 23.32415,
+			"sourceUrl": "https://kpmg.com/bg/en/about-us/office-locations.html"
+		},
+		{
+			"city": "Varna",
+			"country": "Bulgaria",
+			"countryCode": "BG",
+			"latitude": 43.21912,
+			"longitude": 27.91024,
+			"sourceUrl": "https://kpmg.com/bg/en/about-us/office-locations.html"
+		},
+		{
+			"city": "Phnom Penh",
+			"country": "Cambodia",
+			"countryCode": "KH",
+			"latitude": 11.56245,
+			"longitude": 104.91601,
+			"sourceUrl": "https://kpmg.com/kh/en/about/offices.html"
+		},
+		{
+			"city": "Abbotsford",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 49.05798,
+			"longitude": -122.25257,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Calgary",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 51.05011,
+			"longitude": -114.08529,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Chilliwack",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 49.16638,
+			"longitude": -121.95257,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Edmonton",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 53.55014,
+			"longitude": -113.46871,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Fredericton",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 45.94541,
+			"longitude": -66.66558,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Greater Sudbury",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 46.49,
+			"longitude": -80.99001,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Halifax",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 44.64269,
+			"longitude": -63.57688,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Hamilton",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 43.25011,
+			"longitude": -79.84963,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Joliette",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 46.0164,
+			"longitude": -73.4236,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Kamloops",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 50.66648,
+			"longitude": -120.3192,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Kanata",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 45.3001,
+			"longitude": -75.91606,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Kelowna",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 49.88307,
+			"longitude": -119.48568,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Kingston",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 44.22976,
+			"longitude": -76.48098,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Kitchener",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 43.42537,
+			"longitude": -80.5112,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Langley",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 49.10107,
+			"longitude": -122.65883,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Lethbridge",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 49.69999,
+			"longitude": -112.81856,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "London",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 42.98339,
+			"longitude": -81.23304,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Moncton",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 46.09454,
+			"longitude": -64.7965,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Montréal",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 45.50884,
+			"longitude": -73.58781,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "North Bay",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 46.3168,
+			"longitude": -79.46633,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Oakville",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 43.45011,
+			"longitude": -79.68292,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Ottawa",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 45.41117,
+			"longitude": -75.69812,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Prince George",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 53.9166,
+			"longitude": -122.75301,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Québec",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 46.81228,
+			"longitude": -71.21454,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Regina",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 50.45008,
+			"longitude": -104.6178,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Saskatoon",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 52.13238,
+			"longitude": -106.66892,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Sault Ste. Marie",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 46.51677,
+			"longitude": -84.33325,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "St. John's",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 47.56494,
+			"longitude": -52.70931,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Toronto",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 43.70643,
+			"longitude": -79.39864,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Vancouver",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 49.24966,
+			"longitude": -123.11934,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Vernon",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 50.26729,
+			"longitude": -119.27337,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Victoria",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 48.4359,
+			"longitude": -123.35155,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Windsor",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 42.30008,
+			"longitude": -83.01654,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Winnipeg",
+			"country": "Canada",
+			"countryCode": "CA",
+			"latitude": 49.8844,
+			"longitude": -97.14704,
+			"sourceUrl": "https://kpmg.com/ca/en/about/offices.html"
+		},
+		{
+			"city": "Beijing",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 39.9075,
+			"longitude": 116.39723,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Changchun",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 43.88,
+			"longitude": 125.32278,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Changsha",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 28.19874,
+			"longitude": 112.97087,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Chengdu",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 30.66667,
+			"longitude": 104.06667,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Chongqing",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 29.56026,
+			"longitude": 106.55771,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Dalian",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 38.91222,
+			"longitude": 121.60222,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Dongguan",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 23.01797,
+			"longitude": 113.74866,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Foshan",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 23.02677,
+			"longitude": 113.13148,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Fuzhou",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 26.06139,
+			"longitude": 119.30611,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Guangzhou",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 23.11667,
+			"longitude": 113.25,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Haikou",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 20.03421,
+			"longitude": 110.34651,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Hangzhou",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 30.29365,
+			"longitude": 120.16142,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Hefei",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 31.86389,
+			"longitude": 117.28083,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Jinan",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 36.66833,
+			"longitude": 116.99722,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Nanjing",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 32.06167,
+			"longitude": 118.77778,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Nantong",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 32.03028,
+			"longitude": 120.87472,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Ningbo",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 29.87819,
+			"longitude": 121.54945,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Qingdao",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 36.06488,
+			"longitude": 120.38042,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Shanghai",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 31.22222,
+			"longitude": 121.45806,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Shenyang",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 41.79222,
+			"longitude": 123.43278,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Shenzhen",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 22.54554,
+			"longitude": 114.0683,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Suzhou",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 31.30408,
+			"longitude": 120.59538,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Taiyuan",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 37.86944,
+			"longitude": 112.56028,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Tianjin",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 39.14222,
+			"longitude": 117.17667,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Wuhan",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 30.58333,
+			"longitude": 114.26667,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Wuxi",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 31.56887,
+			"longitude": 120.28857,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Xi’an",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 34.25833,
+			"longitude": 108.92861,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Xiamen",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 24.47979,
+			"longitude": 118.08187,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Zhengzhou",
+			"country": "China",
+			"countryCode": "CN",
+			"latitude": 34.75778,
+			"longitude": 113.64861,
+			"sourceUrl": "https://kpmg.com/cn/en/about/office-locations.html"
+		},
+		{
+			"city": "Barranquilla",
+			"country": "Colombia",
+			"countryCode": "CO",
+			"latitude": 10.96854,
+			"longitude": -74.78132,
+			"sourceUrl": "https://kpmg.com/co/es/about/offices.html"
+		},
+		{
+			"city": "Bogotá",
+			"country": "Colombia",
+			"countryCode": "CO",
+			"latitude": 4.60971,
+			"longitude": -74.08175,
+			"sourceUrl": "https://kpmg.com/co/es/about/offices.html"
+		},
+		{
+			"city": "Cali",
+			"country": "Colombia",
+			"countryCode": "CO",
+			"latitude": 3.43054,
+			"longitude": -76.5199,
+			"sourceUrl": "https://kpmg.com/co/es/about/offices.html"
+		},
+		{
+			"city": "Medellín",
+			"country": "Colombia",
+			"countryCode": "CO",
+			"latitude": 6.245,
+			"longitude": -75.57151,
+			"sourceUrl": "https://kpmg.com/co/es/about/offices.html"
+		},
+		{
+			"city": "Alexandria",
+			"country": "Egypt",
+			"countryCode": "EG",
+			"latitude": 31.20176,
+			"longitude": 29.91582,
+			"sourceUrl": "https://kpmg.com/eg/en/about/offices.html"
+		},
+		{
+			"city": "Cairo",
+			"country": "Egypt",
+			"countryCode": "EG",
+			"latitude": 30.06263,
+			"longitude": 31.24967,
+			"sourceUrl": "https://kpmg.com/eg/en/about/offices.html"
+		},
+		{
+			"city": "Tallinn",
+			"country": "Estonia",
+			"countryCode": "EE",
+			"latitude": 59.43696,
+			"longitude": 24.75353,
+			"sourceUrl": "https://kpmg.com/ee/en/about/offices.html"
+		},
+		{
+			"city": "Tartu",
+			"country": "Estonia",
+			"countryCode": "EE",
+			"latitude": 58.38062,
+			"longitude": 26.72509,
+			"sourceUrl": "https://kpmg.com/ee/en/about/offices.html"
+		},
+		{
+			"city": "Aachen",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 50.77664,
+			"longitude": 6.08342,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Augsburg",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 48.37154,
+			"longitude": 10.89851,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Berlin",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 52.52437,
+			"longitude": 13.41053,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Bielefeld",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 52.03333,
+			"longitude": 8.53333,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Bremen",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 53.07582,
+			"longitude": 8.80717,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Dortmund",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 51.51494,
+			"longitude": 7.466,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Dresden",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 51.05089,
+			"longitude": 13.73832,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Düsseldorf",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 51.22319,
+			"longitude": 6.77927,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Essen",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 51.45657,
+			"longitude": 7.01228,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Frankfurt am Main",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 50.11552,
+			"longitude": 8.68417,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Freiburg",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 47.9959,
+			"longitude": 7.85222,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Friedrichshafen",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 47.65689,
+			"longitude": 9.47554,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Hamburg",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 53.55073,
+			"longitude": 9.99302,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Hannover",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 52.37052,
+			"longitude": 9.73322,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Jena",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 50.92878,
+			"longitude": 11.5899,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Karlsruhe",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 49.00937,
+			"longitude": 8.40444,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Kiel",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 54.32133,
+			"longitude": 10.13489,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Köln",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 50.93333,
+			"longitude": 6.95,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Leipzig",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 51.33962,
+			"longitude": 12.37129,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Mainz",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 49.98185,
+			"longitude": 8.28008,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Mannheim",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 49.4891,
+			"longitude": 8.46694,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Munich",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 48.13743,
+			"longitude": 11.57549,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Münster",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 51.96236,
+			"longitude": 7.62571,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Nuremberg",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 49.45421,
+			"longitude": 11.07752,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Regensburg",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 49.01513,
+			"longitude": 12.10161,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Saarbrücken",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 49.23262,
+			"longitude": 7.00982,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Stuttgart",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 48.78232,
+			"longitude": 9.17702,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Ulm",
+			"country": "Germany",
+			"countryCode": "DE",
+			"latitude": 48.39841,
+			"longitude": 9.99155,
+			"sourceUrl": "https://kpmg.com/de/en/about/offices.html"
+		},
+		{
+			"city": "Ahmedabad",
+			"country": "India",
+			"countryCode": "IN",
+			"latitude": 23.02579,
+			"longitude": 72.58727,
+			"sourceUrl": "https://kpmg.com/in/en/about/offices.html"
+		},
+		{
+			"city": "Bengaluru",
+			"country": "India",
+			"countryCode": "IN",
+			"latitude": 12.97194,
+			"longitude": 77.59369,
+			"sourceUrl": "https://kpmg.com/in/en/about/offices.html"
+		},
+		{
+			"city": "Chandigarh",
+			"country": "India",
+			"countryCode": "IN",
+			"latitude": 30.73629,
+			"longitude": 76.7884,
+			"sourceUrl": "https://kpmg.com/in/en/about/offices.html"
+		},
+		{
+			"city": "Chennai",
+			"country": "India",
+			"countryCode": "IN",
+			"latitude": 13.08784,
+			"longitude": 80.27847,
+			"sourceUrl": "https://kpmg.com/in/en/about/offices.html"
+		},
+		{
+			"city": "Delhi",
+			"country": "India",
+			"countryCode": "IN",
+			"latitude": 28.65195,
+			"longitude": 77.23149,
+			"sourceUrl": "https://kpmg.com/in/en/about/offices.html"
+		},
+		{
+			"city": "Gurugram",
+			"country": "India",
+			"countryCode": "IN",
+			"latitude": 28.4601,
+			"longitude": 77.02635,
+			"sourceUrl": "https://kpmg.com/in/en/about/offices.html"
+		},
+		{
+			"city": "Hyderabad",
+			"country": "India",
+			"countryCode": "IN",
+			"latitude": 17.38405,
+			"longitude": 78.45636,
+			"sourceUrl": "https://kpmg.com/in/en/about/offices.html"
+		},
+		{
+			"city": "Jaipur",
+			"country": "India",
+			"countryCode": "IN",
+			"latitude": 26.91962,
+			"longitude": 75.78781,
+			"sourceUrl": "https://kpmg.com/in/en/about/offices.html"
+		},
+		{
+			"city": "Kochi",
+			"country": "India",
+			"countryCode": "IN",
+			"latitude": 9.93988,
+			"longitude": 76.26022,
+			"sourceUrl": "https://kpmg.com/in/en/about/offices.html"
+		},
+		{
+			"city": "Kolkata",
+			"country": "India",
+			"countryCode": "IN",
+			"latitude": 22.56263,
+			"longitude": 88.36304,
+			"sourceUrl": "https://kpmg.com/in/en/about/offices.html"
+		},
+		{
+			"city": "Mumbai",
+			"country": "India",
+			"countryCode": "IN",
+			"latitude": 19.07283,
+			"longitude": 72.88261,
+			"sourceUrl": "https://kpmg.com/in/en/about/offices.html"
+		},
+		{
+			"city": "Navi Mumbai",
+			"country": "India",
+			"countryCode": "IN",
+			"latitude": 19.03681,
+			"longitude": 73.01582,
+			"sourceUrl": "https://kpmg.com/in/en/about/offices.html"
+		},
+		{
+			"city": "Noida",
+			"country": "India",
+			"countryCode": "IN",
+			"latitude": 28.58,
+			"longitude": 77.33,
+			"sourceUrl": "https://kpmg.com/in/en/about/offices.html"
+		},
+		{
+			"city": "Pune",
+			"country": "India",
+			"countryCode": "IN",
+			"latitude": 18.51957,
+			"longitude": 73.85535,
+			"sourceUrl": "https://kpmg.com/in/en/about/offices.html"
+		},
+		{
+			"city": "Vadodara",
+			"country": "India",
+			"countryCode": "IN",
+			"latitude": 22.29941,
+			"longitude": 73.20812,
+			"sourceUrl": "https://kpmg.com/in/en/about/offices.html"
+		},
+		{
+			"city": "Vijayawada",
+			"country": "India",
+			"countryCode": "IN",
+			"latitude": 16.50745,
+			"longitude": 80.6466,
+			"sourceUrl": "https://kpmg.com/in/en/about/offices.html"
+		},
+		{
+			"city": "Kingston",
+			"country": "Jamaica",
+			"countryCode": "JM",
+			"latitude": 17.99702,
+			"longitude": -76.79358,
+			"sourceUrl": "https://kpmg.com/jm/en/about/offices.html"
+		},
+		{
+			"city": "Montego Bay",
+			"country": "Jamaica",
+			"countryCode": "JM",
+			"latitude": 18.47116,
+			"longitude": -77.91883,
+			"sourceUrl": "https://kpmg.com/jm/en/about/offices.html"
+		},
+		{
+			"city": "Almaty",
+			"country": "Kazakhstan",
+			"countryCode": "KZ",
+			"latitude": 43.25249,
+			"longitude": 76.9115,
+			"sourceUrl": "https://kpmg.com/kz/en/about/offices.html"
+		},
+		{
+			"city": "Astana",
+			"country": "Kazakhstan",
+			"countryCode": "KZ",
+			"latitude": 51.1801,
+			"longitude": 71.44598,
+			"sourceUrl": "https://kpmg.com/kz/en/about/offices.html"
+		},
+		{
+			"city": "Kuwait City",
+			"country": "Kuwait",
+			"countryCode": "KW",
+			"latitude": 29.367,
+			"longitude": 47.97429,
+			"sourceUrl": "https://kpmg.com/kw/en/about/our-office-location.html"
+		},
+		{
+			"city": "George Town",
+			"country": "Malaysia",
+			"countryCode": "MY",
+			"latitude": 5.41123,
+			"longitude": 100.33543,
+			"sourceUrl": "https://kpmg.com/my/en/about/our-offices.html"
+		},
+		{
+			"city": "Ipoh",
+			"country": "Malaysia",
+			"countryCode": "MY",
+			"latitude": 4.5841,
+			"longitude": 101.0829,
+			"sourceUrl": "https://kpmg.com/my/en/about/our-offices.html"
+		},
+		{
+			"city": "Johor Bahru",
+			"country": "Malaysia",
+			"countryCode": "MY",
+			"latitude": 1.4655,
+			"longitude": 103.7578,
+			"sourceUrl": "https://kpmg.com/my/en/about/our-offices.html"
+		},
+		{
+			"city": "Kota Kinabalu",
+			"country": "Malaysia",
+			"countryCode": "MY",
+			"latitude": 5.9749,
+			"longitude": 116.0724,
+			"sourceUrl": "https://kpmg.com/my/en/about/our-offices.html"
+		},
+		{
+			"city": "Kuching",
+			"country": "Malaysia",
+			"countryCode": "MY",
+			"latitude": 1.55,
+			"longitude": 110.33333,
+			"sourceUrl": "https://kpmg.com/my/en/about/our-offices.html"
+		},
+		{
+			"city": "Labuan",
+			"country": "Malaysia",
+			"countryCode": "MY",
+			"latitude": 5.28028,
+			"longitude": 115.2475,
+			"sourceUrl": "https://kpmg.com/my/en/about/our-offices.html"
+		},
+		{
+			"city": "Miri",
+			"country": "Malaysia",
+			"countryCode": "MY",
+			"latitude": 4.39928,
+			"longitude": 113.99163,
+			"sourceUrl": "https://kpmg.com/my/en/about/our-offices.html"
+		},
+		{
+			"city": "Petaling Jaya",
+			"country": "Malaysia",
+			"countryCode": "MY",
+			"latitude": 3.10726,
+			"longitude": 101.60671,
+			"sourceUrl": "https://kpmg.com/my/en/about/our-offices.html"
+		},
+		{
+			"city": "Pietà",
+			"country": "Malta",
+			"countryCode": "MT",
+			"latitude": 35.89297,
+			"longitude": 14.49362,
+			"sourceUrl": "https://kpmg.com/mt/en/about/offices.html"
+		},
+		{
+			"city": "Rabat",
+			"country": "Malta",
+			"countryCode": "MT",
+			"latitude": 35.88152,
+			"longitude": 14.39872,
+			"sourceUrl": "https://kpmg.com/mt/en/about/offices.html"
+		},
+		{
+			"city": "Aguascalientes",
+			"country": "Mexico",
+			"countryCode": "MX",
+			"latitude": 21.88262,
+			"longitude": -102.2843,
+			"sourceUrl": "https://kpmg.com/mx/es/about/offices.html"
+		},
+		{
+			"city": "Cancún",
+			"country": "Mexico",
+			"countryCode": "MX",
+			"latitude": 21.17429,
+			"longitude": -86.84656,
+			"sourceUrl": "https://kpmg.com/mx/es/about/offices.html"
+		},
+		{
+			"city": "Chihuahua",
+			"country": "Mexico",
+			"countryCode": "MX",
+			"latitude": 28.63528,
+			"longitude": -106.08889,
+			"sourceUrl": "https://kpmg.com/mx/es/about/offices.html"
+		},
+		{
+			"city": "Ciudad Juárez",
+			"country": "Mexico",
+			"countryCode": "MX",
+			"latitude": 31.72024,
+			"longitude": -106.46084,
+			"sourceUrl": "https://kpmg.com/mx/es/about/offices.html"
+		},
+		{
+			"city": "Culiacán",
+			"country": "Mexico",
+			"countryCode": "MX",
+			"latitude": 24.80209,
+			"longitude": -107.39421,
+			"sourceUrl": "https://kpmg.com/mx/es/about/offices.html"
+		},
+		{
+			"city": "Guadalajara",
+			"country": "Mexico",
+			"countryCode": "MX",
+			"latitude": 20.67738,
+			"longitude": -103.34749,
+			"sourceUrl": "https://kpmg.com/mx/es/about/offices.html"
+		},
+		{
+			"city": "Hermosillo",
+			"country": "Mexico",
+			"countryCode": "MX",
+			"latitude": 29.08874,
+			"longitude": -110.96677,
+			"sourceUrl": "https://kpmg.com/mx/es/about/offices.html"
+		},
+		{
+			"city": "León de los Aldama",
+			"country": "Mexico",
+			"countryCode": "MX",
+			"latitude": 21.12183,
+			"longitude": -101.68253,
+			"sourceUrl": "https://kpmg.com/mx/es/about/offices.html"
+		},
+		{
+			"city": "Mexicali",
+			"country": "Mexico",
+			"countryCode": "MX",
+			"latitude": 32.62781,
+			"longitude": -115.45446,
+			"sourceUrl": "https://kpmg.com/mx/es/about/offices.html"
+		},
+		{
+			"city": "Mexico City",
+			"country": "Mexico",
+			"countryCode": "MX",
+			"latitude": 19.42847,
+			"longitude": -99.12766,
+			"sourceUrl": "https://kpmg.com/mx/es/about/offices.html"
+		},
+		{
+			"city": "Monterrey",
+			"country": "Mexico",
+			"countryCode": "MX",
+			"latitude": 25.68435,
+			"longitude": -100.31721,
+			"sourceUrl": "https://kpmg.com/mx/es/about/offices.html"
+		},
+		{
+			"city": "Puebla",
+			"country": "Mexico",
+			"countryCode": "MX",
+			"latitude": 19.04778,
+			"longitude": -98.20723,
+			"sourceUrl": "https://kpmg.com/mx/es/about/offices.html"
+		},
+		{
+			"city": "Reynosa",
+			"country": "Mexico",
+			"countryCode": "MX",
+			"latitude": 26.08005,
+			"longitude": -98.28456,
+			"sourceUrl": "https://kpmg.com/mx/es/about/offices.html"
+		},
+		{
+			"city": "Saltillo",
+			"country": "Mexico",
+			"countryCode": "MX",
+			"latitude": 25.42595,
+			"longitude": -100.97963,
+			"sourceUrl": "https://kpmg.com/mx/es/about/offices.html"
+		},
+		{
+			"city": "San Luis Potosí",
+			"country": "Mexico",
+			"countryCode": "MX",
+			"latitude": 22.15234,
+			"longitude": -100.97135,
+			"sourceUrl": "https://kpmg.com/mx/es/about/offices.html"
+		},
+		{
+			"city": "Santiago de Querétaro",
+			"country": "Mexico",
+			"countryCode": "MX",
+			"latitude": 20.58806,
+			"longitude": -100.38806,
+			"sourceUrl": "https://kpmg.com/mx/es/about/offices.html"
+		},
+		{
+			"city": "Tijuana",
+			"country": "Mexico",
+			"countryCode": "MX",
+			"latitude": 32.5027,
+			"longitude": -117.00371,
+			"sourceUrl": "https://kpmg.com/mx/es/about/offices.html"
+		},
+		{
+			"city": "Ashburton",
+			"country": "New Zealand",
+			"countryCode": "NZ",
+			"latitude": -43.89834,
+			"longitude": 171.73011,
+			"sourceUrl": "https://kpmg.com/nz/en/about/offices.html"
+		},
+		{
+			"city": "Auckland",
+			"country": "New Zealand",
+			"countryCode": "NZ",
+			"latitude": -36.84853,
+			"longitude": 174.76349,
+			"sourceUrl": "https://kpmg.com/nz/en/about/offices.html"
+		},
+		{
+			"city": "Christchurch",
+			"country": "New Zealand",
+			"countryCode": "NZ",
+			"latitude": -43.53333,
+			"longitude": 172.63333,
+			"sourceUrl": "https://kpmg.com/nz/en/about/offices.html"
+		},
+		{
+			"city": "Hamilton",
+			"country": "New Zealand",
+			"countryCode": "NZ",
+			"latitude": -37.78333,
+			"longitude": 175.28333,
+			"sourceUrl": "https://kpmg.com/nz/en/about/offices.html"
+		},
+		{
+			"city": "Tauranga",
+			"country": "New Zealand",
+			"countryCode": "NZ",
+			"latitude": -37.68611,
+			"longitude": 176.16667,
+			"sourceUrl": "https://kpmg.com/nz/en/about/offices.html"
+		},
+		{
+			"city": "Timaru",
+			"country": "New Zealand",
+			"countryCode": "NZ",
+			"latitude": -44.39672,
+			"longitude": 171.25364,
+			"sourceUrl": "https://kpmg.com/nz/en/about/offices.html"
+		},
+		{
+			"city": "Wellington",
+			"country": "New Zealand",
+			"countryCode": "NZ",
+			"latitude": -41.28664,
+			"longitude": 174.77557,
+			"sourceUrl": "https://kpmg.com/nz/en/about/offices.html"
+		},
+		{
+			"city": "Skopje",
+			"country": "North Macedonia",
+			"countryCode": "MK",
+			"latitude": 41.99646,
+			"longitude": 21.43141,
+			"sourceUrl": "https://kpmg.com/mk/en/about-us/office-locations.html"
+		},
+		{
+			"city": "Islamabad",
+			"country": "Pakistan",
+			"countryCode": "PK",
+			"latitude": 33.72148,
+			"longitude": 73.04329,
+			"sourceUrl": "https://kpmg.com/pk/en/about/offices.html"
+		},
+		{
+			"city": "Karachi",
+			"country": "Pakistan",
+			"countryCode": "PK",
+			"latitude": 24.8608,
+			"longitude": 67.0104,
+			"sourceUrl": "https://kpmg.com/pk/en/about/offices.html"
+		},
+		{
+			"city": "Lahore",
+			"country": "Pakistan",
+			"countryCode": "PK",
+			"latitude": 31.558,
+			"longitude": 74.35071,
+			"sourceUrl": "https://kpmg.com/pk/en/about/offices.html"
+		},
+		{
+			"city": "Panama City",
+			"country": "Panama",
+			"countryCode": "PA",
+			"latitude": 8.9936,
+			"longitude": -79.51973,
+			"sourceUrl": "https://kpmg.com/pa/es/about/offices.html"
+		},
+		{
+			"city": "Lae",
+			"country": "Papua New Guinea",
+			"countryCode": "PG",
+			"latitude": -6.72333,
+			"longitude": 146.99611,
+			"sourceUrl": "https://kpmg.com/pg/en/about/office.html"
+		},
+		{
+			"city": "Port Moresby",
+			"country": "Papua New Guinea",
+			"countryCode": "PG",
+			"latitude": -9.47723,
+			"longitude": 147.15089,
+			"sourceUrl": "https://kpmg.com/pg/en/about/office.html"
+		},
+		{
+			"city": "Lima",
+			"country": "Peru",
+			"countryCode": "PE",
+			"latitude": -12.04318,
+			"longitude": -77.02824,
+			"sourceUrl": "https://kpmg.com/pe/es/about/offices.html"
+		},
+		{
+			"city": "Cebu City",
+			"country": "Philippines",
+			"countryCode": "PH",
+			"latitude": 10.31672,
+			"longitude": 123.89071,
+			"sourceUrl": "https://kpmg.com/ph/en/about/offices.html"
+		},
+		{
+			"city": "Iloilo",
+			"country": "Philippines",
+			"countryCode": "PH",
+			"latitude": 10.69694,
+			"longitude": 122.56444,
+			"sourceUrl": "https://kpmg.com/ph/en/about/offices.html"
+		},
+		{
+			"city": "Manila",
+			"country": "Philippines",
+			"countryCode": "PH",
+			"latitude": 14.6042,
+			"longitude": 120.9822,
+			"sourceUrl": "https://kpmg.com/ph/en/about/offices.html"
+		},
+		{
+			"city": "Gdańsk",
+			"country": "Poland",
+			"countryCode": "PL",
+			"latitude": 54.35227,
+			"longitude": 18.64912,
+			"sourceUrl": "https://kpmg.com/pl/en/about/offices.html"
+		},
+		{
+			"city": "Katowice",
+			"country": "Poland",
+			"countryCode": "PL",
+			"latitude": 50.2597,
+			"longitude": 19.02173,
+			"sourceUrl": "https://kpmg.com/pl/en/about/offices.html"
+		},
+		{
+			"city": "Kraków",
+			"country": "Poland",
+			"countryCode": "PL",
+			"latitude": 50.06143,
+			"longitude": 19.93658,
+			"sourceUrl": "https://kpmg.com/pl/en/about/offices.html"
+		},
+		{
+			"city": "Łódź",
+			"country": "Poland",
+			"countryCode": "PL",
+			"latitude": 51.77058,
+			"longitude": 19.47395,
+			"sourceUrl": "https://kpmg.com/pl/en/about/offices.html"
+		},
+		{
+			"city": "Poznań",
+			"country": "Poland",
+			"countryCode": "PL",
+			"latitude": 52.40692,
+			"longitude": 16.92993,
+			"sourceUrl": "https://kpmg.com/pl/en/about/offices.html"
+		},
+		{
+			"city": "Warsaw",
+			"country": "Poland",
+			"countryCode": "PL",
+			"latitude": 52.22977,
+			"longitude": 21.01178,
+			"sourceUrl": "https://kpmg.com/pl/en/about/offices.html"
+		},
+		{
+			"city": "Wrocław",
+			"country": "Poland",
+			"countryCode": "PL",
+			"latitude": 51.10286,
+			"longitude": 17.03006,
+			"sourceUrl": "https://kpmg.com/pl/en/about/offices.html"
+		},
+		{
+			"city": "Jeddah",
+			"country": "Saudi Arabia",
+			"countryCode": "SA",
+			"latitude": 21.49012,
+			"longitude": 39.18624,
+			"sourceUrl": "https://kpmg.com/sa/en/about/offices.html"
+		},
+		{
+			"city": "Madinah",
+			"country": "Saudi Arabia",
+			"countryCode": "SA",
+			"latitude": 24.46861,
+			"longitude": 39.61417,
+			"sourceUrl": "https://kpmg.com/sa/en/about/offices.html"
+		},
+		{
+			"city": "Riyadh",
+			"country": "Saudi Arabia",
+			"countryCode": "SA",
+			"latitude": 24.68773,
+			"longitude": 46.72185,
+			"sourceUrl": "https://kpmg.com/sa/en/about/offices.html"
+		},
+		{
+			"city": "Kragujevac",
+			"country": "Serbia",
+			"countryCode": "RS",
+			"latitude": 44.01667,
+			"longitude": 20.91667,
+			"sourceUrl": "https://kpmg.com/rs/en/about/offices.html"
+		},
+		{
+			"city": "Ljubljana",
+			"country": "Slovenia",
+			"countryCode": "SI",
+			"latitude": 46.05108,
+			"longitude": 14.50513,
+			"sourceUrl": "https://kpmg.com/si/en/about/offices.html"
+		},
+		{
+			"city": "Nova Gorica",
+			"country": "Slovenia",
+			"countryCode": "SI",
+			"latitude": 45.95604,
+			"longitude": 13.64837,
+			"sourceUrl": "https://kpmg.com/si/en/about/offices.html"
+		},
+		{
+			"city": "Basel",
+			"country": "Switzerland",
+			"countryCode": "CH",
+			"latitude": 47.55839,
+			"longitude": 7.57327,
+			"sourceUrl": "https://kpmg.com/ch/en/about/offices.html"
+		},
+		{
+			"city": "Bern",
+			"country": "Switzerland",
+			"countryCode": "CH",
+			"latitude": 46.94809,
+			"longitude": 7.44744,
+			"sourceUrl": "https://kpmg.com/ch/en/about/offices.html"
+		},
+		{
+			"city": "Geneva",
+			"country": "Switzerland",
+			"countryCode": "CH",
+			"latitude": 46.20222,
+			"longitude": 6.14569,
+			"sourceUrl": "https://kpmg.com/ch/en/about/offices.html"
+		},
+		{
+			"city": "Lausanne",
+			"country": "Switzerland",
+			"countryCode": "CH",
+			"latitude": 46.516,
+			"longitude": 6.63282,
+			"sourceUrl": "https://kpmg.com/ch/en/about/offices.html"
+		},
+		{
+			"city": "Lugano",
+			"country": "Switzerland",
+			"countryCode": "CH",
+			"latitude": 46.01008,
+			"longitude": 8.96004,
+			"sourceUrl": "https://kpmg.com/ch/en/about/offices.html"
+		},
+		{
+			"city": "Luzern",
+			"country": "Switzerland",
+			"countryCode": "CH",
+			"latitude": 47.05048,
+			"longitude": 8.30635,
+			"sourceUrl": "https://kpmg.com/ch/en/about/offices.html"
+		},
+		{
+			"city": "Neuchâtel",
+			"country": "Switzerland",
+			"countryCode": "CH",
+			"latitude": 46.99179,
+			"longitude": 6.931,
+			"sourceUrl": "https://kpmg.com/ch/en/about/offices.html"
+		},
+		{
+			"city": "Sankt Gallen",
+			"country": "Switzerland",
+			"countryCode": "CH",
+			"latitude": 47.42391,
+			"longitude": 9.37477,
+			"sourceUrl": "https://kpmg.com/ch/en/about/offices.html"
+		},
+		{
+			"city": "Zug",
+			"country": "Switzerland",
+			"countryCode": "CH",
+			"latitude": 47.17242,
+			"longitude": 8.51745,
+			"sourceUrl": "https://kpmg.com/ch/en/about/offices.html"
+		},
+		{
+			"city": "Zürich",
+			"country": "Switzerland",
+			"countryCode": "CH",
+			"latitude": 47.36667,
+			"longitude": 8.55,
+			"sourceUrl": "https://kpmg.com/ch/en/about/offices.html"
+		},
+		{
+			"city": "Port of Spain",
+			"country": "Trinidad and Tobago",
+			"countryCode": "TT",
+			"latitude": 10.66668,
+			"longitude": -61.51889,
+			"sourceUrl": "https://kpmg.com/tt/en/about/offices.html"
+		},
+		{
+			"city": "Tunis",
+			"country": "Tunisia",
+			"countryCode": "TN",
+			"latitude": 36.81897,
+			"longitude": 10.16579,
+			"sourceUrl": "https://kpmg.com/tn/en/about/offices.html"
+		},
+		{
+			"city": "Adana",
+			"country": "Turkey",
+			"countryCode": "TR",
+			"latitude": 36.98615,
+			"longitude": 35.32531,
+			"sourceUrl": "https://kpmg.com/tr/en/about/offices.html"
+		},
+		{
+			"city": "Ankara",
+			"country": "Turkey",
+			"countryCode": "TR",
+			"latitude": 39.91987,
+			"longitude": 32.85427,
+			"sourceUrl": "https://kpmg.com/tr/en/about/offices.html"
+		},
+		{
+			"city": "Antalya",
+			"country": "Turkey",
+			"countryCode": "TR",
+			"latitude": 36.90812,
+			"longitude": 30.69556,
+			"sourceUrl": "https://kpmg.com/tr/en/about/offices.html"
+		},
+		{
+			"city": "Bursa",
+			"country": "Turkey",
+			"countryCode": "TR",
+			"latitude": 40.19559,
+			"longitude": 29.06013,
+			"sourceUrl": "https://kpmg.com/tr/en/about/offices.html"
+		},
+		{
+			"city": "Istanbul",
+			"country": "Turkey",
+			"countryCode": "TR",
+			"latitude": 41.01384,
+			"longitude": 28.94966,
+			"sourceUrl": "https://kpmg.com/tr/en/about/offices.html"
+		},
+		{
+			"city": "İzmir",
+			"country": "Turkey",
+			"countryCode": "TR",
+			"latitude": 38.41273,
+			"longitude": 27.13838,
+			"sourceUrl": "https://kpmg.com/tr/en/about/offices.html"
+		},
+		{
+			"city": "Abu Dhabi",
+			"country": "United Arab Emirates",
+			"countryCode": "AE",
+			"latitude": 24.45118,
+			"longitude": 54.39696,
+			"sourceUrl": "https://kpmg.com/ae/en/about/offices.html"
+		},
+		{
+			"city": "Dubai",
+			"country": "United Arab Emirates",
+			"countryCode": "AE",
+			"latitude": 25.07725,
+			"longitude": 55.30927,
+			"sourceUrl": "https://kpmg.com/ae/en/about/offices.html"
+		},
+		{
+			"city": "Aberdeen",
+			"country": "United Kingdom",
+			"countryCode": "GB",
+			"latitude": 57.14369,
+			"longitude": -2.09814,
+			"sourceUrl": "https://kpmg.com/uk/en/about/offices.html"
+		},
+		{
+			"city": "Birmingham",
+			"country": "United Kingdom",
+			"countryCode": "GB",
+			"latitude": 52.48142,
+			"longitude": -1.89983,
+			"sourceUrl": "https://kpmg.com/uk/en/about/offices.html"
+		},
+		{
+			"city": "Bristol",
+			"country": "United Kingdom",
+			"countryCode": "GB",
+			"latitude": 51.45523,
+			"longitude": -2.59665,
+			"sourceUrl": "https://kpmg.com/uk/en/about/offices.html"
+		},
+		{
+			"city": "Cardiff",
+			"country": "United Kingdom",
+			"countryCode": "GB",
+			"latitude": 51.48,
+			"longitude": -3.18,
+			"sourceUrl": "https://kpmg.com/uk/en/about/offices.html"
+		},
+		{
+			"city": "Edinburgh",
+			"country": "United Kingdom",
+			"countryCode": "GB",
+			"latitude": 55.95206,
+			"longitude": -3.19648,
+			"sourceUrl": "https://kpmg.com/uk/en/about/offices.html"
+		},
+		{
+			"city": "Glasgow",
+			"country": "United Kingdom",
+			"countryCode": "GB",
+			"latitude": 55.86515,
+			"longitude": -4.25763,
+			"sourceUrl": "https://kpmg.com/uk/en/about/offices.html"
+		},
+		{
+			"city": "Leeds",
+			"country": "United Kingdom",
+			"countryCode": "GB",
+			"latitude": 53.79648,
+			"longitude": -1.54785,
+			"sourceUrl": "https://kpmg.com/uk/en/about/offices.html"
+		},
+		{
+			"city": "Liverpool",
+			"country": "United Kingdom",
+			"countryCode": "GB",
+			"latitude": 53.41058,
+			"longitude": -2.97794,
+			"sourceUrl": "https://kpmg.com/uk/en/about/offices.html"
+		},
+		{
+			"city": "London",
+			"country": "United Kingdom",
+			"countryCode": "GB",
+			"latitude": 51.50853,
+			"longitude": -0.12574,
+			"sourceUrl": "https://kpmg.com/uk/en/about/offices.html"
+		},
+		{
+			"city": "Manchester",
+			"country": "United Kingdom",
+			"countryCode": "GB",
+			"latitude": 53.48095,
+			"longitude": -2.23743,
+			"sourceUrl": "https://kpmg.com/uk/en/about/offices.html"
+		},
+		{
+			"city": "Milton Keynes",
+			"country": "United Kingdom",
+			"countryCode": "GB",
+			"latitude": 52.04172,
+			"longitude": -0.75583,
+			"sourceUrl": "https://kpmg.com/uk/en/about/offices.html"
+		},
+		{
+			"city": "Newcastle upon Tyne",
+			"country": "United Kingdom",
+			"countryCode": "GB",
+			"latitude": 54.97328,
+			"longitude": -1.61396,
+			"sourceUrl": "https://kpmg.com/uk/en/about/offices.html"
+		},
+		{
+			"city": "Nottingham",
+			"country": "United Kingdom",
+			"countryCode": "GB",
+			"latitude": 52.9536,
+			"longitude": -1.15047,
+			"sourceUrl": "https://kpmg.com/uk/en/about/offices.html"
+		},
+		{
+			"city": "Reading",
+			"country": "United Kingdom",
+			"countryCode": "GB",
+			"latitude": 51.45625,
+			"longitude": -0.97113,
+			"sourceUrl": "https://kpmg.com/uk/en/about/offices.html"
+		},
+		{
+			"city": "Watford",
+			"country": "United Kingdom",
+			"countryCode": "GB",
+			"latitude": 51.65531,
+			"longitude": -0.39602,
+			"sourceUrl": "https://kpmg.com/uk/en/about/offices.html"
+		},
+		{
+			"city": "Albany",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 42.65258,
+			"longitude": -73.75623,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Albuquerque",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 35.08449,
+			"longitude": -106.65114,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Anchorage",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 61.21806,
+			"longitude": -149.90028,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Atlanta",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 33.749,
+			"longitude": -84.38798,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Austin",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 30.26715,
+			"longitude": -97.74306,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Baltimore",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 39.29038,
+			"longitude": -76.61219,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Baton Rouge",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 30.44332,
+			"longitude": -91.18747,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Birmingham",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 33.52066,
+			"longitude": -86.80249,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Boise",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 43.6135,
+			"longitude": -116.20345,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Boston",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 42.35843,
+			"longitude": -71.05977,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Burlington",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 36.09569,
+			"longitude": -79.4378,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Charlotte",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 35.22709,
+			"longitude": -80.84313,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Chicago",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 41.85003,
+			"longitude": -87.65005,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Cincinnati",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 39.12711,
+			"longitude": -84.51439,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Cleveland",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 41.4995,
+			"longitude": -81.69541,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Columbus",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 39.96118,
+			"longitude": -82.99879,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Dallas",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 32.78306,
+			"longitude": -96.80667,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Denver",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 39.73915,
+			"longitude": -104.9847,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Des Moines",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 41.60054,
+			"longitude": -93.60911,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Detroit",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 42.33143,
+			"longitude": -83.04575,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Fort Lauderdale",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 26.12231,
+			"longitude": -80.14338,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Fort Worth",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 32.72541,
+			"longitude": -97.32085,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Greenville",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 35.61266,
+			"longitude": -77.36635,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Harrisburg",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 40.2737,
+			"longitude": -76.88442,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Hartford",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 41.76371,
+			"longitude": -72.68509,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Honolulu",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 21.30694,
+			"longitude": -157.85833,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Houston",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 29.76328,
+			"longitude": -95.36327,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Indianapolis",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 39.76838,
+			"longitude": -86.15804,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Jackson",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 32.29876,
+			"longitude": -90.18481,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Jacksonville",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 30.33218,
+			"longitude": -81.65565,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Kansas City",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 39.09973,
+			"longitude": -94.57857,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Knoxville",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 35.96064,
+			"longitude": -83.92074,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Las Vegas",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 36.17497,
+			"longitude": -115.13722,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Lincoln",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 40.8,
+			"longitude": -96.66696,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Long Island City",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 40.74482,
+			"longitude": -73.94875,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Los Angeles",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 34.05223,
+			"longitude": -118.24368,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Louisville",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 38.25424,
+			"longitude": -85.75941,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Memphis",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 35.14953,
+			"longitude": -90.04898,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Miami",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 25.77427,
+			"longitude": -80.19366,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Milwaukee",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 43.0389,
+			"longitude": -87.90647,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Minneapolis",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 44.97997,
+			"longitude": -93.26384,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Nashville",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 36.16589,
+			"longitude": -86.78444,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "New Orleans",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 29.95465,
+			"longitude": -90.07507,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "New York City",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 40.71427,
+			"longitude": -74.00597,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Oklahoma City",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 35.46756,
+			"longitude": -97.51643,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Omaha",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 41.25626,
+			"longitude": -95.94043,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Orlando",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 28.53834,
+			"longitude": -81.37924,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Philadelphia",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 39.95238,
+			"longitude": -75.16362,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Phoenix",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 33.44838,
+			"longitude": -112.07404,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Pittsburgh",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 40.44062,
+			"longitude": -79.99589,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Portland",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 45.52345,
+			"longitude": -122.67621,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Providence",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 41.82399,
+			"longitude": -71.41283,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Raleigh",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 35.7721,
+			"longitude": -78.63861,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Richmond",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 37.55376,
+			"longitude": -77.46026,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Rochester",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 43.15478,
+			"longitude": -77.61556,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Sacramento",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 38.58157,
+			"longitude": -121.4944,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Salt Lake City",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 40.76078,
+			"longitude": -111.89105,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "San Antonio",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 29.42412,
+			"longitude": -98.49363,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "San Diego",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 32.71571,
+			"longitude": -117.16472,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "San Francisco",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 37.77493,
+			"longitude": -122.41942,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "San Juan",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 26.18924,
+			"longitude": -98.15529,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Seattle",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 47.60621,
+			"longitude": -122.33207,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Short Hills",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 40.74788,
+			"longitude": -74.32543,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Shreveport",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 32.52515,
+			"longitude": -93.75018,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "St. Louis",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 38.62727,
+			"longitude": -90.19789,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Stamford",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 41.05343,
+			"longitude": -73.53873,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Tallahassee",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 30.43826,
+			"longitude": -84.28073,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Tampa",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 27.94752,
+			"longitude": -82.45843,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Tysons",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 38.91872,
+			"longitude": -77.23109,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Virginia Beach",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 36.85293,
+			"longitude": -75.97799,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Washington",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 38.89511,
+			"longitude": -77.03637,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Winston-Salem",
+			"country": "United States",
+			"countryCode": "US",
+			"latitude": 36.09986,
+			"longitude": -80.24422,
+			"sourceUrl": "https://kpmg.com/us/en/how-we-work/locations.html"
+		},
+		{
+			"city": "Tashkent",
+			"country": "Uzbekistan",
+			"countryCode": "UZ",
+			"latitude": 41.26465,
+			"longitude": 69.21627,
+			"sourceUrl": "https://kpmg.com/uz/en/about/offices.html"
+		},
+		{
+			"city": "Barquisimeto",
+			"country": "Venezuela",
+			"countryCode": "VE",
+			"latitude": 10.0647,
+			"longitude": -69.35703,
+			"sourceUrl": "https://kpmg.com/ve/es/about/offices.html"
+		},
+		{
+			"city": "Caracas",
+			"country": "Venezuela",
+			"countryCode": "VE",
+			"latitude": 10.48801,
+			"longitude": -66.87919,
+			"sourceUrl": "https://kpmg.com/ve/es/about/offices.html"
+		},
+		{
+			"city": "Maracaibo",
+			"country": "Venezuela",
+			"countryCode": "VE",
+			"latitude": 10.64232,
+			"longitude": -71.61089,
+			"sourceUrl": "https://kpmg.com/ve/es/about/offices.html"
+		},
+		{
+			"city": "Maracay",
+			"country": "Venezuela",
+			"countryCode": "VE",
+			"latitude": 10.24972,
+			"longitude": -67.59475,
+			"sourceUrl": "https://kpmg.com/ve/es/about/offices.html"
+		},
+		{
+			"city": "Puerto La Cruz",
+			"country": "Venezuela",
+			"countryCode": "VE",
+			"latitude": 10.21382,
+			"longitude": -64.6328,
+			"sourceUrl": "https://kpmg.com/ve/es/about/offices.html"
+		},
+		{
+			"city": "Valencia",
+			"country": "Venezuela",
+			"countryCode": "VE",
+			"latitude": 10.16153,
+			"longitude": -68.00044,
+			"sourceUrl": "https://kpmg.com/ve/es/about/offices.html"
+		}
+	]
+}

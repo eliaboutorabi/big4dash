@@ -142,9 +142,9 @@
 		z-index: var(--z-drawer);
 		width: min(470px, 100vw);
 		overflow-y: auto;
-		border-left: 2px solid var(--ink);
-		background: var(--surface-base);
-		box-shadow: -20px 0 60px oklch(0.16 0.02 255 / 0.2);
+		border-left: 1.5px solid var(--frame);
+		background: var(--surface-overlay);
+		box-shadow: var(--shadow-drawer);
 		animation: slide-in 240ms var(--ease-out);
 	}
 
@@ -156,9 +156,8 @@
 		align-items: center;
 		justify-content: space-between;
 		padding: 18px 22px;
-		border-bottom: 2px solid var(--ink);
-		background: oklch(1 0 0 / 0.9);
-		backdrop-filter: blur(12px);
+		border-bottom: 1px solid var(--frame);
+		background: var(--surface-overlay);
 	}
 
 	header > div {
@@ -182,7 +181,7 @@
 		height: 34px;
 		place-items: center;
 		padding: 0;
-		border: 1.5px solid var(--ink);
+		border: 1px solid var(--frame);
 		border-radius: 0;
 		background: var(--surface-base);
 		color: var(--ink);
@@ -206,9 +205,9 @@
 		width: 36px;
 		height: 36px;
 		place-items: center;
-		border: 1.5px solid var(--ink);
+		border: 1px solid var(--frame);
 		border-radius: 0;
-		color: var(--surface-base);
+		color: oklch(0.98 0.01 80);
 		font-weight: 850;
 	}
 
@@ -220,7 +219,7 @@
 	}
 	.firm-ey {
 		background: var(--firm-ey);
-		color: var(--ink);
+		color: oklch(0.2 0.025 70);
 	}
 	.firm-kpmg {
 		background: var(--firm-kpmg);
@@ -263,7 +262,7 @@
 		gap: 7px;
 		align-items: center;
 		padding: 13px;
-		border: 1.5px solid var(--ink);
+		border: 1px solid var(--frame);
 		border-radius: 0;
 	}
 
@@ -314,8 +313,7 @@
 	blockquote {
 		margin: 0;
 		padding: 14px 16px;
-		border: 1px solid var(--ink);
-		border-left: 6px solid var(--accent);
+		border: 1.5px solid var(--accent-strong);
 		background: var(--accent-wash);
 		color: var(--text-secondary);
 		font-size: 11px;
@@ -329,11 +327,11 @@
 		gap: 10px 12px;
 		align-items: center;
 		padding: 15px;
-		border: 2px solid var(--ink);
+		border: 1.5px solid var(--frame);
 		border-radius: 0;
-		box-shadow: 4px 4px 0 var(--accent);
-		background: var(--ink);
-		color: var(--surface-base);
+		box-shadow: var(--shadow-accent);
+		background: var(--inverse-surface);
+		color: var(--inverse-text);
 	}
 
 	.source-grade {

@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { ArrowUpRight } from '@lucide/svelte';
+	import { curveMonotoneX, line as shapeLine } from 'd3-shape';
+	import { onMount } from 'svelte';
 	import { FIRM_COLORS, FIRMS, currencyShort, numberShort, percent } from '$lib/data/format';
 	import type { FirmName, SeriesPoint } from '$lib/data/types';
 
@@ -11,7 +13,12 @@
 	}
 
 	let { series, metric, selectedFirms = FIRMS, onSelect = () => {} }: Props = $props();
+	let chartElement: HTMLDivElement;
 	let hovered = $state<{ firm: FirmName; point: SeriesPoint } | null>(null);
+	let tooltipPosition = $state({ left: 0, top: 0, below: false });
+	let animationProgress = $state(1);
+	let animationReady = $state(false);
+	let animationFrame = 0;
 
 	const width = 980;
 	const height = 430;
@@ -34,6 +41,31 @@
 	let yTicks = $derived(
 		Array.from({ length: 5 }, (_, index) => yMin + ((yMax - yMin) * index) / 4)
 	);
+	let animationKey = $derived(`${metric}-${selectedFirms.join('-')}`);
+
+	onMount(() => {
+		animationReady = true;
+		return () => cancelAnimationFrame(animationFrame);
+	});
+
+	$effect(() => {
+		if (!animationReady || !animationKey) return;
+		cancelAnimationFrame(animationFrame);
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			animationProgress = 1;
+			return;
+		}
+		animationProgress = 0;
+		const startedAt = performance.now();
+		const duration = 420;
+		const tick = (now: number) => {
+			const elapsed = Math.min(1, (now - startedAt) / duration);
+			animationProgress = 1 - Math.pow(1 - elapsed, 4);
+			if (elapsed < 1) animationFrame = requestAnimationFrame(tick);
+		};
+		animationFrame = requestAnimationFrame(tick);
+		return () => cancelAnimationFrame(animationFrame);
+	});
 
 	function x(year: number) {
 		if (years.length <= 1) return margin.left;
@@ -44,10 +76,17 @@
 		return margin.top + plotHeight - ((value - yMin) / (yMax - yMin)) * plotHeight;
 	}
 
+	function animatedY(value: number) {
+		return y(0) + (y(value) - y(0)) * animationProgress;
+	}
+
 	function pathFor(points: SeriesPoint[]) {
-		return points
-			.map((point, index) => `${index === 0 ? 'M' : 'L'} ${x(point.year)} ${y(point.value)}`)
-			.join(' ');
+		return (
+			shapeLine<SeriesPoint>()
+				.x((point) => x(point.year))
+				.y((point) => animatedY(point.value))
+				.curve(curveMonotoneX)(points) ?? ''
+		);
 	}
 
 	function displayValue(value: number) {
@@ -67,9 +106,27 @@
 			onSelect(observationId);
 		}
 	}
+
+	function showTooltip(event: PointerEvent | FocusEvent, firm: FirmName, point: SeriesPoint) {
+		const marker = event.currentTarget as SVGCircleElement;
+		const chartBounds = chartElement.getBoundingClientRect();
+		const markerBounds = marker.getBoundingClientRect();
+		const tooltipWidth = chartBounds.width <= 720 ? 168 : 198;
+		const markerCenter = markerBounds.left + markerBounds.width / 2 - chartBounds.left;
+		const markerTop = markerBounds.top - chartBounds.top;
+		tooltipPosition = {
+			left: Math.max(
+				tooltipWidth / 2 + 8,
+				Math.min(chartBounds.width - tooltipWidth / 2 - 8, markerCenter)
+			),
+			top: markerTop,
+			below: markerTop < 112
+		};
+		hovered = { firm, point };
+	}
 </script>
 
-<div class="trend-chart" data-metric={metric}>
+<div class="trend-chart" data-metric={metric} bind:this={chartElement}>
 	<svg
 		viewBox={`0 0 ${width} ${height}`}
 		role="img"
@@ -91,45 +148,49 @@
 			{/each}
 		</g>
 
-		{#each selectedFirms as firm (firm)}
-			{@const points = visibleSeries[firm]}
-			{#if points.length}
-				<path class="series-line underlay" d={pathFor(points)} />
-				<path class="series-line" d={pathFor(points)} style:stroke={FIRM_COLORS[firm]} />
-				{#each points as point (point.observationId)}
-					<circle
-						class:active={hovered?.point.observationId === point.observationId}
-						cx={x(point.year)}
-						cy={y(point.value)}
-						r={hovered?.point.observationId === point.observationId ? 7 : 4}
-						fill={FIRM_COLORS[firm]}
-						role="button"
-						tabindex="0"
-						aria-label={`${firm} FY${point.year}: ${displayValue(point.value)}. Open evidence.`}
-						onpointerenter={() => (hovered = { firm, point })}
-						onpointerleave={() => (hovered = null)}
-						onfocus={() => (hovered = { firm, point })}
-						onblur={() => (hovered = null)}
-						onclick={() => onSelect(point.observationId)}
-						onkeydown={(event) => activatePoint(event, point.observationId)}
-					></circle>
-				{/each}
-				{@const last = points.at(-1)!}
-				<text
-					class="end-label"
-					x={x(last.year) + 13}
-					y={y(last.value) + 4 + endLabelOffset(firm)}
-					fill={FIRM_COLORS[firm]}>{firm}</text
-				>
-			{/if}
-		{/each}
+		<g class="series-geometry">
+			{#each selectedFirms as firm (firm)}
+				{@const points = visibleSeries[firm]}
+				{#if points.length}
+					<path class="series-line" d={pathFor(points)} style:stroke={FIRM_COLORS[firm]} />
+					{#each points as point (point.observationId)}
+						<circle
+							class:active={hovered?.point.observationId === point.observationId}
+							cx={x(point.year)}
+							cy={animatedY(point.value)}
+							r={hovered?.point.observationId === point.observationId ? 5 : 3}
+							fill={FIRM_COLORS[firm]}
+							stroke={FIRM_COLORS[firm]}
+							role="button"
+							tabindex="0"
+							aria-label={`${firm} FY${point.year}: ${displayValue(point.value)}. Open evidence.`}
+							onpointerenter={(event) => showTooltip(event, firm, point)}
+							onpointerleave={() => (hovered = null)}
+							onfocus={(event) => showTooltip(event, firm, point)}
+							onblur={() => (hovered = null)}
+							onclick={() => onSelect(point.observationId)}
+							onkeydown={(event) => activatePoint(event, point.observationId)}
+						></circle>
+					{/each}
+					{@const last = points.at(-1)!}
+					<text
+						class="end-label"
+						x={x(last.year) + 13}
+						y={animatedY(last.value) + 4 + endLabelOffset(firm)}
+						style:opacity={Math.max(0, (animationProgress - 0.82) / 0.18)}
+						fill={FIRM_COLORS[firm]}>{firm}</text
+					>
+				{/if}
+			{/each}
+		</g>
 	</svg>
 
 	{#if hovered}
 		<div
 			class="chart-tooltip"
-			style:left={`${(x(hovered.point.year) / width) * 100}%`}
-			style:top={`${(y(hovered.point.value) / height) * 100}%`}
+			class:below={tooltipPosition.below}
+			style:left={`${tooltipPosition.left}px`}
+			style:top={`${tooltipPosition.top}px`}
 		>
 			<div class="tooltip-heading">
 				<span class="firm-swatch" style:background={FIRM_COLORS[hovered.firm]}></span>
@@ -172,56 +233,77 @@
 		fill: none;
 		stroke-linecap: round;
 		stroke-linejoin: round;
-		stroke-width: 3;
+		stroke-width: 2.25;
+		stroke-opacity: 0.66;
 		vector-effect: non-scaling-stroke;
-		stroke-dasharray: 1400;
-		stroke-dashoffset: 1400;
-		animation: line-draw 1.1s var(--ease-out) forwards;
-	}
-
-	.series-line.underlay {
-		stroke: var(--surface-base);
-		stroke-width: 7;
 	}
 
 	circle {
 		cursor: pointer;
-		stroke: var(--surface-base);
-		stroke-width: 2;
+		fill-opacity: 0.64;
+		stroke-opacity: 0.26;
+		stroke-width: 1;
 		transition:
 			r 160ms var(--ease-out),
-			opacity 160ms var(--ease-out);
+			fill-opacity 160ms var(--ease-out),
+			stroke-opacity 160ms var(--ease-out);
 		vector-effect: non-scaling-stroke;
-		animation: point-enter 420ms var(--ease-out) both;
 	}
 
-	circle:not(.active) {
-		opacity: 0.82;
+	circle.active {
+		fill-opacity: 0.92;
+		stroke-opacity: 0.72;
 	}
 
 	circle:focus-visible {
 		outline: none;
-		stroke: var(--ink);
-		stroke-width: 4;
+		stroke-opacity: 1;
+		stroke-width: 2.5;
 	}
 
 	.end-label {
 		font-size: 14px;
 		font-weight: 800;
+		transition: opacity 120ms linear;
 	}
 
 	.chart-tooltip {
 		position: absolute;
 		z-index: var(--z-tooltip);
-		width: 190px;
+		width: 198px;
 		padding: 12px;
-		border: 1.5px solid var(--ink);
+		border: 1.5px solid var(--frame);
 		border-radius: 0;
-		background: var(--ink);
-		color: var(--surface-base);
-		box-shadow: var(--shadow-floating);
-		transform: translate(-50%, calc(-100% - 14px));
+		background: var(--surface-overlay);
+		color: var(--ink);
+		box-shadow: var(--shadow-brutal-sm);
+		transform: translate(-50%, calc(-100% - 12px));
 		pointer-events: none;
+	}
+
+	.chart-tooltip.below {
+		transform: translate(-50%, 14px);
+	}
+
+	.chart-tooltip::after {
+		position: absolute;
+		bottom: -6px;
+		left: calc(50% - 5px);
+		width: 9px;
+		height: 9px;
+		border-right: 1.5px solid var(--frame);
+		border-bottom: 1.5px solid var(--frame);
+		background: var(--surface-overlay);
+		content: '';
+		transform: rotate(45deg);
+	}
+
+	.chart-tooltip.below::after {
+		top: -6px;
+		bottom: auto;
+		border: 0;
+		border-top: 1.5px solid var(--frame);
+		border-left: 1.5px solid var(--frame);
 	}
 
 	.tooltip-heading {
@@ -233,7 +315,7 @@
 
 	.tooltip-heading span:last-child {
 		margin-left: auto;
-		color: var(--text-on-dark-muted);
+		color: var(--text-tertiary);
 		font-family: var(--font-mono);
 	}
 
@@ -256,24 +338,9 @@
 		align-items: center;
 		gap: 5px;
 		padding: 0;
-		color: var(--accent-light);
+		color: var(--text-secondary);
 		font-size: 11px;
 		font-weight: 700;
-	}
-
-	@keyframes line-draw {
-		to {
-			stroke-dashoffset: 0;
-		}
-	}
-
-	@keyframes point-enter {
-		from {
-			opacity: 0;
-			transform: scale(0);
-			transform-origin: center;
-			transform-box: fill-box;
-		}
 	}
 
 	@media (max-width: 720px) {
@@ -282,7 +349,7 @@
 		}
 
 		.chart-tooltip {
-			width: 160px;
+			width: 168px;
 		}
 	}
 </style>

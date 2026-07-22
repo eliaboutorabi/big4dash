@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import SiGithub from '@icons-pack/svelte-simple-icons/icons/SiGithub';
 	import {
 		ArrowRight,
 		BookOpenCheck,
@@ -9,7 +10,6 @@
 		CircleHelp,
 		Database,
 		ExternalLink,
-		Eye,
 		FileCheck2,
 		Fingerprint,
 		Globe2,
@@ -18,9 +18,10 @@
 		LayoutDashboard,
 		MapPinned,
 		Menu,
-		Play,
+		Moon,
 		ShieldCheck,
 		Sparkles,
+		Sun,
 		TrendingUp,
 		UsersRound,
 		X
@@ -51,8 +52,9 @@
 	let selectedFirms = $state<FirmName[]>([...FIRMS]);
 	let selectedObservationId = $state<string | null>(null);
 	let selectedFirm = $state<FirmName | null>(null);
-	let researchMode = $state(true);
 	let mobileNavOpen = $state(false);
+	let aboutOpen = $state(false);
+	let theme = $state<'light' | 'dark'>('light');
 
 	let selectedObservation = $derived(
 		selectedObservationId
@@ -81,6 +83,12 @@
 	function openEvidence(observationId: string) {
 		selectedFirm = null;
 		selectedObservationId = observationId;
+	}
+
+	function toggleTheme() {
+		theme = theme === 'light' ? 'dark' : 'light';
+		document.documentElement.dataset.theme = theme;
+		localStorage.setItem('firmscope-theme', theme);
 	}
 
 	function scrollTo(sectionId: string) {
@@ -174,16 +182,6 @@
 						description: `Search all ${data.meta.observationCount} observations. Filter by firm, metric family or source grade, then inspect the source locator and excerpt.`,
 						side: 'top'
 					}
-				},
-				{
-					element: '#tour-research-mode',
-					popover: {
-						title: 'Choose your level of rigor',
-						description:
-							'Research mode keeps methodology and caveats in view. Switch it off when you want a cleaner executive scan.',
-						side: 'bottom',
-						align: 'end'
-					}
 				}
 			]
 		});
@@ -192,6 +190,7 @@
 	}
 
 	onMount(() => {
+		theme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
 		let scrollFrame = 0;
 		const updateActiveSection = () => {
 			cancelAnimationFrame(scrollFrame);
@@ -208,6 +207,10 @@
 		updateActiveSection();
 
 		const shortcut = (event: KeyboardEvent) => {
+			if (event.key === 'Escape' && aboutOpen) {
+				aboutOpen = false;
+				return;
+			}
 			if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
 				event.preventDefault();
 				scrollTo('evidence');
@@ -236,21 +239,22 @@
 	/>
 </svelte:head>
 
-<div class="app-shell" class:research-mode={researchMode}>
+<div class="app-shell">
 	<aside class="sidebar" class:mobile-open={mobileNavOpen}>
 		<div class="brand">
-			<div class="brand-mark"><span></span><span></span><span></span><span></span></div>
-			<div><strong>FirmScope</strong><span>Big Four research</span></div>
+			<button class="brand-button" aria-label="About FirmScope" onclick={() => (aboutOpen = true)}>
+				<span class="brand-mark" aria-hidden="true">
+					<i></i><i></i><i></i><i></i><b>4</b>
+				</span>
+				<span class="brand-copy"
+					><strong>FirmScope</strong><small>Big Four intelligence</small></span
+				>
+			</button>
 			<button
 				class="mobile-close"
 				aria-label="Close navigation"
 				onclick={() => (mobileNavOpen = false)}><X size={18} /></button
 			>
-		</div>
-
-		<div class="research-status">
-			<div><span class="status-pulse"></span><strong>Research current</strong></div>
-			<span>Through FY{data.meta.latestCommonYear}</span>
 		</div>
 
 		<nav aria-label="Dashboard sections">
@@ -295,11 +299,6 @@
 				>
 			</div>
 		</div>
-
-		<div class="sidebar-footer">
-			<button onclick={startTour}><Play size={13} fill="currentColor" /> Replay guided tour</button>
-			<span>Independent portfolio research</span>
-		</div>
 	</aside>
 
 	<div
@@ -322,18 +321,24 @@
 			</div>
 			<div class="topbar-actions">
 				<span class="cutoff">Research cutoff <strong>18 Jul 2026</strong></span>
-				<button
-					id="tour-research-mode"
-					class="mode-toggle"
-					class:active={researchMode}
-					onclick={() => (researchMode = !researchMode)}
-				>
-					<Eye size={14} />
-					<span>Research mode</span>
-					<i><b></b></i>
-				</button>
 				<button class="tour-button" onclick={startTour}><Sparkles size={14} /> Take the tour</button
 				>
+				<a
+					class="icon-button github-button"
+					href="https://github.com/eliaboutorabi/big4dash"
+					target="_blank"
+					rel="noreferrer"
+					aria-label="View FirmScope on GitHub"
+					title="View FirmScope on GitHub"><SiGithub size={16} title="" /></a
+				>
+				<button
+					class="icon-button theme-toggle"
+					aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+					title={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+					onclick={toggleTheme}
+				>
+					{#if theme === 'light'}<Moon size={15} />{:else}<Sun size={16} />{/if}
+				</button>
 			</div>
 		</header>
 
@@ -362,30 +367,32 @@
 						</div>
 						<strong>{currencyShort(data.meta.latestRevenueTotal, 0)}</strong>
 						<div class="market-share-bar" aria-label="FY2025 reported revenue market share">
-							<button
-								style:width={`${data.firms[0].marketShare}%`}
-								style:background={FIRM_COLORS.Deloitte}
-								aria-label={`Deloitte: ${percent(data.firms[0].marketShare)} market share`}
-								onclick={() => (selectedFirm = 'Deloitte')}
-							></button>
-							<button
-								style:width={`${data.firms[1].marketShare}%`}
-								style:background={FIRM_COLORS.PwC}
-								aria-label={`PwC: ${percent(data.firms[1].marketShare)} market share`}
-								onclick={() => (selectedFirm = 'PwC')}
-							></button>
-							<button
-								style:width={`${data.firms[2].marketShare}%`}
-								style:background={FIRM_COLORS.EY}
-								aria-label={`EY: ${percent(data.firms[2].marketShare)} market share`}
-								onclick={() => (selectedFirm = 'EY')}
-							></button>
-							<button
-								style:width={`${data.firms[3].marketShare}%`}
-								style:background={FIRM_COLORS.KPMG}
-								aria-label={`KPMG: ${percent(data.firms[3].marketShare)} market share`}
-								onclick={() => (selectedFirm = 'KPMG')}
-							></button>
+							<div class="market-share-fill">
+								<button
+									style:width={`${data.firms[0].marketShare}%`}
+									style:background={FIRM_COLORS.Deloitte}
+									aria-label={`Deloitte: ${percent(data.firms[0].marketShare)} market share`}
+									onclick={() => (selectedFirm = 'Deloitte')}
+								></button>
+								<button
+									style:width={`${data.firms[1].marketShare}%`}
+									style:background={FIRM_COLORS.PwC}
+									aria-label={`PwC: ${percent(data.firms[1].marketShare)} market share`}
+									onclick={() => (selectedFirm = 'PwC')}
+								></button>
+								<button
+									style:width={`${data.firms[2].marketShare}%`}
+									style:background={FIRM_COLORS.EY}
+									aria-label={`EY: ${percent(data.firms[2].marketShare)} market share`}
+									onclick={() => (selectedFirm = 'EY')}
+								></button>
+								<button
+									style:width={`${data.firms[3].marketShare}%`}
+									style:background={FIRM_COLORS.KPMG}
+									aria-label={`KPMG: ${percent(data.firms[3].marketShare)} market share`}
+									onclick={() => (selectedFirm = 'KPMG')}
+								></button>
+							</div>
 						</div>
 						<div class="market-share-labels">
 							<button onclick={() => (selectedFirm = 'Deloitte')}
@@ -603,17 +610,15 @@
 						{selectedFirms}
 						onSelect={openEvidence}
 					/>
-					{#if researchMode}
-						<div class="method-strip">
-							<Info size={13} /><span
-								>{selectedMetric === 'growth'
-									? 'Growth is shown in locally reported currency where available; it is not derived from USD totals.'
-									: selectedMetric === 'people'
-										? 'Workforce labels differ by network and year. Use the evidence drawer to inspect the exact disclosed definition.'
-										: 'Revenue is normalized to reported USD totals. Fiscal year-end dates differ across networks.'}</span
-							>
-						</div>
-					{/if}
+					<div class="method-strip">
+						<Info size={13} /><span
+							>{selectedMetric === 'growth'
+								? 'Growth is shown in locally reported currency where available; it is not derived from USD totals.'
+								: selectedMetric === 'people'
+									? 'Workforce labels differ by network and year. Use the evidence drawer to inspect the exact disclosed definition.'
+									: 'Revenue is normalized to reported USD totals. Fiscal year-end dates differ across networks.'}</span
+						>
+					</div>
 				</div>
 
 				<div class="comparison-readout">
@@ -699,17 +704,18 @@
 							>
 						</div>
 						<CompositionComparison data={data.regionalMix} mode="region" onSelect={openEvidence} />
+						<div class="geography-insight">
+							<div class="geography-insight-icon"><Globe2 size={18} /></div>
+							<div>
+								<span>Scale comparison</span>
+								<strong>Deloitte’s Americas business is nearly the scale of KPMG globally.</strong>
+								<p>$38.8B Americas revenue versus KPMG’s $39.8B total FY2025 revenue.</p>
+							</div>
+							<button onclick={() => openEvidence('obs_del_0152')}
+								>View record <ArrowRight size={13} /></button
+							>
+						</div>
 					</div>
-					<aside class="geography-note">
-						<Globe2 size={20} />
-						<span>Standout</span>
-						<strong>Deloitte’s Americas business alone is nearly the scale of KPMG globally.</strong
-						>
-						<p>$38.8B Americas revenue versus KPMG’s $39.8B total FY2025 revenue.</p>
-						<button onclick={() => openEvidence('obs_del_0152')}
-							>View supporting record <ArrowRight size={13} /></button
-						>
-					</aside>
 				</div>
 			</section>
 
@@ -799,16 +805,20 @@
 			</section>
 
 			<footer class="page-footer">
-				<div class="brand footer-brand">
-					<div class="brand-mark"><span></span><span></span><span></span><span></span></div>
-					<div><strong>FirmScope</strong><span>An independent comparison project</span></div>
-				</div>
+				<button class="footer-brand" onclick={() => (aboutOpen = true)}>
+					<span class="brand-mark" aria-hidden="true">
+						<i></i><i></i><i></i><i></i><b>4</b>
+					</span>
+					<span class="brand-copy"
+						><strong>FirmScope</strong><small>Big Four intelligence</small></span
+					>
+				</button>
 				<p>
 					Figures are based on publicly available network-level disclosures. Definitions and
 					reporting periods vary; source-level caveats are retained throughout.
 				</p>
-				<button onclick={startTour}
-					><Play size={12} fill="currentColor" /> Tour the dashboard</button
+				<a href="https://github.com/eliaboutorabi/big4dash" target="_blank" rel="noreferrer"
+					>View repository <ExternalLink size={12} /></a
 				>
 			</footer>
 		</div>
@@ -818,6 +828,38 @@
 		observation={selectedObservation}
 		onClose={() => (selectedObservationId = null)}
 	/>
+
+	{#if aboutOpen}
+		<button
+			class="about-backdrop"
+			aria-label="Close about FirmScope"
+			onclick={() => (aboutOpen = false)}
+		></button>
+		<dialog open class="about-dialog" aria-labelledby="about-title">
+			<header>
+				<span class="brand-mark about-mark" aria-hidden="true">
+					<i></i><i></i><i></i><i></i><b>4</b>
+				</span>
+				<button aria-label="Close about FirmScope" onclick={() => (aboutOpen = false)}
+					><X size={18} /></button
+				>
+			</header>
+			<span class="about-eyebrow">Designed and developed by</span>
+			<h2 id="about-title">Elham Aboutorabi</h2>
+			<p>
+				FirmScope brings public Big Four disclosures into one interactive, evidence-first comparison
+				experience.
+			</p>
+			<div class="about-links">
+				<a href="https://github.com/eliaboutorabi" target="_blank" rel="noreferrer"
+					><SiGithub size={16} title="" /> GitHub profile <ExternalLink size={13} /></a
+				>
+				<a href="https://eliaboutorabi.github.io" target="_blank" rel="noreferrer"
+					><Globe2 size={16} /> Personal website <ExternalLink size={13} /></a
+				>
+			</div>
+		</dialog>
+	{/if}
 
 	{#if selectedFirmSummary}
 		<button

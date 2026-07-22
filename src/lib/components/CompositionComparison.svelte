@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { ChevronDown, ExternalLink } from '@lucide/svelte';
+	import { onMount } from 'svelte';
 	import { FIRMS } from '$lib/data/format';
 	import type { DimensionPoint, FirmName } from '$lib/data/types';
 
@@ -10,8 +11,43 @@
 	}
 
 	let { data, mode, onSelect = () => {} }: Props = $props();
+	let compositionElement: HTMLDivElement;
 	let expanded = $state(false);
 	let hovered = $state<{ firm: FirmName; point: DimensionPoint; share: number } | null>(null);
+	let tooltipPosition = $state({ left: 0, top: 0, below: false });
+	let barProgress = $state(1);
+	let animationReady = $state(false);
+	let animationFrame = 0;
+	let animationKey = $derived(
+		`${mode}-${Object.values(data)
+			.flat()
+			.map((point) => point.observationId)
+			.join('-')}`
+	);
+
+	onMount(() => {
+		animationReady = true;
+		return () => cancelAnimationFrame(animationFrame);
+	});
+
+	$effect(() => {
+		if (!animationReady || !animationKey) return;
+		cancelAnimationFrame(animationFrame);
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			barProgress = 1;
+			return;
+		}
+		barProgress = 0;
+		const startedAt = performance.now();
+		const duration = 380;
+		const tick = (now: number) => {
+			const elapsed = Math.min(1, (now - startedAt) / duration);
+			barProgress = 1 - Math.pow(1 - elapsed, 4);
+			if (elapsed < 1) animationFrame = requestAnimationFrame(tick);
+		};
+		animationFrame = requestAnimationFrame(tick);
+		return () => cancelAnimationFrame(animationFrame);
+	});
 
 	const serviceColors: Record<string, string> = {
 		audit_assurance_attest: 'var(--mix-audit)',
@@ -59,9 +95,32 @@
 	function shareFor(firm: FirmName, point: DimensionPoint) {
 		return (point.value / totalFor(firm)) * 100;
 	}
+
+	function showTooltip(
+		event: PointerEvent | FocusEvent,
+		firm: FirmName,
+		point: DimensionPoint,
+		share: number
+	) {
+		const segment = event.currentTarget as HTMLButtonElement;
+		const compositionBounds = compositionElement.getBoundingClientRect();
+		const segmentBounds = segment.getBoundingClientRect();
+		const tooltipWidth = 196;
+		const segmentCenter = segmentBounds.left + segmentBounds.width / 2 - compositionBounds.left;
+		const segmentTop = segmentBounds.top - compositionBounds.top;
+		tooltipPosition = {
+			left: Math.max(
+				tooltipWidth / 2 + 8,
+				Math.min(compositionBounds.width - tooltipWidth / 2 - 8, segmentCenter)
+			),
+			top: segmentTop,
+			below: segmentTop < 104
+		};
+		hovered = { firm, point, share };
+	}
 </script>
 
-<div class="composition" data-mode={mode}>
+<div class="composition" data-mode={mode} bind:this={compositionElement}>
 	{#each FIRMS as firm (firm)}
 		<div class="firm-row">
 			<div class="firm-label">
@@ -69,21 +128,23 @@
 				<span>{mode === 'service' ? 'FY25 revenue mix' : 'Reported revenue footprint'}</span>
 			</div>
 			<div class="bar-shell">
-				<div class="bar" aria-label={`${firm} ${mode} composition`}>
-					{#each visiblePoints(firm) as point (point.observationId)}
-						{@const share = shareFor(firm, point)}
-						<button
-							class="segment"
-							style:width={`${share}%`}
-							style:background={colorFor(point)}
-							aria-label={`${firm} ${point.label}: ${share.toFixed(1)}%. Open evidence.`}
-							onpointerenter={() => (hovered = { firm, point, share })}
-							onpointerleave={() => (hovered = null)}
-							onfocus={() => (hovered = { firm, point, share })}
-							onblur={() => (hovered = null)}
-							onclick={() => onSelect(point.observationId)}
-						></button>
-					{/each}
+				<div class="bar-frame">
+					<div class="bar" aria-label={`${firm} ${mode} composition`}>
+						{#each visiblePoints(firm) as point (point.observationId)}
+							{@const share = shareFor(firm, point)}
+							<button
+								class="segment"
+								style:width={`${share * barProgress}%`}
+								style:background={colorFor(point)}
+								aria-label={`${firm} ${point.label}: ${share.toFixed(1)}%. Open evidence.`}
+								onpointerenter={(event) => showTooltip(event, firm, point, share)}
+								onpointerleave={() => (hovered = null)}
+								onfocus={(event) => showTooltip(event, firm, point, share)}
+								onblur={() => (hovered = null)}
+								onclick={() => onSelect(point.observationId)}
+							></button>
+						{/each}
+					</div>
 				</div>
 				<div class="labels">
 					{#each visiblePoints(firm) as point (point.observationId)}
@@ -127,11 +188,16 @@
 	{/if}
 
 	{#if hovered}
-		<div class="composition-tooltip">
+		<div
+			class="composition-tooltip"
+			class:below={tooltipPosition.below}
+			style:left={`${tooltipPosition.left}px`}
+			style:top={`${tooltipPosition.top}px`}
+		>
 			<span>{hovered.firm}</span>
 			<strong>{hovered.point.label}</strong>
 			<b>{hovered.share.toFixed(1)}%</b>
-			<small>Click for source evidence</small>
+			<small>Click segment for evidence</small>
 		</div>
 	{/if}
 </div>
@@ -140,7 +206,7 @@
 	.composition {
 		position: relative;
 		display: grid;
-		gap: 30px;
+		gap: 24px;
 	}
 
 	.firm-row {
@@ -170,25 +236,27 @@
 		min-width: 0;
 	}
 
-	.bar {
-		display: flex;
+	.bar-frame {
 		height: 38px;
 		overflow: hidden;
-		border: 1.5px solid var(--ink);
+		border: 1.5px solid var(--frame);
 		border-radius: 0;
 		background: var(--surface-muted);
-		box-shadow: 3px 3px 0 var(--ink);
+		box-shadow: var(--shadow-brutal-xs);
+	}
+
+	.bar {
+		display: flex;
+		height: 100%;
 	}
 
 	.segment {
 		position: relative;
-		min-width: 2px;
+		min-width: 0;
 		padding: 0;
 		border: 0;
-		border-right: 2px solid var(--ink);
+		border-right: 1px solid color-mix(in oklab, var(--frame) 72%, transparent);
 		cursor: pointer;
-		transform-origin: left;
-		animation: segment-grow 750ms var(--ease-out) both;
 		transition:
 			filter 160ms var(--ease-out),
 			transform 160ms var(--ease-out);
@@ -202,7 +270,7 @@
 	.segment:focus-visible {
 		z-index: 1;
 		filter: brightness(1.1) saturate(1.06);
-		outline: 2px solid var(--ink);
+		outline: 2px solid var(--frame);
 		outline-offset: -2px;
 	}
 
@@ -241,7 +309,7 @@
 	.dot {
 		width: 9px;
 		height: 9px;
-		border: 1px solid var(--ink);
+		border: 1px solid var(--frame);
 		border-radius: 0;
 	}
 
@@ -251,8 +319,7 @@
 		justify-content: space-between;
 		gap: 20px;
 		padding: 14px 16px;
-		border: 1.5px solid var(--ink);
-		border-left: 6px solid var(--accent);
+		border: 1.5px solid var(--frame);
 		background: var(--accent-wash);
 	}
 
@@ -306,7 +373,7 @@
 		gap: 4px 12px;
 		align-items: center;
 		padding: 13px 15px;
-		border: 1.5px solid var(--ink);
+		border: 1.5px solid var(--frame);
 		border-radius: 0;
 		background: var(--surface-base);
 		color: var(--ink);
@@ -342,24 +409,48 @@
 
 	.composition-tooltip {
 		position: absolute;
-		right: 0;
-		top: -8px;
 		z-index: var(--z-tooltip);
 		display: grid;
-		width: 176px;
+		width: 196px;
 		gap: 4px;
 		padding: 12px;
-		border: 1.5px solid var(--ink);
+		border: 1.5px solid var(--frame);
 		border-radius: 0;
-		background: var(--ink);
-		color: var(--surface-base);
-		box-shadow: var(--shadow-floating);
+		background: var(--surface-overlay);
+		color: var(--ink);
+		box-shadow: var(--shadow-brutal-sm);
+		transform: translate(-50%, calc(-100% - 12px));
 		pointer-events: none;
+	}
+
+	.composition-tooltip.below {
+		transform: translate(-50%, 14px);
+	}
+
+	.composition-tooltip::after {
+		position: absolute;
+		bottom: -6px;
+		left: calc(50% - 5px);
+		width: 9px;
+		height: 9px;
+		border-right: 1.5px solid var(--frame);
+		border-bottom: 1.5px solid var(--frame);
+		background: var(--surface-overlay);
+		content: '';
+		transform: rotate(45deg);
+	}
+
+	.composition-tooltip.below::after {
+		top: -6px;
+		bottom: auto;
+		border: 0;
+		border-top: 1.5px solid var(--frame);
+		border-left: 1.5px solid var(--frame);
 	}
 
 	.composition-tooltip span,
 	.composition-tooltip small {
-		color: var(--text-on-dark-muted);
+		color: var(--text-secondary);
 		font-size: 12px;
 	}
 
@@ -370,17 +461,6 @@
 	.composition-tooltip b {
 		font-family: var(--font-mono);
 		font-size: 20px;
-	}
-
-	@keyframes segment-grow {
-		from {
-			transform: scaleX(0);
-			filter: saturate(0.5);
-		}
-		to {
-			transform: scaleX(1);
-			filter: saturate(1);
-		}
 	}
 
 	@media (max-width: 640px) {

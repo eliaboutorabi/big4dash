@@ -214,7 +214,7 @@
 		grid-template-columns: 1.1fr repeat(3, minmax(0, 1fr));
 		min-height: 74px;
 		margin-top: 10px;
-		border: 1.5px solid var(--ink);
+		border: 1px solid var(--frame);
 		background: var(--accent-wash);
 	}
 
@@ -223,7 +223,7 @@
 		align-content: center;
 		gap: 4px;
 		padding: 12px 14px;
-		border-right: 1px solid var(--ink);
+		border-right: 1px solid var(--frame);
 	}
 
 	.scatter-readout > div:last-child {
@@ -248,7 +248,7 @@
 	.readout-firm i {
 		width: 10px;
 		height: 10px;
-		border: 1px solid var(--ink);
+		border: 1px solid var(--frame);
 	}
 
 	.readout-firm span {
@@ -272,7 +272,7 @@
 		}
 
 		.scatter-readout > div:nth-child(-n + 2) {
-			border-bottom: 1px solid var(--ink);
+			border-bottom: 1px solid var(--frame);
 		}
 	}
 </style>

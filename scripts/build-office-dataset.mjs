@@ -1,7 +1,9 @@
-import { writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 const outputPath = resolve('data/10_office_locations.csv');
+const deloitteDirectoryPath = resolve('data/sources/deloitte-office-directory.json');
+const kpmgDirectoryPath = resolve('data/sources/kpmg-office-directory.json');
 const researchDate = '2026-07-18';
 
 const rows = [];
@@ -152,63 +154,66 @@ async function collectPwc() {
 	console.log(`PwC: ${rows.filter((row) => row.firm_network === 'PwC').length} offices`);
 }
 
-const hubCities = [
-	['New York', 'United States', 'US', 40.7128, -74.006],
-	['Toronto', 'Canada', 'CA', 43.6532, -79.3832],
-	['Chicago', 'United States', 'US', 41.8781, -87.6298],
-	['San Francisco', 'United States', 'US', 37.7749, -122.4194],
-	['Mexico City', 'Mexico', 'MX', 19.4326, -99.1332],
-	['São Paulo', 'Brazil', 'BR', -23.5505, -46.6333],
-	['Buenos Aires', 'Argentina', 'AR', -34.6037, -58.3816],
-	['London', 'United Kingdom', 'GB', 51.5074, -0.1278],
-	['Paris', 'France', 'FR', 48.8566, 2.3522],
-	['Frankfurt', 'Germany', 'DE', 50.1109, 8.6821],
-	['Madrid', 'Spain', 'ES', 40.4168, -3.7038],
-	['Milan', 'Italy', 'IT', 45.4642, 9.19],
-	['Amsterdam', 'Netherlands', 'NL', 52.3676, 4.9041],
-	['Zurich', 'Switzerland', 'CH', 47.3769, 8.5417],
-	['Dublin', 'Ireland', 'IE', 53.3498, -6.2603],
-	['Dubai', 'United Arab Emirates', 'AE', 25.2048, 55.2708],
-	['Johannesburg', 'South Africa', 'ZA', -26.2041, 28.0473],
-	['Nairobi', 'Kenya', 'KE', -1.2921, 36.8219],
-	['Mumbai', 'India', 'IN', 19.076, 72.8777],
-	['Singapore', 'Singapore', 'SG', 1.3521, 103.8198],
-	['Hong Kong', 'Hong Kong SAR, China', 'HK', 22.3193, 114.1694],
-	['Tokyo', 'Japan', 'JP', 35.6762, 139.6503],
-	['Seoul', 'South Korea', 'KR', 37.5665, 126.978],
-	['Shanghai', 'China', 'CN', 31.2304, 121.4737],
-	['Sydney', 'Australia', 'AU', -33.8688, 151.2093],
-	['Melbourne', 'Australia', 'AU', -37.8136, 144.9631],
-	['Auckland', 'New Zealand', 'NZ', -36.8509, 174.7645]
-];
-
-function addRepresentativeHubs(firm) {
-	for (const [city, country, countryCode, latitude, longitude] of hubCities) {
-		const siteCode = countryCode.toLowerCase();
+async function collectDeloitte() {
+	const snapshot = JSON.parse(await readFile(deloitteDirectoryPath, 'utf8'));
+	for (const [index, office] of snapshot.records.entries()) {
+		const latitude = Number(office.lat);
+		const longitude = Number(office.lon);
+		if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) continue;
 		rows.push({
-			site_id: `${firm.toLowerCase()}-${siteCode}-${slug(city)}`,
-			firm_network: firm,
-			site_name: `${firm} ${city}`,
-			office_type: 'representative_office_hub',
-			street_address: '',
-			city,
+			site_id: `deloitte-${slug(office.country)}-${slug(office.city)}-${index + 1}`,
+			firm_network: 'Deloitte',
+			site_name: `Deloitte ${office.city}`,
+			office_type: 'official_directory_location',
+			street_address: plainText(office.address),
+			city: plainText(office.city),
 			state_province: '',
-			country,
-			country_iso2: countryCode,
+			country: plainText(office.country),
+			country_iso2: '',
 			latitude,
 			longitude,
 			active_status: 'active',
-			source_url:
-				firm === 'Deloitte'
-					? `https://www.deloitte.com/${siteCode}/en/offices.html`
-					: `https://kpmg.com/${siteCode}/en/about/offices.html`,
-			source_locator: `${firm} official office directory; city-centroid visualization coordinate`,
-			coordinate_precision: 'city_centroid',
-			coverage_tier: 'representative_hub',
-			as_of_date: researchDate
+			source_url: office.detailUrl || snapshot.sourceUrl,
+			source_locator: `Deloitte global office directory; source-linked map coordinate (${snapshot.mappedRecordCount} mapped of ${snapshot.directoryRecordCount} directory entries)`,
+			coordinate_precision: 'source_coordinate',
+			coverage_tier: 'directory_mapped',
+			as_of_date: snapshot.retrievedAt || researchDate
 		});
 	}
-	console.log(`${firm}: ${hubCities.length} representative hubs`);
+	console.log(
+		`Deloitte: ${snapshot.mappedRecordCount} mapped of ${snapshot.directoryRecordCount} directory entries`
+	);
+}
+
+async function collectKpmg() {
+	const snapshot = JSON.parse(await readFile(kpmgDirectoryPath, 'utf8'));
+	for (const [index, office] of snapshot.records.entries()) {
+		const latitude = Number(office.latitude);
+		const longitude = Number(office.longitude);
+		if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) continue;
+		rows.push({
+			site_id: `kpmg-${office.countryCode.toLowerCase()}-${slug(office.city)}-${index + 1}`,
+			firm_network: 'KPMG',
+			site_name: `KPMG ${office.city}`,
+			office_type: 'official_directory_location',
+			street_address: '',
+			city: plainText(office.city),
+			state_province: '',
+			country: plainText(office.country),
+			country_iso2: office.countryCode,
+			latitude,
+			longitude,
+			active_status: 'active',
+			source_url: office.sourceUrl || snapshot.sourceIndexUrl,
+			source_locator: 'KPMG official country office directory; GeoNames city-centroid coordinate',
+			coordinate_precision: 'city_centroid',
+			coverage_tier: 'directory_mapped',
+			as_of_date: snapshot.retrievedAt || researchDate
+		});
+	}
+	console.log(
+		`KPMG: ${snapshot.mappedRecordCount} locations normalized from ${snapshot.sourcePageCount} official directory pages`
+	);
 }
 
 function csvCell(value) {
@@ -218,8 +223,8 @@ function csvCell(value) {
 
 await collectEy();
 await collectPwc();
-addRepresentativeHubs('Deloitte');
-addRepresentativeHubs('KPMG');
+await collectDeloitte();
+await collectKpmg();
 
 const uniqueRows = [
 	...new Map(

@@ -169,7 +169,7 @@
 		gap: 8px;
 		min-height: 44px;
 		padding: 0 12px;
-		border: 1.5px solid var(--ink);
+		border: 1px solid var(--frame);
 		border-radius: 0;
 		background: var(--surface-base);
 		color: var(--text-tertiary);
@@ -193,7 +193,7 @@
 
 	kbd {
 		padding: 2px 6px;
-		border: 1px solid var(--ink);
+		border: 1px solid var(--frame);
 		border-bottom-width: 2px;
 		border-radius: 0;
 		color: var(--text-tertiary);
@@ -256,9 +256,10 @@
 
 	.research-table {
 		overflow: hidden;
-		border: 2px solid var(--ink);
+		border: 1.5px solid var(--frame);
 		border-radius: 0;
-		box-shadow: 4px 4px 0 var(--ink);
+		background: var(--surface-elevated);
+		box-shadow: var(--shadow-brutal-sm);
 	}
 
 	.table-head,
@@ -271,7 +272,7 @@
 
 	.table-head {
 		padding: 12px 14px;
-		border-bottom: 2px solid var(--ink);
+		border-bottom: 1px solid var(--frame);
 		background: var(--accent-light);
 		color: var(--ink);
 		font-size: 11px;
@@ -284,8 +285,8 @@
 		width: 100%;
 		padding: 14px;
 		border: 0;
-		border-bottom: 1px solid var(--ink);
-		background: var(--surface-base);
+		border-bottom: 1px solid var(--frame);
+		background: var(--surface-elevated);
 		color: var(--ink);
 		font: inherit;
 		text-align: left;
@@ -315,9 +316,9 @@
 		height: 28px;
 		flex: 0 0 auto;
 		place-items: center;
-		border: 1px solid var(--ink);
+		border: 1px solid var(--frame);
 		border-radius: 0;
-		color: var(--surface-base);
+		color: oklch(0.98 0.01 80);
 		font-size: 12px;
 		font-style: normal;
 		font-weight: 850;
@@ -378,7 +379,7 @@
 		gap: 7px;
 		width: 100%;
 		padding: 11px;
-		border: 1.5px solid var(--ink);
+		border: 1px solid var(--frame);
 		border-radius: 0;
 		background: var(--surface-base);
 		color: var(--ink);
