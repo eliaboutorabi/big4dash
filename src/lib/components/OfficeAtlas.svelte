@@ -415,6 +415,7 @@
 		place-items: center;
 		border: 1.5px solid var(--frame);
 		background: var(--accent-light);
+		color: var(--accent-ink);
 		box-shadow: var(--shadow-brutal-xs);
 	}
 
@@ -428,7 +429,7 @@
 		font-size: 14px;
 	}
 
-	.atlas-title span,
+	.atlas-title > div > span,
 	.atlas-method p,
 	.readout-location span {
 		color: var(--text-secondary);

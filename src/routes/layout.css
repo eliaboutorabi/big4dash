@@ -137,7 +137,7 @@ select:focus-visible {
 
 ::selection {
 	background: var(--accent-light);
-	color: var(--ink);
+	color: var(--accent-ink);
 }
 
 .app-shell {

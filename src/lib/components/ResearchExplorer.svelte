@@ -274,7 +274,7 @@
 		padding: 12px 14px;
 		border-bottom: 1px solid var(--frame);
 		background: var(--accent-light);
-		color: var(--ink);
+		color: var(--accent-ink);
 		font-size: 11px;
 		font-weight: 750;
 		letter-spacing: 0.04em;

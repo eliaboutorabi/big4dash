@@ -24,6 +24,8 @@ All implementation colors are defined in OKLCH in `src/routes/layout.css`.
 
 The light and dark themes share the same semantic token names. Text, frames, inverse surfaces, and shadow colors have distinct roles so the dark theme never produces white structural rules or accidental light panels. It remaps those roles rather than applying a global inversion, preserving firm and chart semantics in both modes.
 
+Honey-filled controls and signals always pair with `--accent-ink`, never the theme's default text token. This keeps icons and labels dark against yellow in both themes and prevents light-on-light failures in dark mode.
+
 Dark-mode elevation follows four explicit levels: the canvas is darkest, flat structural bands use the default surface and a border, raised analytical objects use a lighter elevated surface with a 4px zero-blur offset shadow, and overlays use the lightest surface with an 8px hard shadow or a directional hard drawer edge. Small highlighted controls use a 2px offset; focal calls to action may use the honey shadow. Shadow geometry never changes arbitrarily between themes, and soft atmospheric shadows are not part of the neo-brutalist vocabulary.
 
 The FirmScope mark is a contiguous two-by-two field with one firm color anchored in each corner and an upright numeral 4 centered over their shared intersection. The colors touch as one market; the numeral names the category without becoming a fifth, unrelated brand color.
