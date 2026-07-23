@@ -30,12 +30,6 @@
 </main>
 
 <style>
-	:global(body) {
-		margin: 0;
-		background: oklch(0.13 0.018 255);
-		color: oklch(0.96 0.006 255);
-	}
-
 	.error-stage {
 		display: grid;
 		min-height: 100vh;
@@ -44,6 +38,7 @@
 		background:
 			linear-gradient(90deg, transparent 49.95%, oklch(1 0 0 / 0.08) 50%, transparent 50.05%),
 			oklch(0.13 0.018 255);
+		color: oklch(0.96 0.006 255);
 	}
 
 	.error-brand {

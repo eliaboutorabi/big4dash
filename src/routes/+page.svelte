@@ -3,6 +3,7 @@
 	import SiGithub from '@icons-pack/svelte-simple-icons/icons/SiGithub';
 	import {
 		ArrowRight,
+		Bookmark,
 		BookOpenCheck,
 		ChartNoAxesCombined,
 		Check,
@@ -28,6 +29,7 @@
 	import CompositionComparison from '$lib/components/CompositionComparison.svelte';
 	import CoverageMatrix from '$lib/components/CoverageMatrix.svelte';
 	import EvidenceDrawer from '$lib/components/EvidenceDrawer.svelte';
+	import EvidenceNotebook from '$lib/components/EvidenceNotebook.svelte';
 	import GrowthIndex from '$lib/components/GrowthIndex.svelte';
 	import MarketMosaic from '$lib/components/MarketMosaic.svelte';
 	import OfficeAtlas from '$lib/components/OfficeAtlas.svelte';
@@ -71,6 +73,8 @@
 	let selectedFirms = $state<FirmName[]>([...FIRMS]);
 	let selectedObservationId = $state<string | null>(null);
 	let selectedFirm = $state<FirmName | null>(null);
+	let savedObservationIds = $state<string[]>([]);
+	let notebookOpen = $state(false);
 	let mobileNavOpen = $state(false);
 	let aboutOpen = $state(false);
 	let theme = $state<'light' | 'dark'>('light');
@@ -90,6 +94,11 @@
 				? data.peopleSeries
 				: data.growthSeries) as Record<FirmName, SeriesPoint[]>
 	);
+	let savedObservations = $derived(
+		savedObservationIds
+			.map((id) => data.observations.find((observation) => observation.id === id))
+			.filter((observation): observation is NonNullable<typeof observation> => Boolean(observation))
+	);
 
 	function toggleFirm(firm: FirmName) {
 		selectedFirms = selectedFirms.includes(firm)
@@ -102,6 +111,13 @@
 	function openEvidence(observationId: string) {
 		selectedFirm = null;
 		selectedObservationId = observationId;
+	}
+
+	function toggleSavedObservation(observationId: string) {
+		savedObservationIds = savedObservationIds.includes(observationId)
+			? savedObservationIds.filter((id) => id !== observationId)
+			: [...savedObservationIds, observationId];
+		localStorage.setItem('firmscope-evidence-notebook', JSON.stringify(savedObservationIds));
 	}
 
 	function toggleTheme() {
@@ -209,6 +225,13 @@
 
 	onMount(() => {
 		theme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+		try {
+			savedObservationIds = JSON.parse(
+				localStorage.getItem('firmscope-evidence-notebook') ?? '[]'
+			);
+		} catch {
+			savedObservationIds = [];
+		}
 		let scrollFrame = 0;
 		const updateActiveSection = () => {
 			cancelAnimationFrame(scrollFrame);
@@ -352,6 +375,14 @@
 			</div>
 			<div class="topbar-actions">
 				<span class="cutoff">Research cutoff <strong>{researchCutoffLabel}</strong></span>
+				<button
+					class="notebook-button"
+					aria-label={`Open evidence notebook with ${savedObservationIds.length} saved records`}
+					onclick={() => (notebookOpen = true)}
+				>
+					<Bookmark size={14} /> Notebook
+					<span>{savedObservationIds.length}</span>
+				</button>
 				<button class="tour-button" onclick={startTour}><Sparkles size={14} /> Take the tour</button
 				>
 				<a
@@ -798,6 +829,22 @@
 	<EvidenceDrawer
 		observation={selectedObservation}
 		onClose={() => (selectedObservationId = null)}
+		saved={selectedObservation ? savedObservationIds.includes(selectedObservation.id) : false}
+		onToggleSave={toggleSavedObservation}
+	/>
+	<EvidenceNotebook
+		open={notebookOpen}
+		observations={savedObservations}
+		onclose={() => (notebookOpen = false)}
+		onselect={(observationId) => {
+			notebookOpen = false;
+			openEvidence(observationId);
+		}}
+		onremove={toggleSavedObservation}
+		onclear={() => {
+			savedObservationIds = [];
+			localStorage.removeItem('firmscope-evidence-notebook');
+		}}
 	/>
 
 	{#if aboutOpen}

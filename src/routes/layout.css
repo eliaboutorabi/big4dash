@@ -412,6 +412,7 @@ main {
 }
 
 .tour-button,
+.notebook-button,
 .icon-button {
 	gap: 7px;
 	height: 32px;
@@ -422,6 +423,22 @@ main {
 	font-size: 12px;
 	font-weight: 700;
 	cursor: pointer;
+}
+
+.notebook-button {
+	gap: 6px;
+	padding: 0 9px;
+}
+
+.notebook-button span {
+	display: grid;
+	min-width: 18px;
+	height: 18px;
+	place-items: center;
+	background: var(--inverse-surface);
+	color: var(--inverse-text);
+	font-family: var(--font-mono);
+	font-size: 9px;
 }
 
 .icon-button {

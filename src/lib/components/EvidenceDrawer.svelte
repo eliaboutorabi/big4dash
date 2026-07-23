@@ -1,6 +1,8 @@
 <script lang="ts">
 	import {
 		ArrowUpRight,
+		Bookmark,
+		BookmarkCheck,
 		CalendarDays,
 		Check,
 		FileText,
@@ -14,9 +16,16 @@
 	interface Props {
 		observation: DashboardObservation | null;
 		onClose?: () => void;
+		saved?: boolean;
+		onToggleSave?: (observationId: string) => void;
 	}
 
-	let { observation, onClose = () => {} }: Props = $props();
+	let {
+		observation,
+		onClose = () => {},
+		saved = false,
+		onToggleSave = () => {}
+	}: Props = $props();
 
 	function closeOnEscape(event: KeyboardEvent) {
 		if (event.key === 'Escape' && observation) onClose();
@@ -55,6 +64,15 @@
 			</div>
 
 			<div class="record-value">{displayObservationValue(observation)}</div>
+			<button
+				class="save-record"
+				class:saved
+				aria-pressed={saved}
+				onclick={() => onToggleSave(observation.id)}
+			>
+				{#if saved}<BookmarkCheck size={15} /> Saved to notebook{:else}<Bookmark size={15} /> Save to
+					notebook{/if}
+			</button>
 
 			<div class="confidence-grid">
 				<div>
@@ -248,6 +266,27 @@
 		font-weight: 650;
 		letter-spacing: -0.035em;
 		line-height: 1;
+	}
+
+	.save-record {
+		display: inline-flex;
+		width: fit-content;
+		min-height: 36px;
+		align-items: center;
+		gap: 7px;
+		margin-top: -12px;
+		padding: 0 11px;
+		border: 1px solid var(--frame);
+		background: var(--surface-base);
+		color: var(--ink);
+		font-size: 10px;
+		font-weight: 800;
+		cursor: pointer;
+	}
+
+	.save-record.saved {
+		background: var(--accent-light);
+		color: var(--accent-ink);
 	}
 
 	.confidence-grid {
