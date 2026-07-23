@@ -304,6 +304,10 @@
 				aboutOpen = false;
 				return;
 			}
+			if (event.key === 'Escape' && selectedFirm) {
+				selectedFirm = null;
+				return;
+			}
 			if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
 				event.preventDefault();
 				scrollTo('evidence');
@@ -311,10 +315,6 @@
 			}
 		};
 		window.addEventListener('keydown', shortcut);
-
-		if (!localStorage.getItem('big-four-tour-seen')) {
-			setTimeout(startTour, 900);
-		}
 
 		return () => {
 			cancelAnimationFrame(scrollFrame);
@@ -909,10 +909,11 @@
 	{#if aboutOpen}
 		<button
 			class="about-backdrop"
-			aria-label="Close about FirmScope"
+			tabindex="-1"
+			aria-hidden="true"
 			onclick={() => (aboutOpen = false)}
 		></button>
-		<dialog open class="about-dialog" aria-labelledby="about-title">
+		<dialog open class="about-dialog" aria-modal="true" aria-labelledby="about-title">
 			<header>
 				<span class="brand-mark about-mark" aria-hidden="true">
 					<i></i><i></i><i></i><i></i><b>4</b>
@@ -941,10 +942,16 @@
 	{#if selectedFirmSummary}
 		<button
 			class="drawer-backdrop firm-backdrop"
-			aria-label="Close firm profile"
+			tabindex="-1"
+			aria-hidden="true"
 			onclick={() => (selectedFirm = null)}
 		></button>
-		<aside class="firm-drawer" aria-label={`${selectedFirmSummary.firm} profile`}>
+		<div
+			class="firm-drawer"
+			role="dialog"
+			aria-modal="true"
+			aria-label={`${selectedFirmSummary.firm} profile`}
+		>
 			<header>
 				<div class="firm-profile-title">
 					<span style:background={FIRM_COLORS[selectedFirmSummary.firm]}
@@ -991,6 +998,6 @@
 					>
 				</div>
 			</div>
-		</aside>
+		</div>
 	{/if}
 </div>

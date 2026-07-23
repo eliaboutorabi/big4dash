@@ -18,23 +18,72 @@
 		onremove: (observationId: string) => void;
 		onclear: () => void;
 	} = $props();
+	let notebookElement = $state<HTMLElement>();
+	let closeButton = $state<HTMLButtonElement>();
 
 	function closeOnEscape(event: KeyboardEvent) {
-		if (event.key === 'Escape' && open) onclose();
+		if (!open) return;
+		if (event.key === 'Escape') {
+			onclose();
+			return;
+		}
+		if (event.key !== 'Tab') return;
+		if (!notebookElement) return;
+		const focusable = [
+			...notebookElement.querySelectorAll<HTMLElement>(
+				'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+			)
+		];
+		const first = focusable[0];
+		const last = focusable.at(-1);
+		if (event.shiftKey && document.activeElement === first) {
+			event.preventDefault();
+			last?.focus();
+		} else if (!event.shiftKey && document.activeElement === last) {
+			event.preventDefault();
+			first?.focus();
+		}
 	}
+
+	$effect(() => {
+		if (!open) return;
+		const previousFocus = document.activeElement as HTMLElement | null;
+		const previousOverflow = document.body.style.overflow;
+		document.body.style.overflow = 'hidden';
+		queueMicrotask(() => closeButton?.focus());
+		return () => {
+			document.body.style.overflow = previousOverflow;
+			previousFocus?.focus();
+		};
+	});
 </script>
 
 <svelte:window onkeydown={closeOnEscape} />
 
 {#if open}
-	<button class="notebook-backdrop" aria-label="Close evidence notebook" onclick={onclose}></button>
-	<aside class="notebook" aria-labelledby="notebook-title">
+	<button
+		class="notebook-backdrop"
+		tabindex="-1"
+		aria-hidden="true"
+		onclick={onclose}
+	></button>
+	<div
+		class="notebook"
+		bind:this={notebookElement}
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby="notebook-title"
+	>
 		<header>
 			<div class="notebook-title">
 				<span><BookmarkCheck size={15} /> Research collection</span>
 				<h2 id="notebook-title">Evidence notebook</h2>
 			</div>
-			<button class="close-button" aria-label="Close evidence notebook" onclick={onclose}
+			<button
+				class="close-button"
+				bind:this={closeButton}
+				aria-label="Close evidence notebook"
+				onclick={onclose}
 				><X size={18} /></button
 			>
 		</header>
@@ -86,7 +135,7 @@
 			<span>Local research state</span>
 			<p>Saved records never alter the underlying dataset.</p>
 		</footer>
-	</aside>
+	</div>
 {/if}
 
 <style>

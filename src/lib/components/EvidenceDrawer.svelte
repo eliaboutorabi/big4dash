@@ -26,28 +26,78 @@
 		saved = false,
 		onToggleSave = () => {}
 	}: Props = $props();
+	let drawerElement = $state<HTMLElement>();
+	let closeButton = $state<HTMLButtonElement>();
 
 	function closeOnEscape(event: KeyboardEvent) {
-		if (event.key === 'Escape' && observation) onClose();
+		if (!observation) return;
+		if (event.key === 'Escape') {
+			onClose();
+			return;
+		}
+		if (event.key !== 'Tab') return;
+		if (!drawerElement) return;
+		const focusable = [
+			...drawerElement.querySelectorAll<HTMLElement>(
+				'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+			)
+		];
+		const first = focusable[0];
+		const last = focusable.at(-1);
+		if (event.shiftKey && document.activeElement === first) {
+			event.preventDefault();
+			last?.focus();
+		} else if (!event.shiftKey && document.activeElement === last) {
+			event.preventDefault();
+			first?.focus();
+		}
 	}
 
 	function openSource() {
 		if (!observation) return;
 		window.open(observation.sourceUrl || observation.archivedUrl, '_blank', 'noopener,noreferrer');
 	}
+
+	$effect(() => {
+		if (!observation) return;
+		const previousFocus = document.activeElement as HTMLElement | null;
+		const previousOverflow = document.body.style.overflow;
+		document.body.style.overflow = 'hidden';
+		queueMicrotask(() => closeButton?.focus());
+		return () => {
+			document.body.style.overflow = previousOverflow;
+			previousFocus?.focus();
+		};
+	});
 </script>
 
 <svelte:window onkeydown={closeOnEscape} />
 
 {#if observation}
-	<button class="drawer-backdrop" aria-label="Close evidence drawer" onclick={onClose}></button>
-	<aside class="evidence-drawer" aria-label="Evidence detail" aria-live="polite">
+	<button
+		class="drawer-backdrop"
+		tabindex="-1"
+		aria-hidden="true"
+		onclick={onClose}
+	></button>
+	<div
+		class="evidence-drawer"
+		bind:this={drawerElement}
+		role="dialog"
+		aria-modal="true"
+		aria-label="Evidence detail"
+		aria-live="polite"
+	>
 		<header>
 			<div>
 				<span class="record-id">{observation.id}</span>
 				<strong>Evidence record</strong>
 			</div>
-			<button class="icon-button" aria-label="Close evidence drawer" onclick={onClose}
+			<button
+				class="icon-button"
+				bind:this={closeButton}
+				aria-label="Close evidence drawer"
+				onclick={onClose}
 				><X size={18} /></button
 			>
 		</header>
@@ -136,7 +186,7 @@
 				</section>
 			{/if}
 		</div>
-	</aside>
+	</div>
 {/if}
 
 <style>
