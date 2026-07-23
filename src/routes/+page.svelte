@@ -10,7 +10,6 @@
 		CircleHelp,
 		Database,
 		ExternalLink,
-		FileCheck2,
 		Fingerprint,
 		Globe2,
 		Info,
@@ -416,29 +415,6 @@
 								></button
 							>
 						</div>
-					</div>
-				</div>
-
-				<div class="data-trust-line">
-					<div>
-						<FileCheck2 size={14} /><strong>{data.meta.reportedObservationCount}</strong><span
-							>reported values</span
-						>
-					</div>
-					<div>
-						<ShieldCheck size={14} /><strong>{data.meta.qualityPassCount}</strong><span
-							>automated QA checks passed</span
-						>
-					</div>
-					<div>
-						<Globe2 size={14} /><strong>{data.meta.activeSourceCount}</strong><span
-							>live source URLs</span
-						>
-					</div>
-					<div>
-						<Info size={14} /><strong>{data.meta.archiveFallbackCount}</strong><span
-							>archive fallbacks</span
-						>
 					</div>
 				</div>
 
