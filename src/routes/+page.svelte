@@ -38,6 +38,7 @@
 	import PairwiseCompare from '$lib/components/PairwiseCompare.svelte';
 	import ReportingCalendar from '$lib/components/ReportingCalendar.svelte';
 	import ResearchExplorer from '$lib/components/ResearchExplorer.svelte';
+	import RevisionTrail from '$lib/components/RevisionTrail.svelte';
 	import ScenarioStudio from '$lib/components/ScenarioStudio.svelte';
 	import TrendChart from '$lib/components/TrendChart.svelte';
 	import WorkforceScatter from '$lib/components/WorkforceScatter.svelte';
@@ -868,6 +869,7 @@
 						observations={data.observations}
 						onselect={openEvidence}
 					/>
+					<RevisionTrail observations={data.observations} onselect={openEvidence} />
 					<ResearchExplorer observations={data.observations} onSelect={openEvidence} />
 				</div>
 			</section>
