@@ -33,6 +33,7 @@
 	import EvidenceNotebook from '$lib/components/EvidenceNotebook.svelte';
 	import GrowthIndex from '$lib/components/GrowthIndex.svelte';
 	import MarketMosaic from '$lib/components/MarketMosaic.svelte';
+	import MarketShareHistory from '$lib/components/MarketShareHistory.svelte';
 	import OfficeAtlas from '$lib/components/OfficeAtlas.svelte';
 	import PairwiseCompare from '$lib/components/PairwiseCompare.svelte';
 	import ReportingCalendar from '$lib/components/ReportingCalendar.svelte';
@@ -693,6 +694,7 @@
 					</div>
 				</div>
 				<GrowthIndex series={data.revenueSeries} onselect={openEvidence} />
+				<MarketShareHistory series={data.revenueSeries} onselect={openEvidence} />
 			</section>
 
 			<section id="mix" class="dashboard-section">
