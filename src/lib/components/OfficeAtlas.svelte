@@ -48,6 +48,7 @@
 	let activeFirms = $state<FirmName[]>(['Deloitte', 'PwC', 'EY', 'KPMG']);
 	let inspected = $state<OfficeInspection | null>(null);
 	let viewMode = $state<'2d' | '3d'>('2d');
+	let globeLoaded = $state(false);
 
 	const width = 1120;
 	const height = 540;
@@ -232,6 +233,11 @@
 			: [...activeFirms, firm];
 		if (inspected && !activeFirms.includes(inspected.location.firm)) inspected = null;
 	}
+
+	function setViewMode(mode: '2d' | '3d') {
+		viewMode = mode;
+		if (mode === '3d') globeLoaded = true;
+	}
 </script>
 
 <div class="atlas-shell">
@@ -258,12 +264,12 @@
 			<button
 				class:active={viewMode === '2d'}
 				aria-pressed={viewMode === '2d'}
-				onclick={() => (viewMode = '2d')}><MapIcon size={14} /> 2D</button
+				onclick={() => setViewMode('2d')}><MapIcon size={14} /> 2D</button
 			>
 			<button
 				class:active={viewMode === '3d'}
 				aria-pressed={viewMode === '3d'}
-				onclick={() => (viewMode = '3d')}><Globe2 size={14} /> 3D</button
+				onclick={() => setViewMode('3d')}><Globe2 size={14} /> 3D</button
 			>
 		</div>
 		<div class="map-stamp">
@@ -318,11 +324,13 @@
 			</svg>
 		</div>
 		<div class="map-layer map-3d" aria-hidden={viewMode === '2d'}>
-			<OfficeGlobe
-				locations={visibleLocations}
-				active={viewMode === '3d'}
-				onInspect={inspectGlobeLocation}
-			/>
+			{#if globeLoaded}
+				<OfficeGlobe
+					locations={visibleLocations}
+					active={viewMode === '3d'}
+					onInspect={inspectGlobeLocation}
+				/>
+			{/if}
 		</div>
 		<div class="globe-instruction">
 			<span>Drag to orbit</span><i></i><span>Scroll to zoom</span>

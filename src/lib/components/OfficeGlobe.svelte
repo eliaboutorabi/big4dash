@@ -23,6 +23,7 @@
 	let hostElement: HTMLDivElement;
 	let canvasElement: HTMLCanvasElement;
 	let available = $state(true);
+	let ready = $state(false);
 	let controller = $state<GlobeController | null>(null);
 
 	const countries = feature(
@@ -266,13 +267,26 @@
 						canvasElement.style.cursor = 'grab';
 					}
 				}
-				canvasElement.addEventListener('pointermove', inspectPointer, { passive: true });
-				canvasElement.addEventListener('pointerdown', () => {
+				function handlePointerDown() {
 					canvasElement.style.cursor = 'grabbing';
-				});
-				canvasElement.addEventListener('pointerup', () => {
+				}
+				function handlePointerUp() {
 					canvasElement.style.cursor = 'grab';
-				});
+				}
+				function handleKeyboard(event: KeyboardEvent) {
+					const step = event.shiftKey ? 0.22 : 0.1;
+					if (event.key === 'ArrowLeft') globeGroup.rotation.y -= step;
+					else if (event.key === 'ArrowRight') globeGroup.rotation.y += step;
+					else if (event.key === 'ArrowUp') globeGroup.rotation.x -= step;
+					else if (event.key === 'ArrowDown') globeGroup.rotation.x += step;
+					else return;
+					event.preventDefault();
+					renderFrame();
+				}
+				canvasElement.addEventListener('pointermove', inspectPointer, { passive: true });
+				canvasElement.addEventListener('pointerdown', handlePointerDown);
+				canvasElement.addEventListener('pointerup', handlePointerUp);
+				canvasElement.addEventListener('keydown', handleKeyboard);
 
 				let inViewport = false;
 				let modeActive = active;
@@ -319,14 +333,19 @@
 				};
 				updateLocations(locations);
 				syncMotion();
+				ready = true;
 
 				dispose = () => {
 					controller = null;
+					ready = false;
 					renderer.setAnimationLoop(null);
 					resizeObserver.disconnect();
 					intersectionObserver.disconnect();
 					reduceMotion.removeEventListener('change', syncMotion);
 					canvasElement.removeEventListener('pointermove', inspectPointer);
+					canvasElement.removeEventListener('pointerdown', handlePointerDown);
+					canvasElement.removeEventListener('pointerup', handlePointerUp);
+					canvasElement.removeEventListener('keydown', handleKeyboard);
 					controls.dispose();
 					texture.dispose();
 					globeGeometry.dispose();
@@ -428,8 +447,16 @@
 <div class="globe-host" bind:this={hostElement}>
 	<canvas
 		bind:this={canvasElement}
-		aria-label={`Interactive 3D globe showing ${locations.length.toLocaleString()} mapped Big Four office locations`}
+		tabindex="0"
+		aria-label={`Interactive 3D globe showing ${locations.length.toLocaleString()} mapped Big Four office locations. Drag to orbit, scroll to zoom, or use arrow keys to rotate.`}
 	></canvas>
+	{#if available && !ready}
+		<div class="globe-loading" aria-live="polite">
+			<span></span>
+			<strong>Building the spatial view</strong>
+			<small>Loading globe geometry and {locations.length.toLocaleString()} mapped records</small>
+		</div>
+	{/if}
 	{#if !available}
 		<div class="globe-fallback">
 			<strong>3D rendering is unavailable</strong>
@@ -458,6 +485,42 @@
 		cursor: grabbing;
 	}
 
+	canvas:focus-visible {
+		outline: 2px solid var(--accent-light);
+		outline-offset: -4px;
+	}
+
+	.globe-loading {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		place-content: center;
+		justify-items: center;
+		gap: 7px;
+		background: var(--map-ocean, #111d29);
+		color: var(--text-on-sidebar);
+		text-align: center;
+	}
+
+	.globe-loading > span {
+		width: 42px;
+		height: 42px;
+		margin-bottom: 7px;
+		border: 2px solid var(--border-on-dark);
+		border-top-color: var(--accent-light);
+		border-radius: 50%;
+		animation: globe-loading 700ms linear infinite;
+	}
+
+	.globe-loading strong {
+		font-size: 13px;
+	}
+
+	.globe-loading small {
+		color: var(--text-on-dark-muted);
+		font-size: 10px;
+	}
+
 	.globe-fallback {
 		position: absolute;
 		inset: 0;
@@ -476,5 +539,17 @@
 	.globe-fallback span {
 		color: var(--text-on-dark-muted);
 		font-size: 12px;
+	}
+
+	@keyframes globe-loading {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.globe-loading > span {
+			animation: none;
+		}
 	}
 </style>
