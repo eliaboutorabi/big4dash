@@ -27,6 +27,7 @@
 	import dashboardData from '$lib/data/dashboard-data.json';
 	import CompositionComparison from '$lib/components/CompositionComparison.svelte';
 	import EvidenceDrawer from '$lib/components/EvidenceDrawer.svelte';
+	import GrowthIndex from '$lib/components/GrowthIndex.svelte';
 	import MarketMosaic from '$lib/components/MarketMosaic.svelte';
 	import OfficeAtlas from '$lib/components/OfficeAtlas.svelte';
 	import ReportingCalendar from '$lib/components/ReportingCalendar.svelte';
@@ -594,6 +595,7 @@
 						<p>Five-year comparison window used for CAGR.</p>
 					</div>
 				</div>
+				<GrowthIndex series={data.revenueSeries} onselect={openEvidence} />
 			</section>
 
 			<section id="mix" class="dashboard-section">
