@@ -236,6 +236,19 @@
 		name="description"
 		content="An evidence-first interactive comparison of Deloitte, PwC, EY and KPMG across scale, growth, business mix, geography and workforce."
 	/>
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content="FirmScope" />
+	<meta property="og:title" content="FirmScope — The Big Four, compared" />
+	<meta
+		property="og:description"
+		content="Traceable comparative intelligence across the world's four largest professional-services networks."
+	/>
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:title" content="FirmScope — The Big Four, compared" />
+	<meta
+		name="twitter:description"
+		content="Evidence-first visual intelligence for Deloitte, PwC, EY and KPMG."
+	/>
 </svelte:head>
 
 <div class="app-shell">
