@@ -29,6 +29,7 @@
 	import EvidenceDrawer from '$lib/components/EvidenceDrawer.svelte';
 	import MarketMosaic from '$lib/components/MarketMosaic.svelte';
 	import OfficeAtlas from '$lib/components/OfficeAtlas.svelte';
+	import ReportingCalendar from '$lib/components/ReportingCalendar.svelte';
 	import ResearchExplorer from '$lib/components/ResearchExplorer.svelte';
 	import TrendChart from '$lib/components/TrendChart.svelte';
 	import WorkforceScatter from '$lib/components/WorkforceScatter.svelte';
@@ -532,6 +533,8 @@
 						>
 					</div>
 				</div>
+
+				<ReportingCalendar firms={data.firms} onselect={openEvidence} />
 
 				<div id="tour-trend" class="chart-panel">
 					<div class="panel-toolbar">
