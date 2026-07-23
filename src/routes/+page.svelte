@@ -26,6 +26,7 @@
 	} from '@lucide/svelte';
 	import dashboardData from '$lib/data/dashboard-data.json';
 	import CompositionComparison from '$lib/components/CompositionComparison.svelte';
+	import CoverageMatrix from '$lib/components/CoverageMatrix.svelte';
 	import EvidenceDrawer from '$lib/components/EvidenceDrawer.svelte';
 	import GrowthIndex from '$lib/components/GrowthIndex.svelte';
 	import MarketMosaic from '$lib/components/MarketMosaic.svelte';
@@ -762,6 +763,11 @@
 							>
 						</div>
 					</div>
+					<CoverageMatrix
+						coverage={data.coverage}
+						observations={data.observations}
+						onselect={openEvidence}
+					/>
 					<ResearchExplorer observations={data.observations} onSelect={openEvidence} />
 				</div>
 			</section>
