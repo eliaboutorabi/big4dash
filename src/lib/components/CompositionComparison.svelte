@@ -13,6 +13,7 @@
 	let { data, mode, onSelect = () => {} }: Props = $props();
 	let compositionElement: HTMLDivElement;
 	let expanded = $state(false);
+	let basis = $state<'share' | 'scale'>('share');
 	let hovered = $state<{ firm: FirmName; point: DimensionPoint; share: number } | null>(null);
 	let tooltipPosition = $state({ left: 0, top: 0, below: false });
 	let barProgress = $state(1);
@@ -96,6 +97,20 @@
 		return (point.value / totalFor(firm)) * 100;
 	}
 
+	function maxTotal() {
+		return Math.max(...FIRMS.map((firm) => totalFor(firm)));
+	}
+
+	function widthFor(firm: FirmName, point: DimensionPoint) {
+		return basis === 'share' ? shareFor(firm, point) : (point.value / maxTotal()) * 100;
+	}
+
+	function displayFor(firm: FirmName, point: DimensionPoint) {
+		return basis === 'share'
+			? `${shareFor(firm, point).toFixed(0)}%`
+			: `$${(point.value / 1_000_000_000).toFixed(1)}B`;
+	}
+
 	function showTooltip(
 		event: PointerEvent | FocusEvent,
 		firm: FirmName,
@@ -121,6 +136,17 @@
 </script>
 
 <div class="composition" data-mode={mode} bind:this={compositionElement}>
+	<div class="basis-toolbar">
+		<p>
+			{basis === 'share'
+				? 'Each bar is normalized to 100% of the firm’s reported total.'
+				: 'Bar length now preserves the reported dollar-scale difference between firms.'}
+		</p>
+		<div class="basis-switch" aria-label="Composition comparison basis">
+			<button class:active={basis === 'share'} onclick={() => (basis = 'share')}>100% mix</button>
+			<button class:active={basis === 'scale'} onclick={() => (basis = 'scale')}>$ scale</button>
+		</div>
+	</div>
 	{#each FIRMS as firm (firm)}
 		<div class="firm-row">
 			<div class="firm-label">
@@ -134,9 +160,9 @@
 							{@const share = shareFor(firm, point)}
 							<button
 								class="segment"
-								style:width={`${share * barProgress}%`}
+								style:width={`${widthFor(firm, point) * barProgress}%`}
 								style:background={colorFor(point)}
-								aria-label={`${firm} ${point.label}: ${share.toFixed(1)}%. Open evidence.`}
+								aria-label={`${firm} ${point.label}: ${displayFor(firm, point)}. Open evidence.`}
 								onpointerenter={(event) => showTooltip(event, firm, point, share)}
 								onpointerleave={() => (hovered = null)}
 								onfocus={(event) => showTooltip(event, firm, point, share)}
@@ -151,7 +177,7 @@
 						<button onclick={() => onSelect(point.observationId)}>
 							<span class="dot" style:background={colorFor(point)}></span>
 							<span>{point.label}</span>
-							<strong>{shareFor(firm, point).toFixed(0)}%</strong>
+							<strong>{displayFor(firm, point)}</strong>
 						</button>
 					{/each}
 				</div>
@@ -207,6 +233,47 @@
 		position: relative;
 		display: grid;
 		gap: 24px;
+	}
+
+	.basis-toolbar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 18px;
+		padding-bottom: 13px;
+		border-bottom: 1px solid var(--border-subtle);
+	}
+
+	.basis-toolbar p {
+		margin: 0;
+		color: var(--text-secondary);
+		font-size: 11px;
+		line-height: 1.5;
+	}
+
+	.basis-switch {
+		display: flex;
+		flex: 0 0 auto;
+		padding: 3px;
+		border: 1px solid var(--frame);
+		background: var(--surface-muted);
+	}
+
+	.basis-switch button {
+		min-width: 70px;
+		min-height: 30px;
+		padding: 0 9px;
+		border: 0;
+		background: transparent;
+		color: var(--text-secondary);
+		font-size: 10px;
+		font-weight: 750;
+		cursor: pointer;
+	}
+
+	.basis-switch button.active {
+		background: var(--accent-light);
+		color: var(--accent-ink);
 	}
 
 	.firm-row {
@@ -464,6 +531,16 @@
 	}
 
 	@media (max-width: 640px) {
+		.basis-toolbar {
+			align-items: stretch;
+			flex-direction: column;
+			gap: 9px;
+		}
+
+		.basis-switch button {
+			flex: 1;
+		}
+
 		.firm-row {
 			grid-template-columns: 1fr;
 			gap: 8px;
