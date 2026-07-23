@@ -358,8 +358,7 @@
 			<section id="overview" class="dashboard-section overview-section">
 				<div id="tour-intro" class="overview-intro">
 					<div>
-						<span class="section-index">01 / Comparative overview</span>
-						<h1>The Big Four, seen as one market.</h1>
+						<h1>Four networks. One market. Every caveat intact.</h1>
 						<p>
 							Four global networks. Different reporting calendars, service taxonomies and geographic
 							strengths—compared here without sanding away the caveats.
@@ -505,11 +504,10 @@
 			<section id="scale" class="dashboard-section">
 				<div class="section-heading">
 					<div>
-						<span class="section-index">02 / Scale &amp; momentum</span>
-						<h2>Follow the shape of growth.</h2>
+						<h2>Growth looks different when the denominator is visible.</h2>
 						<p>
-							Switch measures without losing the comparative frame. Every plotted point opens its
-							exact evidence record.
+							Move between revenue, people and local growth without losing the comparative frame.
+							Every plotted point opens its exact evidence record.
 						</p>
 					</div>
 					<div class="section-callout">
@@ -578,8 +576,7 @@
 			<section id="mix" class="dashboard-section">
 				<div class="section-heading">
 					<div>
-						<span class="section-index">03 / Business mix</span>
-						<h2>How each network earns.</h2>
+						<h2>Revenue is one number. The businesses beneath it are not.</h2>
 						<p>
 							Reported service lines are shown as a share of each firm’s disclosed service
 							revenue—not forced into false equivalence.
@@ -600,7 +597,6 @@
 			<section id="offices" class="dashboard-section office-section">
 				<div class="section-heading">
 					<div>
-						<span class="section-index">04 / Spatial network</span>
 						<h2>The firms are global. Their disclosed footprints are not identical.</h2>
 						<p>
 							Explore the physical network behind the financial scale. This atlas preserves the
@@ -621,8 +617,7 @@
 			<section id="geography" class="dashboard-section geography-section">
 				<div class="section-heading">
 					<div>
-						<span class="section-index">05 / Revenue geography</span>
-						<h2>Regional fingerprints.</h2>
+						<h2>Regional exposure is the hidden strategy.</h2>
 						<p>
 							Americas is the largest disclosed region for three firms. KPMG’s reported EMA region
 							remains its strongest.
@@ -660,8 +655,7 @@
 			<section id="workforce" class="dashboard-section">
 				<div class="section-heading">
 					<div>
-						<span class="section-index">06 / Workforce lens</span>
-						<h2>Scale, people and a directional productivity proxy.</h2>
+						<h2>People turn scale into operating leverage.</h2>
 						<p>
 							Revenue per disclosed person is useful for orientation—but workforce definitions make
 							it a signal, not a verdict.
@@ -701,8 +695,7 @@
 			<section id="evidence" class="dashboard-section evidence-section">
 				<div class="section-heading">
 					<div>
-						<span class="section-index">07 / Evidence ledger</span>
-						<h2>Interrogate the research.</h2>
+						<h2>Every conclusion should survive a source check.</h2>
 						<p>
 							Search the complete observation ledger, inspect source excerpts and test the
 							comparability behind every claim.
