@@ -112,14 +112,14 @@
 			{@const delta = leftValue - rightValue}
 			<div class="comparison-row">
 				<strong>{metric.label}</strong>
-				<button onclick={() => onselect(metric.evidence(left))}>
+				<button data-firm={leftFirm} onclick={() => onselect(metric.evidence(left))}>
 					<span>{metric.format(leftValue)}</span>
 					<i
 						style:width={`${(leftValue / maximum) * 100}%`}
 						style:background={FIRM_COLORS[leftFirm]}
 					></i>
 				</button>
-				<button onclick={() => onselect(metric.evidence(right))}>
+				<button data-firm={rightFirm} onclick={() => onselect(metric.evidence(right))}>
 					<span>{metric.format(rightValue)}</span>
 					<i
 						style:width={`${(rightValue / maximum) * 100}%`}
@@ -336,13 +336,41 @@
 			grid-column: 2;
 		}
 
-		.comparison-table {
-			overflow-x: auto;
+		.comparison-head {
+			display: none;
 		}
 
-		.comparison-head,
 		.comparison-row {
-			width: 680px;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			grid-template-areas:
+				'metric metric'
+				'left right'
+				'gap gap';
+			gap: 9px 12px;
+			padding: 13px 0;
+		}
+
+		.comparison-row > strong {
+			grid-area: metric;
+		}
+
+		.comparison-row > button:nth-child(2) {
+			grid-area: left;
+		}
+
+		.comparison-row > button:nth-child(3) {
+			grid-area: right;
+		}
+
+		.comparison-row > span {
+			grid-area: gap;
+		}
+
+		.comparison-row button::before {
+			color: var(--text-tertiary);
+			font-size: 8px;
+			font-weight: 750;
+			content: attr(data-firm);
 		}
 	}
 

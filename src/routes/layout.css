@@ -1804,6 +1804,9 @@ h1 {
 		height: 58px;
 		padding: 0 14px;
 	}
+	.topbar-actions {
+		gap: 6px;
+	}
 	.topbar-context span,
 	.mode-toggle > svg,
 	.mode-toggle > span {
@@ -1880,11 +1883,24 @@ h1 {
 }
 
 @media (max-width: 480px) {
+	.notebook-button,
+	.share-view-button,
 	.tour-button {
 		width: 34px;
 		padding: 0;
 		justify-content: center;
 		font-size: 0;
+	}
+	.notebook-button span {
+		min-width: 16px;
+		height: 16px;
+		font-size: 8px;
+	}
+	.topbar-context strong {
+		max-width: 66px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 	.overview-intro > div:first-child > p {
 		font-size: 13px;
