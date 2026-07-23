@@ -396,6 +396,7 @@ main {
 
 .topbar-actions {
 	gap: 10px;
+	flex-shrink: 0;
 }
 
 .cutoff {
@@ -414,6 +415,7 @@ main {
 .tour-button,
 .notebook-button,
 .share-view-button,
+.command-button,
 .icon-button {
 	gap: 7px;
 	height: 32px;
@@ -423,6 +425,7 @@ main {
 	color: var(--text-secondary);
 	font-size: 12px;
 	font-weight: 700;
+	white-space: nowrap;
 	cursor: pointer;
 }
 
@@ -434,6 +437,23 @@ main {
 .share-view-button {
 	gap: 6px;
 	padding: 0 9px;
+}
+
+.command-button {
+	gap: 6px;
+	padding: 0 7px 0 9px;
+}
+
+.command-button span {
+	display: none;
+}
+
+.command-button kbd {
+	padding: 2px 4px;
+	border: 1px solid var(--border-subtle);
+	background: var(--surface-subtle);
+	color: var(--text-tertiary);
+	font: 8px var(--font-mono);
 }
 
 .notebook-button span {
@@ -480,6 +500,12 @@ main {
 .tour-button:active {
 	box-shadow: none;
 	transform: translate(2px, 2px);
+}
+
+@media (min-width: 1500px) {
+	.command-button span {
+		display: inline;
+	}
 }
 
 .content {
@@ -1885,6 +1911,7 @@ h1 {
 @media (max-width: 480px) {
 	.notebook-button,
 	.share-view-button,
+	.command-button,
 	.tour-button {
 		width: 34px;
 		padding: 0;
@@ -1895,6 +1922,10 @@ h1 {
 		min-width: 16px;
 		height: 16px;
 		font-size: 8px;
+	}
+	.command-button span,
+	.command-button kbd {
+		display: none;
 	}
 	.topbar-context strong {
 		max-width: 66px;

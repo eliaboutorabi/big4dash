@@ -19,6 +19,7 @@
 		MapPinned,
 		Menu,
 		Moon,
+		Search,
 		Share2,
 		ShieldCheck,
 		Sparkles,
@@ -27,6 +28,7 @@
 		UsersRound,
 		X
 	} from '@lucide/svelte';
+	import CommandPalette from '$lib/components/CommandPalette.svelte';
 	import CompositionComparison from '$lib/components/CompositionComparison.svelte';
 	import CoverageMatrix from '$lib/components/CoverageMatrix.svelte';
 	import EvidenceDrawer from '$lib/components/EvidenceDrawer.svelte';
@@ -80,6 +82,7 @@
 	let selectedFirm = $state<FirmName | null>(null);
 	let savedObservationIds = $state<string[]>([]);
 	let notebookOpen = $state(false);
+	let commandPaletteOpen = $state(false);
 	let viewCopied = $state(false);
 	let mobileNavOpen = $state(false);
 	let aboutOpen = $state(false);
@@ -449,6 +452,14 @@
 				>
 					<Share2 size={14} />
 					{viewCopied ? 'Copied' : 'Share view'}
+				</button>
+				<button
+					class="command-button"
+					aria-label="Open research command palette"
+					title="Open research command palette"
+					onclick={() => (commandPaletteOpen = true)}
+				>
+					<Search size={14} /> <span>Find anything</span><kbd>⌘K</kbd>
 				</button>
 				<button class="tour-button" onclick={startTour}><Sparkles size={14} /> Take the tour</button
 				>
@@ -913,6 +924,18 @@
 			savedObservationIds = [];
 			localStorage.removeItem('firmscope-evidence-notebook');
 		}}
+	/>
+	<CommandPalette
+		bind:open={commandPaletteOpen}
+		sections={sections.map(({ id, label }) => ({ id, label }))}
+		observations={data.observations}
+		onnavigate={scrollTo}
+		onmetric={(metric) => {
+			setMetric(metric);
+			scrollTo('scale');
+		}}
+		onfirm={(firm) => (selectedFirm = firm)}
+		onevidence={openEvidence}
 	/>
 
 	{#if aboutOpen}
