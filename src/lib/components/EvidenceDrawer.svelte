@@ -246,7 +246,7 @@
 		font-family: var(--font-mono);
 		font-size: clamp(30px, 6vw, 46px);
 		font-weight: 650;
-		letter-spacing: -0.06em;
+		letter-spacing: -0.035em;
 		line-height: 1;
 	}
 

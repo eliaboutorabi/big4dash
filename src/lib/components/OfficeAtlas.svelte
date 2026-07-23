@@ -835,7 +835,7 @@
 
 	.coverage-cards strong {
 		font: 650 27px var(--font-mono);
-		letter-spacing: -0.05em;
+		letter-spacing: -0.035em;
 	}
 
 	.coverage-cards small {
