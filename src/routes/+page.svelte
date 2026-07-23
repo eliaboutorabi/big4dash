@@ -38,6 +38,7 @@
 	import PairwiseCompare from '$lib/components/PairwiseCompare.svelte';
 	import ReportingCalendar from '$lib/components/ReportingCalendar.svelte';
 	import ResearchExplorer from '$lib/components/ResearchExplorer.svelte';
+	import ScenarioStudio from '$lib/components/ScenarioStudio.svelte';
 	import TrendChart from '$lib/components/TrendChart.svelte';
 	import WorkforceScatter from '$lib/components/WorkforceScatter.svelte';
 	import { FIRM_COLORS, FIRMS, currencyShort, fullNumber, percent } from '$lib/data/format';
@@ -695,6 +696,7 @@
 				</div>
 				<GrowthIndex series={data.revenueSeries} onselect={openEvidence} />
 				<MarketShareHistory series={data.revenueSeries} onselect={openEvidence} />
+				<ScenarioStudio firms={data.firms} onselect={openEvidence} />
 			</section>
 
 			<section id="mix" class="dashboard-section">
