@@ -22,6 +22,22 @@
 	const yMax = 75_000_000_000;
 	const xTicks = [250_000, 300_000, 350_000, 400_000, 450_000, 500_000];
 	const yTicks = [40_000_000_000, 50_000_000_000, 60_000_000_000, 70_000_000_000];
+	const productivityGuides = [125_000, 150_000, 175_000];
+	let medianPeople = $derived(
+		[...firms]
+			.sort((a, b) => a.people - b.people)
+			.slice(1, 3)
+			.reduce((sum, firm) => sum + firm.people, 0) / 2
+	);
+	let medianRevenue = $derived(
+		[...firms]
+			.sort((a, b) => a.revenue - b.revenue)
+			.slice(1, 3)
+			.reduce((sum, firm) => sum + firm.revenue, 0) / 2
+	);
+	let averageProductivity = $derived(
+		firms.reduce((sum, firm) => sum + firm.revenuePerPerson, 0) / firms.length
+	);
 
 	function x(value: number) {
 		return margin.left + ((value - xMin) / (xMax - xMin)) * (width - margin.left - margin.right);
@@ -29,6 +45,17 @@
 
 	function y(value: number) {
 		return margin.top + ((yMax - value) / (yMax - yMin)) * (height - margin.top - margin.bottom);
+	}
+
+	function guide(rate: number) {
+		const startPeople = Math.max(xMin, yMin / rate);
+		const endPeople = Math.min(xMax, yMax / rate);
+		return {
+			x1: x(startPeople),
+			y1: y(startPeople * rate),
+			x2: x(endPeople),
+			y2: y(endPeople * rate)
+		};
 	}
 </script>
 
@@ -62,17 +89,45 @@
 		>
 
 		<g class="quadrants" aria-hidden="true">
-			<line x1={x(365_000)} x2={x(365_000)} y1={margin.top} y2={height - margin.bottom} />
+			<rect
+				class="advantaged-zone"
+				x={margin.left}
+				y={margin.top}
+				width={x(medianPeople) - margin.left}
+				height={y(medianRevenue) - margin.top}
+			/>
+			<line
+				x1={x(medianPeople)}
+				x2={x(medianPeople)}
+				y1={margin.top}
+				y2={height - margin.bottom}
+			/>
 			<line
 				x1={margin.left}
 				x2={width - margin.right}
-				y1={y(56_000_000_000)}
-				y2={y(56_000_000_000)}
+				y1={y(medianRevenue)}
+				y2={y(medianRevenue)}
 			/>
-			<text x={margin.left + 12} y={margin.top + 18}>HIGH REVENUE / LEANER BASE</text>
+			<text x={margin.left + 12} y={margin.top + 18}>HIGHER SCALE / LEANER BASE</text>
 			<text x={width - margin.right - 12} y={height - margin.bottom - 12} text-anchor="end"
 				>LARGER PEOPLE PLATFORM</text
 			>
+		</g>
+
+		<g class="productivity-guides" aria-hidden="true">
+			{#each productivityGuides as rate (rate)}
+				{@const segment = guide(rate)}
+				<line
+					x1={segment.x1}
+					y1={segment.y1}
+					x2={segment.x2}
+					y2={segment.y2}
+					class:average={Math.abs(rate - averageProductivity) < 8_000}
+				/>
+				<text x={segment.x2 - 5} y={segment.y2 - 7} text-anchor="end">
+					{currencyShort(rate, 0)} / person
+				</text>
+			{/each}
 		</g>
 
 		{#each firms as firm (firm.firm)}
@@ -83,6 +138,7 @@
 				tabindex="0"
 				aria-label={`${firm.firm}: ${currencyShort(firm.revenue)} revenue and ${fullNumber(firm.people)} people. Open evidence.`}
 				onpointerenter={() => (hovered = firm)}
+				onpointerleave={() => (hovered = null)}
 				onfocus={() => (hovered = firm)}
 				onclick={() => onSelect(firm.peopleObservationId)}
 				onkeydown={(event) => {
@@ -172,7 +228,6 @@
 	.firm-point .halo {
 		opacity: 0.13;
 		stroke: none;
-		animation: point-pulse 3.2s ease-in-out infinite;
 	}
 
 	.firm-point:hover circle,
@@ -201,12 +256,35 @@
 		opacity: 0.3;
 	}
 
+	.quadrants .advantaged-zone {
+		fill: var(--success-wash);
+		opacity: 0.58;
+	}
+
 	.quadrants text {
 		fill: var(--text-tertiary);
 		font-family: var(--font-mono);
 		font-size: 12px;
 		font-weight: 700;
 		letter-spacing: 0.06em;
+	}
+
+	.productivity-guides line {
+		stroke: var(--accent-strong);
+		stroke-dasharray: 3 5;
+		stroke-width: 1;
+		opacity: 0.48;
+	}
+
+	.productivity-guides line.average {
+		stroke-width: 1.5;
+		opacity: 0.74;
+	}
+
+	.productivity-guides text {
+		fill: var(--accent-strong);
+		font-family: var(--font-mono);
+		font-size: 10px;
 	}
 
 	.scatter-readout {
@@ -253,13 +331,6 @@
 
 	.readout-firm span {
 		grid-column: 2;
-	}
-
-	@keyframes point-pulse {
-		50% {
-			transform: scale(1.16);
-			opacity: 0.05;
-		}
 	}
 
 	@media (max-width: 620px) {
