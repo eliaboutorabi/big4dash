@@ -31,6 +31,7 @@
 	import GrowthIndex from '$lib/components/GrowthIndex.svelte';
 	import MarketMosaic from '$lib/components/MarketMosaic.svelte';
 	import OfficeAtlas from '$lib/components/OfficeAtlas.svelte';
+	import PairwiseCompare from '$lib/components/PairwiseCompare.svelte';
 	import ReportingCalendar from '$lib/components/ReportingCalendar.svelte';
 	import ResearchExplorer from '$lib/components/ResearchExplorer.svelte';
 	import TrendChart from '$lib/components/TrendChart.svelte';
@@ -463,6 +464,8 @@
 						<div class="firm-accent" style:background={FIRM_COLORS.KPMG}></div>
 					</button>
 				</div>
+
+				<PairwiseCompare firms={data.firms} onselect={openEvidence} />
 
 				<div class="insight-deck">
 					<div class="insight-intro">
