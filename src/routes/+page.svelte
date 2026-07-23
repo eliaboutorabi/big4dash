@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, untrack } from 'svelte';
+	import type { PageProps } from './$types';
 	import SiGithub from '@icons-pack/svelte-simple-icons/icons/SiGithub';
 	import {
 		ArrowRight,
@@ -26,7 +27,6 @@
 		UsersRound,
 		X
 	} from '@lucide/svelte';
-	import dashboardData from '$lib/data/dashboard-data.json';
 	import CompositionComparison from '$lib/components/CompositionComparison.svelte';
 	import CoverageMatrix from '$lib/components/CoverageMatrix.svelte';
 	import EvidenceDrawer from '$lib/components/EvidenceDrawer.svelte';
@@ -42,7 +42,8 @@
 	import { FIRM_COLORS, FIRMS, currencyShort, fullNumber, percent } from '$lib/data/format';
 	import type { DashboardData, FirmName, SeriesPoint } from '$lib/data/types';
 
-	const data = dashboardData as DashboardData;
+	let { data: pageData }: PageProps = $props();
+	const data = untrack(() => pageData.dashboardData as DashboardData);
 	const rankedFirms = [...data.firms].sort((a, b) => b.revenue - a.revenue);
 	const strongestCagr = [...data.firms].sort((a, b) => b.fiveYearCagr - a.fiveYearCagr)[0];
 	const revenueScaleGap = rankedFirms[0].revenue - rankedFirms.at(-1)!.revenue;
@@ -269,7 +270,10 @@
 			.filter((firm): firm is FirmName => FIRMS.includes(firm as FirmName));
 		if (initialFirms.length) selectedFirms = [...new Set(initialFirms)];
 		const initialEvidence = initialUrl.searchParams.get('evidence');
-		if (initialEvidence && data.observations.some((observation) => observation.id === initialEvidence)) {
+		if (
+			initialEvidence &&
+			data.observations.some((observation) => observation.id === initialEvidence)
+		) {
 			selectedObservationId = initialEvidence;
 		}
 		const initialSection = initialUrl.searchParams.get('section');
@@ -278,9 +282,7 @@
 			requestAnimationFrame(() => document.getElementById(initialSection)?.scrollIntoView());
 		}
 		try {
-			savedObservationIds = JSON.parse(
-				localStorage.getItem('firmscope-evidence-notebook') ?? '[]'
-			);
+			savedObservationIds = JSON.parse(localStorage.getItem('firmscope-evidence-notebook') ?? '[]');
 		} catch {
 			savedObservationIds = [];
 		}
@@ -429,7 +431,9 @@
 				<span class="cutoff">Research cutoff <strong>{researchCutoffLabel}</strong></span>
 				<button
 					class="notebook-button"
-					aria-label={`Open evidence notebook with ${savedObservationIds.length} saved records`}
+					aria-label={`Open evidence notebook with ${savedObservationIds.length} saved ${
+						savedObservationIds.length === 1 ? 'record' : 'records'
+					}`}
 					onclick={() => (notebookOpen = true)}
 				>
 					<Bookmark size={14} /> Notebook
@@ -440,7 +444,8 @@
 					aria-label={viewCopied ? 'Dashboard link copied' : 'Copy link to current dashboard view'}
 					onclick={shareView}
 				>
-					<Share2 size={14} /> {viewCopied ? 'Copied' : 'Share view'}
+					<Share2 size={14} />
+					{viewCopied ? 'Copied' : 'Share view'}
 				</button>
 				<button class="tour-button" onclick={startTour}><Sparkles size={14} /> Take the tour</button
 				>
@@ -638,13 +643,11 @@
 								class:active={selectedMetric === 'revenue'}
 								onclick={() => setMetric('revenue')}>Revenue</button
 							>
-							<button
-								class:active={selectedMetric === 'people'}
-								onclick={() => setMetric('people')}>Workforce</button
+							<button class:active={selectedMetric === 'people'} onclick={() => setMetric('people')}
+								>Workforce</button
 							>
-							<button
-								class:active={selectedMetric === 'growth'}
-								onclick={() => setMetric('growth')}>Local growth</button
+							<button class:active={selectedMetric === 'growth'} onclick={() => setMetric('growth')}
+								>Local growth</button
 							>
 						</div>
 						<div class="firm-filters">

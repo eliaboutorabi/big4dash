@@ -19,7 +19,9 @@
 
 	<section>
 		<div class="error-code"><SearchX size={20} /> {page.status}</div>
-		<h1>{page.status === 404 ? 'This evidence trail ends here.' : 'The analysis hit an exception.'}</h1>
+		<h1>
+			{page.status === 404 ? 'This evidence trail ends here.' : 'The analysis hit an exception.'}
+		</h1>
 		<p>
 			{page.status === 404
 				? 'The requested page is not part of the current research instrument.'

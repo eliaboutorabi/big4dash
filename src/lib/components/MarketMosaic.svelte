@@ -45,7 +45,9 @@
 				>
 					<span>0{index + 1}</span>
 					<strong>{firm.firm}</strong>
-					<div><b>{currencyShort(firm.revenue)}</b><small>{percent(firm.marketShare, 0)}</small></div>
+					<div>
+						<b>{currencyShort(firm.revenue)}</b><small>{percent(firm.marketShare, 0)}</small>
+					</div>
 					<span class="open-icon"><ArrowUpRight size={14} aria-hidden="true" /></span>
 				</button>
 			{/each}
@@ -62,7 +64,9 @@
 				>
 					<span>0{index + 3}</span>
 					<strong>{firm.firm}</strong>
-					<div><b>{currencyShort(firm.revenue)}</b><small>{percent(firm.marketShare, 0)}</small></div>
+					<div>
+						<b>{currencyShort(firm.revenue)}</b><small>{percent(firm.marketShare, 0)}</small>
+					</div>
 					<span class="open-icon"><ArrowUpRight size={14} aria-hidden="true" /></span>
 				</button>
 			{/each}

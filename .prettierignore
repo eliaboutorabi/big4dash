@@ -7,3 +7,9 @@ bun.lockb
 
 # Miscellaneous
 /static/
+/.agents/
+/.impeccable/
+/references/
+/data/
+/src/lib/data/dashboard-data.json
+skills-lock.json

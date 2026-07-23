@@ -61,12 +61,7 @@
 <svelte:window onkeydown={closeOnEscape} />
 
 {#if open}
-	<button
-		class="notebook-backdrop"
-		tabindex="-1"
-		aria-hidden="true"
-		onclick={onclose}
-	></button>
+	<button class="notebook-backdrop" tabindex="-1" aria-hidden="true" onclick={onclose}></button>
 	<div
 		class="notebook"
 		bind:this={notebookElement}
@@ -83,8 +78,7 @@
 				class="close-button"
 				bind:this={closeButton}
 				aria-label="Close evidence notebook"
-				onclick={onclose}
-				><X size={18} /></button
+				onclick={onclose}><X size={18} /></button
 			>
 		</header>
 

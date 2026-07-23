@@ -52,7 +52,9 @@
 	<div class="calendar-chart">
 		<div class="calendar-axis" aria-hidden="true">
 			{#each ticks as tick (tick)}
-				<span style:left={`${position(tick)}%`}>{tickLabel.format(new Date(`${tick}T12:00:00Z`))}</span>
+				<span style:left={`${position(tick)}%`}
+					>{tickLabel.format(new Date(`${tick}T12:00:00Z`))}</span
+				>
 			{/each}
 		</div>
 		<div class="calendar-rows">

@@ -32,7 +32,9 @@ function slug(value) {
 }
 
 function validCountryCode(value) {
-	const code = String(value ?? '').trim().toUpperCase();
+	const code = String(value ?? '')
+		.trim()
+		.toUpperCase();
 	return /^[A-Z]{2}$/.test(code) ? code : '';
 }
 

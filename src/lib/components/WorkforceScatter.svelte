@@ -96,12 +96,7 @@
 				width={x(medianPeople) - margin.left}
 				height={y(medianRevenue) - margin.top}
 			/>
-			<line
-				x1={x(medianPeople)}
-				x2={x(medianPeople)}
-				y1={margin.top}
-				y2={height - margin.bottom}
-			/>
+			<line x1={x(medianPeople)} x2={x(medianPeople)} y1={margin.top} y2={height - margin.bottom} />
 			<line
 				x1={margin.left}
 				x2={width - margin.right}

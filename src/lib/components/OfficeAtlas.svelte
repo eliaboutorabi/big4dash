@@ -181,11 +181,7 @@
 		else inspected = { location, clusterSize: 1, firmCount: 1, firmLocationCount: 1 };
 	}
 
-	function inspectWithKeyboard(
-		event: KeyboardEvent,
-		cluster: MapCluster,
-		marker: ClusterMarker
-	) {
+	function inspectWithKeyboard(event: KeyboardEvent, cluster: MapCluster, marker: ClusterMarker) {
 		if (event.key === 'Enter' || event.key === ' ') {
 			event.preventDefault();
 			inspectClusterMarker(cluster, marker);
@@ -219,9 +215,7 @@
 		const next = markers[nextIndex];
 		inspectClusterMarker(next.cluster, next.marker);
 		requestAnimationFrame(() => {
-			document
-				.querySelector<SVGCircleElement>(`[data-office-marker="${next.marker.id}"]`)
-				?.focus();
+			document.querySelector<SVGCircleElement>(`[data-office-marker="${next.marker.id}"]`)?.focus();
 		});
 	}
 
@@ -341,8 +335,7 @@
 			>
 			{#if proximityClusterCount > 0}
 				<span
-					><i class="split-dot"></i>{proximityClusterCount.toLocaleString()} nearby-position groups
-					separated</span
+					><i class="split-dot"></i>{proximityClusterCount.toLocaleString()} nearby-position groups separated</span
 				>
 			{/if}
 		</div>
@@ -429,8 +422,8 @@
 			Deloitte’s official directory contains 867 entries; 794 carry source-linked coordinates and
 			co-located listings collapse to 699 unique plots. KPMG contributes 327 locations normalized
 			from 76 official country directories using city centroids. EY and PwC expose structured source
-			coordinates. Petal groups resolve screen collisions at this zoom; they do not necessarily imply
-			a shared building. Counts describe mapped records—not comparable audited office totals.
+			coordinates. Petal groups resolve screen collisions at this zoom; they do not necessarily
+			imply a shared building. Counts describe mapped records—not comparable audited office totals.
 		</p>
 	</div>
 </div>

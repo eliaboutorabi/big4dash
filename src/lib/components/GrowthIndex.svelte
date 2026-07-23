@@ -14,9 +14,7 @@
 
 	const plot = { left: 64, right: 844, top: 40, bottom: 282 };
 	let baseYear = $state<2015 | 2020>(2020);
-	let years = $derived(
-		Array.from({ length: 2025 - baseYear + 1 }, (_, index) => baseYear + index)
-	);
+	let years = $derived(Array.from({ length: 2025 - baseYear + 1 }, (_, index) => baseYear + index));
 	let indexed = $derived.by(() => {
 		const result = {} as Record<
 			FirmName,
@@ -124,7 +122,10 @@
 						<title>{firm} · {point.year} · {point.index.toFixed(1)}</title>
 					</g>
 				{/each}
-				<g class="end-label" transform={`translate(${plot.right + 14} ${y(finalPoint(firm).index)})`}>
+				<g
+					class="end-label"
+					transform={`translate(${plot.right + 14} ${y(finalPoint(firm).index)})`}
+				>
 					<circle r="4" fill={FIRM_COLORS[firm]} />
 					<text x="10" y="-2">{firm}</text>
 					<text class="end-value" x="10" y="12">{finalPoint(firm).index.toFixed(0)}</text>

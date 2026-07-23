@@ -114,17 +114,11 @@
 				<strong>{metric.label}</strong>
 				<button data-firm={leftFirm} onclick={() => onselect(metric.evidence(left))}>
 					<span>{metric.format(leftValue)}</span>
-					<i
-						style:width={`${(leftValue / maximum) * 100}%`}
-						style:background={FIRM_COLORS[leftFirm]}
-					></i>
+					<i style:--bar-scale={leftValue / maximum} style:background={FIRM_COLORS[leftFirm]}></i>
 				</button>
 				<button data-firm={rightFirm} onclick={() => onselect(metric.evidence(right))}>
 					<span>{metric.format(rightValue)}</span>
-					<i
-						style:width={`${(rightValue / maximum) * 100}%`}
-						style:background={FIRM_COLORS[rightFirm]}
-					></i>
+					<i style:--bar-scale={rightValue / maximum} style:background={FIRM_COLORS[rightFirm]}></i>
 				</button>
 				<span class:negative={delta < 0}>
 					{#if delta >= 0}<ArrowUpRight size={12} />{:else}<ArrowDownRight size={12} />{/if}
@@ -298,9 +292,12 @@
 
 	.comparison-row button i {
 		display: block;
+		width: 100%;
 		height: 4px;
 		min-width: 3px;
-		transition: width 220ms var(--ease-out);
+		transform: scaleX(var(--bar-scale));
+		transform-origin: left;
+		transition: transform 220ms var(--ease-out);
 	}
 
 	.comparison-row > span {

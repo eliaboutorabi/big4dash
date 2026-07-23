@@ -20,12 +20,7 @@
 		onToggleSave?: (observationId: string) => void;
 	}
 
-	let {
-		observation,
-		onClose = () => {},
-		saved = false,
-		onToggleSave = () => {}
-	}: Props = $props();
+	let { observation, onClose = () => {}, saved = false, onToggleSave = () => {} }: Props = $props();
 	let drawerElement = $state<HTMLElement>();
 	let closeButton = $state<HTMLButtonElement>();
 
@@ -74,12 +69,7 @@
 <svelte:window onkeydown={closeOnEscape} />
 
 {#if observation}
-	<button
-		class="drawer-backdrop"
-		tabindex="-1"
-		aria-hidden="true"
-		onclick={onClose}
-	></button>
+	<button class="drawer-backdrop" tabindex="-1" aria-hidden="true" onclick={onClose}></button>
 	<div
 		class="evidence-drawer"
 		bind:this={drawerElement}
@@ -97,8 +87,7 @@
 				class="icon-button"
 				bind:this={closeButton}
 				aria-label="Close evidence drawer"
-				onclick={onClose}
-				><X size={18} /></button
+				onclick={onClose}><X size={18} /></button
 			>
 		</header>
 

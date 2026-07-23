@@ -6,6 +6,7 @@
 	"scripts": {
 		"data:build": "node scripts/build-dashboard-data.mjs",
 		"data:offices": "node scripts/build-office-dataset.mjs",
+		"data:validate": "vitest run --project server",
 		"predev": "npm run data:build",
 		"dev": "vite dev",
 		"prebuild": "npm run data:build",
@@ -18,7 +19,8 @@
 		"format": "prettier --write .",
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run && npm run test:e2e",
-		"test:e2e": "playwright install && playwright test"
+		"test:e2e": "playwright test",
+		"quality": "npm run data:build && npm run check && npm run lint && npm run test"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
