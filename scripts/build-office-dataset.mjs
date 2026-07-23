@@ -5,6 +5,7 @@ const outputPath = resolve('data/10_office_locations.csv');
 const deloitteDirectoryPath = resolve('data/sources/deloitte-office-directory.json');
 const kpmgDirectoryPath = resolve('data/sources/kpmg-office-directory.json');
 const researchDate = '2026-07-18';
+const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
 
 const rows = [];
 
@@ -28,6 +29,31 @@ function slug(value) {
 		.replace(/[^a-z0-9]+/g, '-')
 		.replace(/(^-|-$)/g, '')
 		.slice(0, 64);
+}
+
+function validCountryCode(value) {
+	const code = String(value ?? '').trim().toUpperCase();
+	return /^[A-Z]{2}$/.test(code) ? code : '';
+}
+
+function pwcCountry(territory, office) {
+	const territoryName = plainText(territory.name);
+	const territoryCode = validCountryCode(territory.countryCode);
+	const officeCode = validCountryCode(String(office.id ?? '').split('-')[0]);
+	const countryCode = territoryCode || officeCode;
+	const isPlaceholder = /choose a territory/i.test(territoryName);
+	let country = isPlaceholder ? '' : territoryName;
+
+	if (!country && countryCode) {
+		try {
+			country = regionNames.of(countryCode) ?? '';
+		} catch {
+			country = '';
+		}
+	}
+
+	if (!country) country = plainText(office.parentRegion?.name || office.parentRegion?.id || '');
+	return { country, countryCode, isPlaceholder };
 }
 
 async function fetchText(url) {
@@ -128,8 +154,9 @@ async function collectPwc() {
 			const latitude = Number(office.coords?.latitude);
 			const longitude = Number(office.coords?.longitude);
 			if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) continue;
+			const resolvedCountry = pwcCountry(territory, office);
 			rows.push({
-				site_id: `pwc-${territory.countryCode || 'xx'}-${slug(office.id || office.name)}`,
+				site_id: `pwc-${resolvedCountry.countryCode.toLowerCase() || 'xx'}-${slug(office.id || office.name)}`,
 				firm_network: 'PwC',
 				site_name: office.name || 'PwC office',
 				office_type: 'official_office',
@@ -137,9 +164,11 @@ async function collectPwc() {
 					office.searchTerm || decodeURIComponent((office.address || '').replaceAll('+', ' '))
 				),
 				city: plainText(office.name),
-				state_province: plainText(office.parentRegion?.name || office.parentRegion?.id || ''),
-				country: territory.name || '',
-				country_iso2: String(territory.countryCode || '').toUpperCase(),
+				state_province: resolvedCountry.isPlaceholder
+					? ''
+					: plainText(office.parentRegion?.name || office.parentRegion?.id || ''),
+				country: resolvedCountry.country,
+				country_iso2: resolvedCountry.countryCode,
 				latitude,
 				longitude,
 				active_status: 'active',
@@ -239,6 +268,14 @@ for (const row of uniqueRows) {
 	const occurrence = (siteIdCounts.get(row.site_id) ?? 0) + 1;
 	siteIdCounts.set(row.site_id, occurrence);
 	if (occurrence > 1) row.site_id = `${row.site_id}-${occurrence}`;
+}
+const invalidCountryRows = uniqueRows.filter(
+	(row) => !row.country || /choose a territory/i.test(row.country)
+);
+if (invalidCountryRows.length > 0) {
+	throw new Error(
+		`Office dataset contains ${invalidCountryRows.length} missing or placeholder countries; first invalid site: ${invalidCountryRows[0].site_id}`
+	);
 }
 const columns = [
 	'site_id',
