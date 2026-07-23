@@ -80,7 +80,7 @@
 		visibleLocations.filter((location) => location.coverageTier !== 'representative_hub').length
 	);
 	let mapClusters = $derived(buildMapClusters(visibleLocations));
-	let overlapClusterCount = $derived(
+	let proximityClusterCount = $derived(
 		mapClusters.filter((cluster) => cluster.markers.length > 1).length
 	);
 	let clusterByLocationId = $derived.by(() => {
@@ -180,6 +180,50 @@
 		else inspected = { location, clusterSize: 1, firmCount: 1, firmLocationCount: 1 };
 	}
 
+	function inspectWithKeyboard(
+		event: KeyboardEvent,
+		cluster: MapCluster,
+		marker: ClusterMarker
+	) {
+		if (event.key === 'Enter' || event.key === ' ') {
+			event.preventDefault();
+			inspectClusterMarker(cluster, marker);
+			return;
+		}
+		const direction =
+			event.key === 'ArrowRight' || event.key === 'ArrowDown'
+				? 1
+				: event.key === 'ArrowLeft' || event.key === 'ArrowUp'
+					? -1
+					: event.key === 'Home'
+						? Number.NEGATIVE_INFINITY
+						: event.key === 'End'
+							? Number.POSITIVE_INFINITY
+							: 0;
+		if (!direction) return;
+		event.preventDefault();
+		const markers = mapClusters.flatMap((candidateCluster) =>
+			candidateCluster.markers.map((candidateMarker) => ({
+				cluster: candidateCluster,
+				marker: candidateMarker
+			}))
+		);
+		const currentIndex = markers.findIndex((candidate) => candidate.marker.id === marker.id);
+		const nextIndex =
+			direction === Number.NEGATIVE_INFINITY
+				? 0
+				: direction === Number.POSITIVE_INFINITY
+					? markers.length - 1
+					: (currentIndex + direction + markers.length) % markers.length;
+		const next = markers[nextIndex];
+		inspectClusterMarker(next.cluster, next.marker);
+		requestAnimationFrame(() => {
+			document
+				.querySelector<SVGCircleElement>(`[data-office-marker="${next.marker.id}"]`)
+				?.focus();
+		});
+	}
+
 	function toggleFirm(firm: FirmName) {
 		activeFirms = activeFirms.includes(firm)
 			? activeFirms.length === 1
@@ -257,15 +301,16 @@
 								fill-opacity={inspected?.location.id === marker.location.id ? 1 : 0.72}
 								stroke-opacity="0.9"
 								role="button"
-								tabindex="0"
-								aria-label={`${marker.firm} office${marker.locationCount > 1 ? ` group of ${marker.locationCount}` : ''} in ${marker.location.city}, ${marker.location.country}${cluster.markers.length > 1 ? `; ${cluster.markers.length} firms share this map position` : ''}`}
+								tabindex={inspected?.location.id === marker.location.id ||
+								(!inspected && marker.id === mapClusters[0]?.markers[0]?.id)
+									? 0
+									: -1}
+								data-office-marker={marker.id}
+								aria-label={`${marker.firm} office${marker.locationCount > 1 ? ` group of ${marker.locationCount}` : ''} in ${marker.location.city}, ${marker.location.country}${cluster.markers.length > 1 ? `; ${cluster.markers.length} firms are grouped nearby at this zoom` : ''}`}
 								onpointerenter={() => inspectClusterMarker(cluster, marker)}
 								onfocus={() => inspectClusterMarker(cluster, marker)}
 								onclick={() => inspectClusterMarker(cluster, marker)}
-								onkeydown={(event) => {
-									if (event.key === 'Enter' || event.key === ' ')
-										inspectClusterMarker(cluster, marker);
-								}}
+								onkeydown={(event) => inspectWithKeyboard(event, cluster, marker)}
 							></circle>
 						{/each}
 					{/each}
@@ -286,9 +331,10 @@
 			<span
 				><i class="directory-dot"></i>{directoryCount.toLocaleString()} mapped directory records</span
 			>
-			{#if overlapClusterCount > 0}
+			{#if proximityClusterCount > 0}
 				<span
-					><i class="split-dot"></i>{overlapClusterCount.toLocaleString()} shared-position clusters split</span
+					><i class="split-dot"></i>{proximityClusterCount.toLocaleString()} nearby-position groups
+					separated</span
 				>
 			{/if}
 		</div>
@@ -302,8 +348,8 @@
 				{#if inspected.firmCount > 1 || inspected.firmLocationCount > 1}
 					<small
 						>{inspected.firmCount > 1
-							? `${inspected.firmCount} firms here`
-							: 'Shared map position'}{inspected.firmLocationCount > 1
+							? `${inspected.firmCount} firms grouped nearby`
+							: 'Nearby records grouped'}{inspected.firmLocationCount > 1
 							? ` · ${inspected.firmLocationCount} ${inspected.location.firm} records`
 							: ''}</small
 					>
@@ -327,7 +373,7 @@
 			<div class="readout-quality">
 				<span
 					>{inspected.clusterSize > 1
-						? `Shared position · ${inspected.firmCount} firms · ${inspected.clusterSize} mapped records`
+						? `Map-proximity group · ${inspected.firmCount} firms · ${inspected.clusterSize} mapped records`
 						: inspected.location.coverageTier === 'representative_hub'
 							? 'Representative hub · city centroid'
 							: inspected.location.coordinatePrecision === 'source_coordinate'
@@ -345,7 +391,7 @@
 				<ScanSearch size={20} />
 				<div>
 					<strong>Inspect the network</strong><span
-						>Move across a point to identify the office and its coordinate provenance.</span
+						>Hover a point, or focus the map and use arrow keys to step through nearby records.</span
 					>
 				</div>
 			</div>
@@ -375,7 +421,8 @@
 			Deloitte’s official directory contains 867 entries; 794 carry source-linked coordinates and
 			co-located listings collapse to 699 unique plots. KPMG contributes 327 locations normalized
 			from 76 official country directories using city centroids. EY and PwC expose structured source
-			coordinates. Counts describe mapped records—not comparable audited office totals.
+			coordinates. Petal groups resolve screen collisions at this zoom; they do not necessarily imply
+			a shared building. Counts describe mapped records—not comparable audited office totals.
 		</p>
 	</div>
 </div>
