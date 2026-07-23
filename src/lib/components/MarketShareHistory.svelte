@@ -299,7 +299,6 @@
 
 	svg {
 		display: block;
-		min-width: 650px;
 		width: 100%;
 	}
 
