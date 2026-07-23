@@ -36,6 +36,22 @@
 	import type { DashboardData, FirmName, SeriesPoint } from '$lib/data/types';
 
 	const data = dashboardData as DashboardData;
+	const rankedFirms = [...data.firms].sort((a, b) => b.revenue - a.revenue);
+	const strongestCagr = [...data.firms].sort((a, b) => b.fiveYearCagr - a.fiveYearCagr)[0];
+	const revenueScaleGap = rankedFirms[0].revenue - rankedFirms.at(-1)!.revenue;
+	const growthSpread =
+		Math.max(...data.firms.map((firm) => firm.growth)) -
+		Math.min(...data.firms.map((firm) => firm.growth));
+	const combinedPeople = data.firms.reduce((sum, firm) => sum + firm.people, 0);
+	const deloitteAmericas =
+		data.regionalMix.Deloitte.find((region) => region.canonical === 'Americas') ??
+		data.regionalMix.Deloitte[0];
+	const latestYearLabel = `FY${String(data.meta.latestCommonYear).slice(-2)}`;
+	const researchCutoffLabel = new Intl.DateTimeFormat('en-GB', {
+		day: '2-digit',
+		month: 'short',
+		year: 'numeric'
+	}).format(new Date(`${data.meta.researchCutoff}T12:00:00Z`));
 	const sections = [
 		{ id: 'overview', label: 'Overview', icon: LayoutDashboard },
 		{ id: 'scale', label: 'Scale & growth', icon: ChartNoAxesCombined },
@@ -151,8 +167,7 @@
 					element: '#tour-offices',
 					popover: {
 						title: 'See the physical network',
-						description:
-							'Explore 1,234 mapped locations. Directory coordinates and representative hubs are deliberately encoded differently so coverage is never overstated.',
+						description: `Explore ${data.officeLocations.length.toLocaleString()} mapped locations. Source coordinates and city-centroid joins are deliberately encoded differently so coverage is never overstated.`,
 						side: 'top'
 					}
 				},
@@ -332,7 +347,7 @@
 				<strong>{sections.find((section) => section.id === activeSection)?.label}</strong>
 			</div>
 			<div class="topbar-actions">
-				<span class="cutoff">Research cutoff <strong>18 Jul 2026</strong></span>
+				<span class="cutoff">Research cutoff <strong>{researchCutoffLabel}</strong></span>
 				<button class="tour-button" onclick={startTour}><Sparkles size={14} /> Take the tour</button
 				>
 				<a
@@ -511,7 +526,9 @@
 						</p>
 					</div>
 					<div class="section-callout">
-						<TrendingUp size={16} /><span><strong>8.2%</strong> highest five-year revenue CAGR</span
+						<TrendingUp size={16} /><span
+							><strong>{percent(strongestCagr.fiveYearCagr)}</strong> highest five-year CAGR ·
+							{strongestCagr.firm}</span
 						>
 					</div>
 				</div>
@@ -559,12 +576,15 @@
 
 				<div class="comparison-readout">
 					<div>
-						<span>Scale gap</span><strong>$30.7B</strong>
-						<p>Deloitte’s FY25 reported revenue lead over KPMG.</p>
+						<span>Scale gap</span><strong>{currencyShort(revenueScaleGap)}</strong>
+						<p>
+							{rankedFirms[0].firm}’s {latestYearLabel} reported revenue lead over
+							{rankedFirms.at(-1)!.firm}.
+						</p>
 					</div>
 					<div>
-						<span>Growth spread</span><strong>2.4 pts</strong>
-						<p>Difference between the fastest and slowest FY25 local growth rates.</p>
+						<span>Growth spread</span><strong>{growthSpread.toFixed(1)} pts</strong>
+						<p>Difference between the fastest and slowest {latestYearLabel} local growth rates.</p>
 					</div>
 					<div>
 						<span>Common horizon</span><strong>FY20–25</strong>
@@ -642,9 +662,13 @@
 							<div>
 								<span>Scale comparison</span>
 								<strong>Deloitte’s Americas business is nearly the scale of KPMG globally.</strong>
-								<p>$38.8B Americas revenue versus KPMG’s $39.8B total FY2025 revenue.</p>
+								<p>
+									{currencyShort(deloitteAmericas.value)} Americas revenue versus KPMG’s
+									{currencyShort(data.firms.find((firm) => firm.firm === 'KPMG')!.revenue)} total
+									{latestYearLabel} revenue.
+								</p>
 							</div>
-							<button onclick={() => openEvidence('obs_del_0152')}
+							<button onclick={() => openEvidence(deloitteAmericas.observationId)}
 								>View record <ArrowRight size={13} /></button
 							>
 						</div>
@@ -662,7 +686,9 @@
 						</p>
 					</div>
 					<div class="section-callout">
-						<UsersRound size={16} /><span><strong>1.52M</strong> disclosed people combined</span>
+						<UsersRound size={16} /><span
+							><strong>{fullNumber(combinedPeople)}</strong> disclosed people combined</span
+						>
 					</div>
 				</div>
 				<div id="tour-workforce" class="workforce-layout">
