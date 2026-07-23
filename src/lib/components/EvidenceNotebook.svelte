@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { BookmarkCheck, Database, Trash2, X } from '@lucide/svelte';
+	import { BookmarkCheck, Database, FileDown, FileSpreadsheet, Trash2, X } from '@lucide/svelte';
 	import { displayObservationValue } from '$lib/data/format';
 	import type { DashboardObservation } from '$lib/data/types';
 
@@ -20,6 +20,109 @@
 	} = $props();
 	let notebookElement = $state<HTMLElement>();
 	let closeButton = $state<HTMLButtonElement>();
+
+	function downloadFile(filename: string, content: string, type: string) {
+		const url = URL.createObjectURL(new Blob([content], { type }));
+		const anchor = document.createElement('a');
+		anchor.href = url;
+		anchor.download = filename;
+		anchor.click();
+		URL.revokeObjectURL(url);
+	}
+
+	function csvCell(value: unknown) {
+		let text = String(value ?? '');
+		if (/^[=+\-@]/.test(text)) text = `'${text}`;
+		return `"${text.replaceAll('"', '""')}"`;
+	}
+
+	function exportCsv() {
+		const headers = [
+			'Observation ID',
+			'Firm',
+			'Fiscal year',
+			'Metric',
+			'Reported value',
+			'Definition',
+			'Source',
+			'Source URL',
+			'Source locator',
+			'Comparability score',
+			'Confidence score',
+			'Quality flag',
+			'Notes'
+		];
+		const rows = observations.map((observation) => [
+			observation.id,
+			observation.firm,
+			observation.fiscalYear,
+			observation.metricName,
+			displayObservationValue(observation),
+			observation.definition,
+			observation.sourceTitle,
+			observation.sourceUrl || observation.archivedUrl,
+			observation.sourceLocator,
+			observation.comparabilityScore,
+			observation.confidenceScore,
+			observation.qualityFlag,
+			observation.notes
+		]);
+		const csv = [headers, ...rows].map((row) => row.map(csvCell).join(',')).join('\r\n');
+		downloadFile(
+			`firmscope-evidence-${new Date().toISOString().slice(0, 10)}.csv`,
+			`\ufeff${csv}`,
+			'text/csv;charset=utf-8'
+		);
+	}
+
+	function markdownCell(value: string) {
+		return value.replaceAll('|', '\\|').replaceAll('\n', ' ').trim();
+	}
+
+	function exportBriefing() {
+		const generated = new Intl.DateTimeFormat('en-US', {
+			dateStyle: 'long',
+			timeStyle: 'short'
+		}).format(new Date());
+		const records = observations
+			.map((observation, index) => {
+				const sourceUrl = observation.sourceUrl || observation.archivedUrl;
+				const source = sourceUrl
+					? `[${markdownCell(observation.sourceTitle)}](${sourceUrl})`
+					: markdownCell(observation.sourceTitle);
+				return [
+					`## ${index + 1}. ${observation.firm} — ${markdownCell(observation.metricName)}`,
+					'',
+					`- **Period:** ${observation.fiscalYear || observation.asOfDate || 'Not stated'}`,
+					`- **Reported value:** ${markdownCell(displayObservationValue(observation))}`,
+					`- **Definition:** ${markdownCell(observation.definition || 'Not separately stated')}`,
+					`- **Evidence quality:** comparability ${observation.comparabilityScore}/5; confidence ${observation.confidenceScore}/5`,
+					`- **Source:** ${source}`,
+					`- **Locator:** ${markdownCell(observation.sourceLocator || 'Document-level source')}`,
+					observation.notes ? `- **Research note:** ${markdownCell(observation.notes)}` : '',
+					`- **Observation ID:** \`${observation.id}\``
+				]
+					.filter(Boolean)
+					.join('\n');
+			})
+			.join('\n\n');
+		const markdown = [
+			'# FirmScope evidence briefing',
+			'',
+			`Generated ${generated} from ${observations.length} saved ${
+				observations.length === 1 ? 'record' : 'records'
+			}.`,
+			'',
+			'> Figures preserve source-specific periods, definitions and caveats. This export does not make non-comparable disclosures equivalent.',
+			'',
+			records
+		].join('\n');
+		downloadFile(
+			`firmscope-briefing-${new Date().toISOString().slice(0, 10)}.md`,
+			markdown,
+			'text/markdown;charset=utf-8'
+		);
+	}
 
 	function closeOnEscape(event: KeyboardEvent) {
 		if (!open) return;
@@ -83,12 +186,25 @@
 		</header>
 
 		<div class="notebook-summary">
-			<div>
+			<div class="saved-count">
 				<strong>{observations.length}</strong>
 				<span>saved {observations.length === 1 ? 'record' : 'records'}</span>
 			</div>
 			{#if observations.length}
-				<button onclick={onclear}><Trash2 size={12} /> Clear notebook</button>
+				<div class="summary-actions">
+					<button aria-label="Download saved evidence as CSV" onclick={exportCsv}>
+						<FileSpreadsheet size={12} /> CSV
+					</button>
+					<button
+						aria-label="Download saved evidence briefing as Markdown"
+						onclick={exportBriefing}
+					>
+						<FileDown size={12} /> Brief
+					</button>
+					<button aria-label="Clear evidence notebook" onclick={onclear}>
+						<Trash2 size={12} /> Clear
+					</button>
+				</div>
 			{/if}
 		</div>
 
@@ -126,8 +242,8 @@
 		</div>
 
 		<footer>
-			<span>Local research state</span>
-			<p>Saved records never alter the underlying dataset.</p>
+			<span>Portable research state</span>
+			<p>Exports preserve source lineage and never alter the underlying dataset.</p>
 		</footer>
 	</div>
 {/if}
@@ -208,7 +324,7 @@
 		background: var(--accent-wash);
 	}
 
-	.notebook-summary > div {
+	.saved-count {
 		display: flex;
 		align-items: baseline;
 		gap: 7px;
@@ -234,6 +350,19 @@
 		color: var(--text-secondary);
 		font-size: 9px;
 		cursor: pointer;
+	}
+
+	.summary-actions {
+		display: flex;
+		align-items: center;
+	}
+
+	.summary-actions button {
+		border-left: 1px solid var(--border-subtle);
+	}
+
+	.summary-actions button:first-child {
+		border-left: 0;
 	}
 
 	.notebook-body {

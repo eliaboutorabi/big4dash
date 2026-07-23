@@ -7,13 +7,18 @@ The interface is designed as a research product rather than a static report. Eve
 ## Highlights
 
 - Revenue mosaic, reporting-calendar comparison and fifteen-year indexed growth race
+- Historical within-four revenue-share ribbon with an interactive year scrubber
+- Transparent scenario studio for five-year CAGR, latest-pace and custom assumptions
 - Switchable revenue, workforce and local-currency trend views with point-level evidence
 - Service-line composition in proportional and reported-dollar modes
 - Revenue-versus-workforce productivity frontier with directional iso-productivity bands
 - Pairwise workbench for comparing any two firms across five decision-useful measures
 - Disclosure-coverage matrix that makes taxonomy and comparability gaps visible
+- Original-to-revised disclosure lineage for restatements and later comparatives
 - Searchable evidence ledger containing 651 observations from 71 sources
-- Bookmarkable evidence notebook, shareable URL state and progressive-disclosure drawers
+- Keyboard command palette spanning chapters, firms, metrics and source records
+- Bookmarkable evidence notebook with CSV and Markdown exports
+- Shareable URL state and progressive-disclosure drawers
 - Two-dimensional office atlas with an optional, deferred 3D globe
 - Responsive light and dark themes, keyboard-aware dialogs and opt-in guided tour
 
