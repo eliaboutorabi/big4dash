@@ -413,6 +413,7 @@ main {
 
 .tour-button,
 .notebook-button,
+.share-view-button,
 .icon-button {
 	gap: 7px;
 	height: 32px;
@@ -426,6 +427,11 @@ main {
 }
 
 .notebook-button {
+	gap: 6px;
+	padding: 0 9px;
+}
+
+.share-view-button {
 	gap: 6px;
 	padding: 0 9px;
 }

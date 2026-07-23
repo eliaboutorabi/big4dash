@@ -18,6 +18,7 @@
 		MapPinned,
 		Menu,
 		Moon,
+		Share2,
 		ShieldCheck,
 		Sparkles,
 		Sun,
@@ -75,6 +76,7 @@
 	let selectedFirm = $state<FirmName | null>(null);
 	let savedObservationIds = $state<string[]>([]);
 	let notebookOpen = $state(false);
+	let viewCopied = $state(false);
 	let mobileNavOpen = $state(false);
 	let aboutOpen = $state(false);
 	let theme = $state<'light' | 'dark'>('light');
@@ -106,11 +108,23 @@
 				? selectedFirms
 				: selectedFirms.filter((item) => item !== firm)
 			: [...selectedFirms, firm];
+		syncUrlState();
 	}
 
 	function openEvidence(observationId: string) {
 		selectedFirm = null;
 		selectedObservationId = observationId;
+		syncUrlState();
+	}
+
+	function closeEvidence() {
+		selectedObservationId = null;
+		syncUrlState();
+	}
+
+	function setMetric(metric: 'revenue' | 'people' | 'growth') {
+		selectedMetric = metric;
+		syncUrlState();
 	}
 
 	function toggleSavedObservation(observationId: string) {
@@ -130,6 +144,28 @@
 		activeSection = sectionId;
 		mobileNavOpen = false;
 		document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		syncUrlState();
+	}
+
+	function syncUrlState() {
+		if (typeof window === 'undefined') return;
+		const url = new URL(window.location.href);
+		if (activeSection === 'overview') url.searchParams.delete('section');
+		else url.searchParams.set('section', activeSection);
+		if (selectedMetric === 'revenue') url.searchParams.delete('metric');
+		else url.searchParams.set('metric', selectedMetric);
+		if (selectedFirms.length === FIRMS.length) url.searchParams.delete('firms');
+		else url.searchParams.set('firms', selectedFirms.join(','));
+		if (selectedObservationId) url.searchParams.set('evidence', selectedObservationId);
+		else url.searchParams.delete('evidence');
+		window.history.replaceState({}, '', url);
+	}
+
+	async function shareView() {
+		syncUrlState();
+		await navigator.clipboard.writeText(window.location.href);
+		viewCopied = true;
+		window.setTimeout(() => (viewCopied = false), 1800);
 	}
 
 	async function startTour() {
@@ -225,6 +261,22 @@
 
 	onMount(() => {
 		theme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+		const initialUrl = new URL(window.location.href);
+		const initialMetric = initialUrl.searchParams.get('metric');
+		if (initialMetric === 'people' || initialMetric === 'growth') selectedMetric = initialMetric;
+		const initialFirms = (initialUrl.searchParams.get('firms') ?? '')
+			.split(',')
+			.filter((firm): firm is FirmName => FIRMS.includes(firm as FirmName));
+		if (initialFirms.length) selectedFirms = [...new Set(initialFirms)];
+		const initialEvidence = initialUrl.searchParams.get('evidence');
+		if (initialEvidence && data.observations.some((observation) => observation.id === initialEvidence)) {
+			selectedObservationId = initialEvidence;
+		}
+		const initialSection = initialUrl.searchParams.get('section');
+		if (initialSection && sections.some((section) => section.id === initialSection)) {
+			activeSection = initialSection;
+			requestAnimationFrame(() => document.getElementById(initialSection)?.scrollIntoView());
+		}
 		try {
 			savedObservationIds = JSON.parse(
 				localStorage.getItem('firmscope-evidence-notebook') ?? '[]'
@@ -382,6 +434,13 @@
 				>
 					<Bookmark size={14} /> Notebook
 					<span>{savedObservationIds.length}</span>
+				</button>
+				<button
+					class="share-view-button"
+					aria-label={viewCopied ? 'Dashboard link copied' : 'Copy link to current dashboard view'}
+					onclick={shareView}
+				>
+					<Share2 size={14} /> {viewCopied ? 'Copied' : 'Share view'}
 				</button>
 				<button class="tour-button" onclick={startTour}><Sparkles size={14} /> Take the tour</button
 				>
@@ -577,15 +636,15 @@
 						<div class="metric-tabs" aria-label="Trend metric">
 							<button
 								class:active={selectedMetric === 'revenue'}
-								onclick={() => (selectedMetric = 'revenue')}>Revenue</button
+								onclick={() => setMetric('revenue')}>Revenue</button
 							>
 							<button
 								class:active={selectedMetric === 'people'}
-								onclick={() => (selectedMetric = 'people')}>Workforce</button
+								onclick={() => setMetric('people')}>Workforce</button
 							>
 							<button
 								class:active={selectedMetric === 'growth'}
-								onclick={() => (selectedMetric = 'growth')}>Local growth</button
+								onclick={() => setMetric('growth')}>Local growth</button
 							>
 						</div>
 						<div class="firm-filters">
@@ -828,7 +887,7 @@
 
 	<EvidenceDrawer
 		observation={selectedObservation}
-		onClose={() => (selectedObservationId = null)}
+		onClose={closeEvidence}
 		saved={selectedObservation ? savedObservationIds.includes(selectedObservation.id) : false}
 		onToggleSave={toggleSavedObservation}
 	/>
