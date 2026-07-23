@@ -10,7 +10,6 @@
 		CircleHelp,
 		Database,
 		ExternalLink,
-		Fingerprint,
 		Globe2,
 		Info,
 		Layers3,
@@ -28,6 +27,7 @@
 	import dashboardData from '$lib/data/dashboard-data.json';
 	import CompositionComparison from '$lib/components/CompositionComparison.svelte';
 	import EvidenceDrawer from '$lib/components/EvidenceDrawer.svelte';
+	import MarketMosaic from '$lib/components/MarketMosaic.svelte';
 	import OfficeAtlas from '$lib/components/OfficeAtlas.svelte';
 	import ResearchExplorer from '$lib/components/ResearchExplorer.svelte';
 	import TrendChart from '$lib/components/TrendChart.svelte';
@@ -373,62 +373,11 @@
 							>
 						</div>
 					</div>
-					<div class="market-pulse">
-						<div class="pulse-heading">
-							<span>Combined FY25 revenue</span><Fingerprint size={17} />
-						</div>
-						<strong>{currencyShort(data.meta.latestRevenueTotal, 0)}</strong>
-						<div class="market-share-bar" aria-label="FY2025 reported revenue market share">
-							<div class="market-share-fill">
-								<button
-									style:width={`${data.firms[0].marketShare}%`}
-									style:background={FIRM_COLORS.Deloitte}
-									aria-label={`Deloitte: ${percent(data.firms[0].marketShare)} market share`}
-									onclick={() => (selectedFirm = 'Deloitte')}
-								></button>
-								<button
-									style:width={`${data.firms[1].marketShare}%`}
-									style:background={FIRM_COLORS.PwC}
-									aria-label={`PwC: ${percent(data.firms[1].marketShare)} market share`}
-									onclick={() => (selectedFirm = 'PwC')}
-								></button>
-								<button
-									style:width={`${data.firms[2].marketShare}%`}
-									style:background={FIRM_COLORS.EY}
-									aria-label={`EY: ${percent(data.firms[2].marketShare)} market share`}
-									onclick={() => (selectedFirm = 'EY')}
-								></button>
-								<button
-									style:width={`${data.firms[3].marketShare}%`}
-									style:background={FIRM_COLORS.KPMG}
-									aria-label={`KPMG: ${percent(data.firms[3].marketShare)} market share`}
-									onclick={() => (selectedFirm = 'KPMG')}
-								></button>
-							</div>
-						</div>
-						<div class="market-share-labels">
-							<button onclick={() => (selectedFirm = 'Deloitte')}
-								><i style:background={FIRM_COLORS.Deloitte}></i><span>Deloitte</span><b
-									>{percent(data.firms[0].marketShare, 0)}</b
-								></button
-							>
-							<button onclick={() => (selectedFirm = 'PwC')}
-								><i style:background={FIRM_COLORS.PwC}></i><span>PwC</span><b
-									>{percent(data.firms[1].marketShare, 0)}</b
-								></button
-							>
-							<button onclick={() => (selectedFirm = 'EY')}
-								><i style:background={FIRM_COLORS.EY}></i><span>EY</span><b
-									>{percent(data.firms[2].marketShare, 0)}</b
-								></button
-							>
-							<button onclick={() => (selectedFirm = 'KPMG')}
-								><i style:background={FIRM_COLORS.KPMG}></i><span>KPMG</span><b
-									>{percent(data.firms[3].marketShare, 0)}</b
-								></button
-							>
-						</div>
-					</div>
+					<MarketMosaic
+						firms={data.firms}
+						total={data.meta.latestRevenueTotal}
+						onselect={(firm) => (selectedFirm = firm)}
+					/>
 				</div>
 
 				<div id="tour-firm-strip" class="firm-strip">
