@@ -39,6 +39,9 @@ The FirmScope mark is a contiguous two-by-two field with one firm color anchored
 5. Keep motion brief and state-based; never delay analytical reading.
 6. Anchor chart tooltips just above the active mark, clamp them inside the plot, and flip them below only when the upper edge would collide.
 7. Distinguish source coordinates from city-centroid joins through explicit provenance copy and persistent methodology notes.
+8. Label scenario outputs as sensitivities, expose every assumption, and keep the reported baseline one action away.
+9. Preserve original and later-comparative observations as a visible lineage rather than silently replacing history.
+10. Let expert users reach chapters, firm profiles, metrics, and evidence directly from one keyboard command surface.
 
 ## Spatial visualization
 

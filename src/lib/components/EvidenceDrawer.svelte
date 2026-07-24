@@ -1,6 +1,8 @@
 <script lang="ts">
 	import {
 		ArrowUpRight,
+		Bookmark,
+		BookmarkCheck,
 		CalendarDays,
 		Check,
 		FileText,
@@ -14,32 +16,78 @@
 	interface Props {
 		observation: DashboardObservation | null;
 		onClose?: () => void;
+		saved?: boolean;
+		onToggleSave?: (observationId: string) => void;
 	}
 
-	let { observation, onClose = () => {} }: Props = $props();
+	let { observation, onClose = () => {}, saved = false, onToggleSave = () => {} }: Props = $props();
+	let drawerElement = $state<HTMLElement>();
+	let closeButton = $state<HTMLButtonElement>();
 
 	function closeOnEscape(event: KeyboardEvent) {
-		if (event.key === 'Escape' && observation) onClose();
+		if (!observation) return;
+		if (event.key === 'Escape') {
+			onClose();
+			return;
+		}
+		if (event.key !== 'Tab') return;
+		if (!drawerElement) return;
+		const focusable = [
+			...drawerElement.querySelectorAll<HTMLElement>(
+				'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+			)
+		];
+		const first = focusable[0];
+		const last = focusable.at(-1);
+		if (event.shiftKey && document.activeElement === first) {
+			event.preventDefault();
+			last?.focus();
+		} else if (!event.shiftKey && document.activeElement === last) {
+			event.preventDefault();
+			first?.focus();
+		}
 	}
 
 	function openSource() {
 		if (!observation) return;
 		window.open(observation.sourceUrl || observation.archivedUrl, '_blank', 'noopener,noreferrer');
 	}
+
+	$effect(() => {
+		if (!observation) return;
+		const previousFocus = document.activeElement as HTMLElement | null;
+		const previousOverflow = document.body.style.overflow;
+		document.body.style.overflow = 'hidden';
+		queueMicrotask(() => closeButton?.focus());
+		return () => {
+			document.body.style.overflow = previousOverflow;
+			previousFocus?.focus();
+		};
+	});
 </script>
 
 <svelte:window onkeydown={closeOnEscape} />
 
 {#if observation}
-	<button class="drawer-backdrop" aria-label="Close evidence drawer" onclick={onClose}></button>
-	<aside class="evidence-drawer" aria-label="Evidence detail" aria-live="polite">
+	<button class="drawer-backdrop" tabindex="-1" aria-hidden="true" onclick={onClose}></button>
+	<div
+		class="evidence-drawer"
+		bind:this={drawerElement}
+		role="dialog"
+		aria-modal="true"
+		aria-label="Evidence detail"
+		aria-live="polite"
+	>
 		<header>
 			<div>
 				<span class="record-id">{observation.id}</span>
 				<strong>Evidence record</strong>
 			</div>
-			<button class="icon-button" aria-label="Close evidence drawer" onclick={onClose}
-				><X size={18} /></button
+			<button
+				class="icon-button"
+				bind:this={closeButton}
+				aria-label="Close evidence drawer"
+				onclick={onClose}><X size={18} /></button
 			>
 		</header>
 
@@ -55,6 +103,15 @@
 			</div>
 
 			<div class="record-value">{displayObservationValue(observation)}</div>
+			<button
+				class="save-record"
+				class:saved
+				aria-pressed={saved}
+				onclick={() => onToggleSave(observation.id)}
+			>
+				{#if saved}<BookmarkCheck size={15} /> Saved to notebook{:else}<Bookmark size={15} /> Save to
+					notebook{/if}
+			</button>
 
 			<div class="confidence-grid">
 				<div>
@@ -118,7 +175,7 @@
 				</section>
 			{/if}
 		</div>
-	</aside>
+	</div>
 {/if}
 
 <style>
@@ -246,8 +303,29 @@
 		font-family: var(--font-mono);
 		font-size: clamp(30px, 6vw, 46px);
 		font-weight: 650;
-		letter-spacing: -0.06em;
+		letter-spacing: -0.035em;
 		line-height: 1;
+	}
+
+	.save-record {
+		display: inline-flex;
+		width: fit-content;
+		min-height: 36px;
+		align-items: center;
+		gap: 7px;
+		margin-top: -12px;
+		padding: 0 11px;
+		border: 1px solid var(--frame);
+		background: var(--surface-base);
+		color: var(--ink);
+		font-size: 10px;
+		font-weight: 800;
+		cursor: pointer;
+	}
+
+	.save-record.saved {
+		background: var(--accent-light);
+		color: var(--accent-ink);
 	}
 
 	.confidence-grid {

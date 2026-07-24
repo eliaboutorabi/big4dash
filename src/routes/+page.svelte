@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, untrack } from 'svelte';
+	import type { PageProps } from './$types';
 	import SiGithub from '@icons-pack/svelte-simple-icons/icons/SiGithub';
 	import {
 		ArrowRight,
+		Bookmark,
 		BookOpenCheck,
 		ChartNoAxesCombined,
 		Check,
@@ -10,7 +12,6 @@
 		CircleHelp,
 		Database,
 		ExternalLink,
-		Fingerprint,
 		Globe2,
 		Info,
 		Layers3,
@@ -18,6 +19,8 @@
 		MapPinned,
 		Menu,
 		Moon,
+		Search,
+		Share2,
 		ShieldCheck,
 		Sparkles,
 		Sun,
@@ -25,17 +28,43 @@
 		UsersRound,
 		X
 	} from '@lucide/svelte';
-	import dashboardData from '$lib/data/dashboard-data.json';
+	import CommandPalette from '$lib/components/CommandPalette.svelte';
 	import CompositionComparison from '$lib/components/CompositionComparison.svelte';
+	import CoverageMatrix from '$lib/components/CoverageMatrix.svelte';
 	import EvidenceDrawer from '$lib/components/EvidenceDrawer.svelte';
+	import EvidenceNotebook from '$lib/components/EvidenceNotebook.svelte';
+	import GrowthIndex from '$lib/components/GrowthIndex.svelte';
+	import MarketMosaic from '$lib/components/MarketMosaic.svelte';
+	import MarketShareHistory from '$lib/components/MarketShareHistory.svelte';
 	import OfficeAtlas from '$lib/components/OfficeAtlas.svelte';
+	import PairwiseCompare from '$lib/components/PairwiseCompare.svelte';
+	import ReportingCalendar from '$lib/components/ReportingCalendar.svelte';
 	import ResearchExplorer from '$lib/components/ResearchExplorer.svelte';
+	import RevisionTrail from '$lib/components/RevisionTrail.svelte';
+	import ScenarioStudio from '$lib/components/ScenarioStudio.svelte';
 	import TrendChart from '$lib/components/TrendChart.svelte';
 	import WorkforceScatter from '$lib/components/WorkforceScatter.svelte';
 	import { FIRM_COLORS, FIRMS, currencyShort, fullNumber, percent } from '$lib/data/format';
 	import type { DashboardData, FirmName, SeriesPoint } from '$lib/data/types';
 
-	const data = dashboardData as DashboardData;
+	let { data: pageData }: PageProps = $props();
+	const data = untrack(() => pageData.dashboardData as DashboardData);
+	const rankedFirms = [...data.firms].sort((a, b) => b.revenue - a.revenue);
+	const strongestCagr = [...data.firms].sort((a, b) => b.fiveYearCagr - a.fiveYearCagr)[0];
+	const revenueScaleGap = rankedFirms[0].revenue - rankedFirms.at(-1)!.revenue;
+	const growthSpread =
+		Math.max(...data.firms.map((firm) => firm.growth)) -
+		Math.min(...data.firms.map((firm) => firm.growth));
+	const combinedPeople = data.firms.reduce((sum, firm) => sum + firm.people, 0);
+	const deloitteAmericas =
+		data.regionalMix.Deloitte.find((region) => region.canonical === 'Americas') ??
+		data.regionalMix.Deloitte[0];
+	const latestYearLabel = `FY${String(data.meta.latestCommonYear).slice(-2)}`;
+	const researchCutoffLabel = new Intl.DateTimeFormat('en-GB', {
+		day: '2-digit',
+		month: 'short',
+		year: 'numeric'
+	}).format(new Date(`${data.meta.researchCutoff}T12:00:00Z`));
 	const sections = [
 		{ id: 'overview', label: 'Overview', icon: LayoutDashboard },
 		{ id: 'scale', label: 'Scale & growth', icon: ChartNoAxesCombined },
@@ -51,6 +80,10 @@
 	let selectedFirms = $state<FirmName[]>([...FIRMS]);
 	let selectedObservationId = $state<string | null>(null);
 	let selectedFirm = $state<FirmName | null>(null);
+	let savedObservationIds = $state<string[]>([]);
+	let notebookOpen = $state(false);
+	let commandPaletteOpen = $state(false);
+	let viewCopied = $state(false);
 	let mobileNavOpen = $state(false);
 	let aboutOpen = $state(false);
 	let theme = $state<'light' | 'dark'>('light');
@@ -70,6 +103,11 @@
 				? data.peopleSeries
 				: data.growthSeries) as Record<FirmName, SeriesPoint[]>
 	);
+	let savedObservations = $derived(
+		savedObservationIds
+			.map((id) => data.observations.find((observation) => observation.id === id))
+			.filter((observation): observation is NonNullable<typeof observation> => Boolean(observation))
+	);
 
 	function toggleFirm(firm: FirmName) {
 		selectedFirms = selectedFirms.includes(firm)
@@ -77,11 +115,30 @@
 				? selectedFirms
 				: selectedFirms.filter((item) => item !== firm)
 			: [...selectedFirms, firm];
+		syncUrlState();
 	}
 
 	function openEvidence(observationId: string) {
 		selectedFirm = null;
 		selectedObservationId = observationId;
+		syncUrlState();
+	}
+
+	function closeEvidence() {
+		selectedObservationId = null;
+		syncUrlState();
+	}
+
+	function setMetric(metric: 'revenue' | 'people' | 'growth') {
+		selectedMetric = metric;
+		syncUrlState();
+	}
+
+	function toggleSavedObservation(observationId: string) {
+		savedObservationIds = savedObservationIds.includes(observationId)
+			? savedObservationIds.filter((id) => id !== observationId)
+			: [...savedObservationIds, observationId];
+		localStorage.setItem('firmscope-evidence-notebook', JSON.stringify(savedObservationIds));
 	}
 
 	function toggleTheme() {
@@ -94,6 +151,28 @@
 		activeSection = sectionId;
 		mobileNavOpen = false;
 		document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		syncUrlState();
+	}
+
+	function syncUrlState() {
+		if (typeof window === 'undefined') return;
+		const url = new URL(window.location.href);
+		if (activeSection === 'overview') url.searchParams.delete('section');
+		else url.searchParams.set('section', activeSection);
+		if (selectedMetric === 'revenue') url.searchParams.delete('metric');
+		else url.searchParams.set('metric', selectedMetric);
+		if (selectedFirms.length === FIRMS.length) url.searchParams.delete('firms');
+		else url.searchParams.set('firms', selectedFirms.join(','));
+		if (selectedObservationId) url.searchParams.set('evidence', selectedObservationId);
+		else url.searchParams.delete('evidence');
+		window.history.replaceState({}, '', url);
+	}
+
+	async function shareView() {
+		syncUrlState();
+		await navigator.clipboard.writeText(window.location.href);
+		viewCopied = true;
+		window.setTimeout(() => (viewCopied = false), 1800);
 	}
 
 	async function startTour() {
@@ -151,8 +230,7 @@
 					element: '#tour-offices',
 					popover: {
 						title: 'See the physical network',
-						description:
-							'Explore 1,234 mapped locations. Directory coordinates and representative hubs are deliberately encoded differently so coverage is never overstated.',
+						description: `Explore ${data.officeLocations.length.toLocaleString()} mapped locations. Source coordinates and city-centroid joins are deliberately encoded differently so coverage is never overstated.`,
 						side: 'top'
 					}
 				},
@@ -190,6 +268,30 @@
 
 	onMount(() => {
 		theme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+		const initialUrl = new URL(window.location.href);
+		const initialMetric = initialUrl.searchParams.get('metric');
+		if (initialMetric === 'people' || initialMetric === 'growth') selectedMetric = initialMetric;
+		const initialFirms = (initialUrl.searchParams.get('firms') ?? '')
+			.split(',')
+			.filter((firm): firm is FirmName => FIRMS.includes(firm as FirmName));
+		if (initialFirms.length) selectedFirms = [...new Set(initialFirms)];
+		const initialEvidence = initialUrl.searchParams.get('evidence');
+		if (
+			initialEvidence &&
+			data.observations.some((observation) => observation.id === initialEvidence)
+		) {
+			selectedObservationId = initialEvidence;
+		}
+		const initialSection = initialUrl.searchParams.get('section');
+		if (initialSection && sections.some((section) => section.id === initialSection)) {
+			activeSection = initialSection;
+			requestAnimationFrame(() => document.getElementById(initialSection)?.scrollIntoView());
+		}
+		try {
+			savedObservationIds = JSON.parse(localStorage.getItem('firmscope-evidence-notebook') ?? '[]');
+		} catch {
+			savedObservationIds = [];
+		}
 		let scrollFrame = 0;
 		const updateActiveSection = () => {
 			cancelAnimationFrame(scrollFrame);
@@ -210,6 +312,10 @@
 				aboutOpen = false;
 				return;
 			}
+			if (event.key === 'Escape' && selectedFirm) {
+				selectedFirm = null;
+				return;
+			}
 			if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
 				event.preventDefault();
 				scrollTo('evidence');
@@ -217,10 +323,6 @@
 			}
 		};
 		window.addEventListener('keydown', shortcut);
-
-		if (!localStorage.getItem('big-four-tour-seen')) {
-			setTimeout(startTour, 900);
-		}
 
 		return () => {
 			cancelAnimationFrame(scrollFrame);
@@ -235,6 +337,19 @@
 	<meta
 		name="description"
 		content="An evidence-first interactive comparison of Deloitte, PwC, EY and KPMG across scale, growth, business mix, geography and workforce."
+	/>
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content="FirmScope" />
+	<meta property="og:title" content="FirmScope — The Big Four, compared" />
+	<meta
+		property="og:description"
+		content="Traceable comparative intelligence across the world's four largest professional-services networks."
+	/>
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:title" content="FirmScope — The Big Four, compared" />
+	<meta
+		name="twitter:description"
+		content="Evidence-first visual intelligence for Deloitte, PwC, EY and KPMG."
 	/>
 </svelte:head>
 
@@ -319,7 +434,33 @@
 				<strong>{sections.find((section) => section.id === activeSection)?.label}</strong>
 			</div>
 			<div class="topbar-actions">
-				<span class="cutoff">Research cutoff <strong>18 Jul 2026</strong></span>
+				<span class="cutoff">Research cutoff <strong>{researchCutoffLabel}</strong></span>
+				<button
+					class="notebook-button"
+					aria-label={`Open evidence notebook with ${savedObservationIds.length} saved ${
+						savedObservationIds.length === 1 ? 'record' : 'records'
+					}`}
+					onclick={() => (notebookOpen = true)}
+				>
+					<Bookmark size={14} /> Notebook
+					<span>{savedObservationIds.length}</span>
+				</button>
+				<button
+					class="share-view-button"
+					aria-label={viewCopied ? 'Dashboard link copied' : 'Copy link to current dashboard view'}
+					onclick={shareView}
+				>
+					<Share2 size={14} />
+					{viewCopied ? 'Copied' : 'Share view'}
+				</button>
+				<button
+					class="command-button"
+					aria-label="Open research command palette"
+					title="Open research command palette"
+					onclick={() => (commandPaletteOpen = true)}
+				>
+					<Search size={14} /> <span>Find anything</span><kbd>⌘K</kbd>
+				</button>
 				<button class="tour-button" onclick={startTour}><Sparkles size={14} /> Take the tour</button
 				>
 				<a
@@ -345,8 +486,7 @@
 			<section id="overview" class="dashboard-section overview-section">
 				<div id="tour-intro" class="overview-intro">
 					<div>
-						<span class="section-index">01 / Comparative overview</span>
-						<h1>The Big Four, seen as one market.</h1>
+						<h1>Four networks. One market. Every caveat intact.</h1>
 						<p>
 							Four global networks. Different reporting calendars, service taxonomies and geographic
 							strengths—compared here without sanding away the caveats.
@@ -360,62 +500,11 @@
 							>
 						</div>
 					</div>
-					<div class="market-pulse">
-						<div class="pulse-heading">
-							<span>Combined FY25 revenue</span><Fingerprint size={17} />
-						</div>
-						<strong>{currencyShort(data.meta.latestRevenueTotal, 0)}</strong>
-						<div class="market-share-bar" aria-label="FY2025 reported revenue market share">
-							<div class="market-share-fill">
-								<button
-									style:width={`${data.firms[0].marketShare}%`}
-									style:background={FIRM_COLORS.Deloitte}
-									aria-label={`Deloitte: ${percent(data.firms[0].marketShare)} market share`}
-									onclick={() => (selectedFirm = 'Deloitte')}
-								></button>
-								<button
-									style:width={`${data.firms[1].marketShare}%`}
-									style:background={FIRM_COLORS.PwC}
-									aria-label={`PwC: ${percent(data.firms[1].marketShare)} market share`}
-									onclick={() => (selectedFirm = 'PwC')}
-								></button>
-								<button
-									style:width={`${data.firms[2].marketShare}%`}
-									style:background={FIRM_COLORS.EY}
-									aria-label={`EY: ${percent(data.firms[2].marketShare)} market share`}
-									onclick={() => (selectedFirm = 'EY')}
-								></button>
-								<button
-									style:width={`${data.firms[3].marketShare}%`}
-									style:background={FIRM_COLORS.KPMG}
-									aria-label={`KPMG: ${percent(data.firms[3].marketShare)} market share`}
-									onclick={() => (selectedFirm = 'KPMG')}
-								></button>
-							</div>
-						</div>
-						<div class="market-share-labels">
-							<button onclick={() => (selectedFirm = 'Deloitte')}
-								><i style:background={FIRM_COLORS.Deloitte}></i><span>Deloitte</span><b
-									>{percent(data.firms[0].marketShare, 0)}</b
-								></button
-							>
-							<button onclick={() => (selectedFirm = 'PwC')}
-								><i style:background={FIRM_COLORS.PwC}></i><span>PwC</span><b
-									>{percent(data.firms[1].marketShare, 0)}</b
-								></button
-							>
-							<button onclick={() => (selectedFirm = 'EY')}
-								><i style:background={FIRM_COLORS.EY}></i><span>EY</span><b
-									>{percent(data.firms[2].marketShare, 0)}</b
-								></button
-							>
-							<button onclick={() => (selectedFirm = 'KPMG')}
-								><i style:background={FIRM_COLORS.KPMG}></i><span>KPMG</span><b
-									>{percent(data.firms[3].marketShare, 0)}</b
-								></button
-							>
-						</div>
-					</div>
+					<MarketMosaic
+						firms={data.firms}
+						total={data.meta.latestRevenueTotal}
+						onselect={(firm) => (selectedFirm = firm)}
+					/>
 				</div>
 
 				<div id="tour-firm-strip" class="firm-strip">
@@ -485,6 +574,8 @@
 					</button>
 				</div>
 
+				<PairwiseCompare firms={data.firms} onselect={openEvidence} />
+
 				<div class="insight-deck">
 					<div class="insight-intro">
 						<span>Research readout</span>
@@ -543,33 +634,34 @@
 			<section id="scale" class="dashboard-section">
 				<div class="section-heading">
 					<div>
-						<span class="section-index">02 / Scale &amp; momentum</span>
-						<h2>Follow the shape of growth.</h2>
+						<h2>Growth looks different when the denominator is visible.</h2>
 						<p>
-							Switch measures without losing the comparative frame. Every plotted point opens its
-							exact evidence record.
+							Move between revenue, people and local growth without losing the comparative frame.
+							Every plotted point opens its exact evidence record.
 						</p>
 					</div>
 					<div class="section-callout">
-						<TrendingUp size={16} /><span><strong>8.2%</strong> highest five-year revenue CAGR</span
+						<TrendingUp size={16} /><span
+							><strong>{percent(strongestCagr.fiveYearCagr)}</strong> highest five-year CAGR ·
+							{strongestCagr.firm}</span
 						>
 					</div>
 				</div>
+
+				<ReportingCalendar firms={data.firms} onselect={openEvidence} />
 
 				<div id="tour-trend" class="chart-panel">
 					<div class="panel-toolbar">
 						<div class="metric-tabs" aria-label="Trend metric">
 							<button
 								class:active={selectedMetric === 'revenue'}
-								onclick={() => (selectedMetric = 'revenue')}>Revenue</button
+								onclick={() => setMetric('revenue')}>Revenue</button
 							>
-							<button
-								class:active={selectedMetric === 'people'}
-								onclick={() => (selectedMetric = 'people')}>Workforce</button
+							<button class:active={selectedMetric === 'people'} onclick={() => setMetric('people')}
+								>Workforce</button
 							>
-							<button
-								class:active={selectedMetric === 'growth'}
-								onclick={() => (selectedMetric = 'growth')}>Local growth</button
+							<button class:active={selectedMetric === 'growth'} onclick={() => setMetric('growth')}
+								>Local growth</button
 							>
 						</div>
 						<div class="firm-filters">
@@ -599,25 +691,30 @@
 
 				<div class="comparison-readout">
 					<div>
-						<span>Scale gap</span><strong>$30.7B</strong>
-						<p>Deloitte’s FY25 reported revenue lead over KPMG.</p>
+						<span>Scale gap</span><strong>{currencyShort(revenueScaleGap)}</strong>
+						<p>
+							{rankedFirms[0].firm}’s {latestYearLabel} reported revenue lead over
+							{rankedFirms.at(-1)!.firm}.
+						</p>
 					</div>
 					<div>
-						<span>Growth spread</span><strong>2.4 pts</strong>
-						<p>Difference between the fastest and slowest FY25 local growth rates.</p>
+						<span>Growth spread</span><strong>{growthSpread.toFixed(1)} pts</strong>
+						<p>Difference between the fastest and slowest {latestYearLabel} local growth rates.</p>
 					</div>
 					<div>
 						<span>Common horizon</span><strong>FY20–25</strong>
 						<p>Five-year comparison window used for CAGR.</p>
 					</div>
 				</div>
+				<GrowthIndex series={data.revenueSeries} onselect={openEvidence} />
+				<MarketShareHistory series={data.revenueSeries} onselect={openEvidence} />
+				<ScenarioStudio firms={data.firms} onselect={openEvidence} />
 			</section>
 
 			<section id="mix" class="dashboard-section">
 				<div class="section-heading">
 					<div>
-						<span class="section-index">03 / Business mix</span>
-						<h2>How each network earns.</h2>
+						<h2>Revenue is one number. The businesses beneath it are not.</h2>
 						<p>
 							Reported service lines are shown as a share of each firm’s disclosed service
 							revenue—not forced into false equivalence.
@@ -638,7 +735,6 @@
 			<section id="offices" class="dashboard-section office-section">
 				<div class="section-heading">
 					<div>
-						<span class="section-index">04 / Spatial network</span>
 						<h2>The firms are global. Their disclosed footprints are not identical.</h2>
 						<p>
 							Explore the physical network behind the financial scale. This atlas preserves the
@@ -659,8 +755,7 @@
 			<section id="geography" class="dashboard-section geography-section">
 				<div class="section-heading">
 					<div>
-						<span class="section-index">05 / Revenue geography</span>
-						<h2>Regional fingerprints.</h2>
+						<h2>Regional exposure is the hidden strategy.</h2>
 						<p>
 							Americas is the largest disclosed region for three firms. KPMG’s reported EMA region
 							remains its strongest.
@@ -685,9 +780,13 @@
 							<div>
 								<span>Scale comparison</span>
 								<strong>Deloitte’s Americas business is nearly the scale of KPMG globally.</strong>
-								<p>$38.8B Americas revenue versus KPMG’s $39.8B total FY2025 revenue.</p>
+								<p>
+									{currencyShort(deloitteAmericas.value)} Americas revenue versus KPMG’s
+									{currencyShort(data.firms.find((firm) => firm.firm === 'KPMG')!.revenue)} total
+									{latestYearLabel} revenue.
+								</p>
 							</div>
-							<button onclick={() => openEvidence('obs_del_0152')}
+							<button onclick={() => openEvidence(deloitteAmericas.observationId)}
 								>View record <ArrowRight size={13} /></button
 							>
 						</div>
@@ -698,15 +797,16 @@
 			<section id="workforce" class="dashboard-section">
 				<div class="section-heading">
 					<div>
-						<span class="section-index">06 / Workforce lens</span>
-						<h2>Scale, people and a directional productivity proxy.</h2>
+						<h2>People turn scale into operating leverage.</h2>
 						<p>
 							Revenue per disclosed person is useful for orientation—but workforce definitions make
 							it a signal, not a verdict.
 						</p>
 					</div>
 					<div class="section-callout">
-						<UsersRound size={16} /><span><strong>1.52M</strong> disclosed people combined</span>
+						<UsersRound size={16} /><span
+							><strong>{fullNumber(combinedPeople)}</strong> disclosed people combined</span
+						>
 					</div>
 				</div>
 				<div id="tour-workforce" class="workforce-layout">
@@ -739,8 +839,7 @@
 			<section id="evidence" class="dashboard-section evidence-section">
 				<div class="section-heading">
 					<div>
-						<span class="section-index">07 / Evidence ledger</span>
-						<h2>Interrogate the research.</h2>
+						<h2>Every conclusion should survive a source check.</h2>
 						<p>
 							Search the complete observation ledger, inspect source excerpts and test the
 							comparability behind every claim.
@@ -776,6 +875,12 @@
 							>
 						</div>
 					</div>
+					<CoverageMatrix
+						coverage={data.coverage}
+						observations={data.observations}
+						onselect={openEvidence}
+					/>
+					<RevisionTrail observations={data.observations} onselect={openEvidence} />
 					<ResearchExplorer observations={data.observations} onSelect={openEvidence} />
 				</div>
 			</section>
@@ -802,16 +907,45 @@
 
 	<EvidenceDrawer
 		observation={selectedObservation}
-		onClose={() => (selectedObservationId = null)}
+		onClose={closeEvidence}
+		saved={selectedObservation ? savedObservationIds.includes(selectedObservation.id) : false}
+		onToggleSave={toggleSavedObservation}
+	/>
+	<EvidenceNotebook
+		open={notebookOpen}
+		observations={savedObservations}
+		onclose={() => (notebookOpen = false)}
+		onselect={(observationId) => {
+			notebookOpen = false;
+			openEvidence(observationId);
+		}}
+		onremove={toggleSavedObservation}
+		onclear={() => {
+			savedObservationIds = [];
+			localStorage.removeItem('firmscope-evidence-notebook');
+		}}
+	/>
+	<CommandPalette
+		bind:open={commandPaletteOpen}
+		sections={sections.map(({ id, label }) => ({ id, label }))}
+		observations={data.observations}
+		onnavigate={scrollTo}
+		onmetric={(metric) => {
+			setMetric(metric);
+			scrollTo('scale');
+		}}
+		onfirm={(firm) => (selectedFirm = firm)}
+		onevidence={openEvidence}
 	/>
 
 	{#if aboutOpen}
 		<button
 			class="about-backdrop"
-			aria-label="Close about FirmScope"
+			tabindex="-1"
+			aria-hidden="true"
 			onclick={() => (aboutOpen = false)}
 		></button>
-		<dialog open class="about-dialog" aria-labelledby="about-title">
+		<dialog open class="about-dialog" aria-modal="true" aria-labelledby="about-title">
 			<header>
 				<span class="brand-mark about-mark" aria-hidden="true">
 					<i></i><i></i><i></i><i></i><b>4</b>
@@ -840,10 +974,16 @@
 	{#if selectedFirmSummary}
 		<button
 			class="drawer-backdrop firm-backdrop"
-			aria-label="Close firm profile"
+			tabindex="-1"
+			aria-hidden="true"
 			onclick={() => (selectedFirm = null)}
 		></button>
-		<aside class="firm-drawer" aria-label={`${selectedFirmSummary.firm} profile`}>
+		<div
+			class="firm-drawer"
+			role="dialog"
+			aria-modal="true"
+			aria-label={`${selectedFirmSummary.firm} profile`}
+		>
 			<header>
 				<div class="firm-profile-title">
 					<span style:background={FIRM_COLORS[selectedFirmSummary.firm]}
@@ -890,6 +1030,6 @@
 					>
 				</div>
 			</div>
-		</aside>
+		</div>
 	{/if}
 </div>

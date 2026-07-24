@@ -1,0 +1,9 @@
+{
+	"name": "FirmScope — Big Four Intelligence",
+	"short_name": "FirmScope",
+	"description": "Evidence-first comparative intelligence for Deloitte, PwC, EY and KPMG.",
+	"start_url": ".",
+	"display": "standalone",
+	"background_color": "#101722",
+	"theme_color": "#101722"
+}
