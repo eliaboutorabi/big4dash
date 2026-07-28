@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ArrowDownRight, ArrowUpRight, GitCompareArrows } from '@lucide/svelte';
+	import { GitCompareArrows } from '@lucide/svelte';
 	import { FIRM_COLORS, FIRMS, currencyShort, fullNumber, percent } from '$lib/data/format';
 	import type { FirmName, FirmSummary } from '$lib/data/types';
 
@@ -71,76 +71,121 @@
 			<span>Pairwise workbench</span>
 			<strong>Put any two networks under the same lens.</strong>
 		</div>
-		<p>Bars compare direction and magnitude; each value opens its supporting record.</p>
+		<p>A shared scale reveals the distance between each pair; every value opens its record.</p>
 	</div>
 
 	<div class="compare-selectors">
-		<label>
-			<span>Network A</span>
-			<select
-				value={leftFirm}
-				aria-label="Choose first network"
-				onchange={(event) => choose('left', event.currentTarget.value as FirmName)}
-			>
-				{#each FIRMS as firm (firm)}<option value={firm}>{firm}</option>{/each}
-			</select>
-		</label>
-		<div class="versus">versus</div>
-		<label>
-			<span>Network B</span>
-			<select
-				value={rightFirm}
-				aria-label="Choose second network"
-				onchange={(event) => choose('right', event.currentTarget.value as FirmName)}
-			>
-				{#each FIRMS as firm (firm)}<option value={firm}>{firm}</option>{/each}
-			</select>
-		</label>
+		<strong>Networks</strong>
+		<div class="selector-pair">
+			<label>
+				<span>Network A</span>
+				<select
+					value={leftFirm}
+					aria-label="Choose first network"
+					onchange={(event) => choose('left', event.currentTarget.value as FirmName)}
+				>
+					{#each FIRMS as firm (firm)}<option value={firm}>{firm}</option>{/each}
+				</select>
+			</label>
+			<div class="versus" aria-hidden="true">vs</div>
+			<label>
+				<span>Network B</span>
+				<select
+					value={rightFirm}
+					aria-label="Choose second network"
+					onchange={(event) => choose('right', event.currentTarget.value as FirmName)}
+				>
+					{#each FIRMS as firm (firm)}<option value={firm}>{firm}</option>{/each}
+				</select>
+			</label>
+		</div>
+		<span class="selector-note">Choose any pair</span>
 	</div>
 
 	<div class="comparison-table">
 		<div class="comparison-head">
 			<span>Measure</span>
-			<strong style:--firm-color={FIRM_COLORS[leftFirm]}>{leftFirm}</strong>
-			<strong style:--firm-color={FIRM_COLORS[rightFirm]}>{rightFirm}</strong>
-			<span>Gap</span>
+			<div class="firm-heads">
+				<strong style:--firm-color={FIRM_COLORS[leftFirm]}>
+					<i class="firm-key firm-key-left"></i>{leftFirm}
+				</strong>
+				<strong style:--firm-color={FIRM_COLORS[rightFirm]}>
+					<i class="firm-key firm-key-right"></i>{rightFirm}
+				</strong>
+			</div>
+			<span>Difference</span>
 		</div>
 		{#each metrics as metric (metric.key)}
 			{@const leftValue = value(left, metric.key)}
 			{@const rightValue = value(right, metric.key)}
-			{@const maximum = Math.max(leftValue, rightValue)}
+			{@const maximum = Math.max(leftValue, rightValue, 1)}
+			{@const leftPosition = leftValue / maximum}
+			{@const rightPosition = rightValue / maximum}
 			{@const delta = leftValue - rightValue}
 			<div class="comparison-row">
 				<strong>{metric.label}</strong>
-				<button data-firm={leftFirm} onclick={() => onselect(metric.evidence(left))}>
-					<span>{metric.format(leftValue)}</span>
-					<i style:--bar-scale={leftValue / maximum} style:background={FIRM_COLORS[leftFirm]}></i>
-				</button>
-				<button data-firm={rightFirm} onclick={() => onselect(metric.evidence(right))}>
-					<span>{metric.format(rightValue)}</span>
-					<i style:--bar-scale={rightValue / maximum} style:background={FIRM_COLORS[rightFirm]}></i>
-				</button>
-				<span class:negative={delta < 0}>
-					{#if delta >= 0}<ArrowUpRight size={12} />{:else}<ArrowDownRight size={12} />{/if}
-					{metric.key === 'revenue' || metric.key === 'revenuePerPerson'
-						? currencyShort(Math.abs(delta), metric.key === 'revenuePerPerson' ? 0 : 1)
-						: metric.key === 'people'
-							? fullNumber(Math.abs(delta))
-							: `${Math.abs(delta).toFixed(1)} pts`}
+				<div
+					class="metric-pair"
+					style:--left-position={leftPosition}
+					style:--right-position={rightPosition}
+					style:--gap-start={Math.min(leftPosition, rightPosition)}
+					style:--gap-size={Math.abs(leftPosition - rightPosition)}
+				>
+					<div class="pair-values">
+						<button
+							data-firm={leftFirm}
+							style:--firm-color={FIRM_COLORS[leftFirm]}
+							onclick={() => onselect(metric.evidence(left))}
+							aria-label={`Open ${leftFirm} ${metric.label} evidence: ${metric.format(leftValue)}`}
+						>
+							<small>{leftFirm}</small>
+							<span>{metric.format(leftValue)}</span>
+						</button>
+						<button
+							data-firm={rightFirm}
+							style:--firm-color={FIRM_COLORS[rightFirm]}
+							onclick={() => onselect(metric.evidence(right))}
+							aria-label={`Open ${rightFirm} ${metric.label} evidence: ${metric.format(rightValue)}`}
+						>
+							<small>{rightFirm}</small>
+							<span>{metric.format(rightValue)}</span>
+						</button>
+					</div>
+					<div class="comparison-track" aria-hidden="true">
+						<span class="track-rail"></span>
+						{#if delta !== 0}<span class="difference-segment"></span>{/if}
+						<i class="comparison-marker marker-left" style:--firm-color={FIRM_COLORS[leftFirm]}></i>
+						<i class="comparison-marker marker-right" style:--firm-color={FIRM_COLORS[rightFirm]}
+						></i>
+					</div>
+				</div>
+				<span class="gap-readout" class:even={delta === 0}>
+					<strong>{delta === 0 ? 'Even' : `${delta > 0 ? leftFirm : rightFirm} leads`}</strong>
+					<small>
+						{metric.key === 'revenue' || metric.key === 'revenuePerPerson'
+							? currencyShort(Math.abs(delta), metric.key === 'revenuePerPerson' ? 0 : 1)
+							: metric.key === 'people'
+								? fullNumber(Math.abs(delta))
+								: `${Math.abs(delta).toFixed(1)} pts`}
+					</small>
 				</span>
 			</div>
 		{/each}
 	</div>
 
 	<div class="period-note">
-		<span>{leftFirm}: {left.periodStart} → {left.periodEnd}</span>
-		<span>{rightFirm}: {right.periodStart} → {right.periodEnd}</span>
+		<strong>Reporting periods</strong>
+		<div>
+			<span>{leftFirm}: {left.periodStart} → {left.periodEnd}</span>
+			<span>{rightFirm}: {right.periodStart} → {right.periodEnd}</span>
+		</div>
 	</div>
 </div>
 
 <style>
 	.pairwise-compare {
-		margin-top: 22px;
+		container-type: inline-size;
+		margin-top: 24px;
 		border: 1.5px solid var(--frame);
 		background: var(--surface-base);
 		box-shadow: var(--shadow-brutal-sm);
@@ -149,9 +194,9 @@
 	.compare-heading {
 		display: grid;
 		grid-template-columns: 40px minmax(240px, 1fr) minmax(260px, 0.8fr);
-		gap: 13px;
+		gap: 12px;
 		align-items: center;
-		padding: 17px 20px;
+		padding: 16px 20px;
 		border-bottom: 1px solid var(--frame);
 		background: var(--inverse-surface);
 		color: var(--inverse-text);
@@ -190,20 +235,39 @@
 
 	.compare-selectors {
 		display: grid;
-		grid-template-columns: 1fr auto 1fr;
-		gap: 13px;
-		align-items: end;
-		padding: 13px 20px;
+		grid-template-columns: 140px minmax(0, 1fr) 110px;
+		gap: 16px;
+		align-items: center;
+		padding: 12px 20px;
 		border-bottom: 1px solid var(--border-subtle);
 		background: var(--surface-muted);
 	}
 
-	.compare-selectors label {
-		display: grid;
-		gap: 5px;
+	.compare-selectors > strong,
+	.selector-note {
+		color: var(--text-tertiary);
+		font-size: 9px;
 	}
 
-	.compare-selectors label span {
+	.selector-note {
+		font-family: var(--font-mono);
+		text-align: right;
+	}
+
+	.selector-pair {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+		gap: 12px;
+		align-items: end;
+	}
+
+	.selector-pair label {
+		display: grid;
+		min-width: 0;
+		gap: 4px;
+	}
+
+	.selector-pair label span {
 		color: var(--text-tertiary);
 		font-size: 9px;
 		font-weight: 750;
@@ -211,7 +275,7 @@
 
 	select {
 		width: 100%;
-		height: 36px;
+		height: 44px;
 		padding: 0 10px;
 		border: 1px solid var(--frame);
 		border-radius: 0;
@@ -222,7 +286,7 @@
 	}
 
 	.versus {
-		padding-bottom: 10px;
+		padding-bottom: 12px;
 		color: var(--text-tertiary);
 		font-family: var(--font-display);
 		font-style: italic;
@@ -230,14 +294,14 @@
 	}
 
 	.comparison-table {
-		padding: 10px 20px 8px;
+		padding: 8px 20px;
 	}
 
 	.comparison-head,
 	.comparison-row {
 		display: grid;
-		grid-template-columns: 140px repeat(2, minmax(130px, 1fr)) 115px;
-		gap: 14px;
+		grid-template-columns: 140px minmax(0, 1fr) 110px;
+		gap: 16px;
 		align-items: center;
 	}
 
@@ -247,36 +311,61 @@
 		font-size: 9px;
 	}
 
-	.comparison-head strong {
-		position: relative;
-		padding-left: 11px;
+	.firm-heads,
+	.pair-values {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 12px;
+	}
+
+	.firm-heads strong {
+		display: flex;
+		align-items: center;
+		gap: 8px;
 		color: var(--ink);
 		font-size: 10px;
 	}
 
-	.comparison-head strong::before {
-		position: absolute;
-		top: 4px;
-		left: 0;
-		width: 6px;
-		height: 6px;
+	.firm-key {
+		display: block;
+		width: 9px;
+		height: 9px;
+		flex: 0 0 auto;
 		background: var(--firm-color);
-		content: '';
+		box-shadow: 0 0 0 1px var(--frame);
+	}
+
+	.firm-key-left {
+		border-radius: 50%;
+	}
+
+	.firm-key-right {
+		width: 8px;
+		height: 8px;
+		transform: rotate(45deg);
 	}
 
 	.comparison-row {
-		min-height: 48px;
+		min-height: 72px;
 		border-top: 1px solid var(--border-subtle);
 	}
 
 	.comparison-row > strong {
-		font-size: 10px;
+		font-size: 11px;
 	}
 
-	.comparison-row button {
+	.metric-pair {
 		display: grid;
-		gap: 5px;
-		padding: 0;
+		gap: 4px;
+		min-width: 0;
+	}
+
+	.pair-values button {
+		display: grid;
+		gap: 2px;
+		min-width: 0;
+		min-height: 44px;
+		padding: 4px 8px;
 		border: 0;
 		background: transparent;
 		color: var(--ink);
@@ -284,47 +373,154 @@
 		cursor: pointer;
 	}
 
-	.comparison-row button span {
+	.pair-values button:last-child {
+		text-align: right;
+	}
+
+	.pair-values button:hover,
+	.pair-values button:focus-visible {
+		background: color-mix(in oklab, var(--firm-color) 10%, transparent);
+		outline: 1px solid var(--firm-color);
+		outline-offset: -1px;
+	}
+
+	.pair-values button small {
+		overflow: hidden;
+		color: var(--text-tertiary);
+		font-size: 8px;
+		font-weight: 750;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.pair-values button span {
 		font-family: var(--font-mono);
-		font-size: 11px;
+		font-size: 13px;
 		font-weight: 750;
 	}
 
-	.comparison-row button i {
-		display: block;
-		width: 100%;
-		height: 4px;
-		min-width: 3px;
-		transform: scaleX(var(--bar-scale));
-		transform-origin: left;
-		transition: transform 220ms var(--ease-out);
+	.comparison-track {
+		position: relative;
+		height: 24px;
+		margin: 0 8px;
 	}
 
-	.comparison-row > span {
-		display: flex;
-		align-items: center;
-		gap: 5px;
-		color: var(--success);
+	.track-rail,
+	.difference-segment,
+	.comparison-marker {
+		position: absolute;
+	}
+
+	.track-rail {
+		top: 11px;
+		left: 0;
+		width: 100%;
+		height: 2px;
+		background: var(--border-subtle);
+	}
+
+	.track-rail::before,
+	.track-rail::after {
+		position: absolute;
+		top: -2px;
+		width: 1px;
+		height: 6px;
+		background: var(--text-tertiary);
+		content: '';
+	}
+
+	.track-rail::before {
+		left: 0;
+	}
+
+	.track-rail::after {
+		right: 0;
+	}
+
+	.difference-segment {
+		top: 10px;
+		left: calc(var(--gap-start) * 100%);
+		width: max(2px, calc(var(--gap-size) * 100%));
+		height: 4px;
+		background: var(--ink);
+		transition:
+			left 220ms var(--ease-out),
+			width 220ms var(--ease-out);
+	}
+
+	.comparison-marker {
+		z-index: 1;
+		background: var(--firm-color);
+		box-shadow:
+			0 0 0 1px var(--surface-base),
+			0 0 0 2px var(--frame);
+		transition: left 220ms var(--ease-out);
+	}
+
+	.marker-left {
+		top: 1px;
+		left: calc(var(--left-position) * 100%);
+		width: 12px;
+		height: 12px;
+		border-radius: 50%;
+		transform: translateX(-50%);
+	}
+
+	.marker-right {
+		top: 12px;
+		left: calc(var(--right-position) * 100%);
+		width: 10px;
+		height: 10px;
+		transform: translateX(-50%) rotate(45deg);
+	}
+
+	.gap-readout {
+		display: grid;
+		gap: 2px;
+		color: var(--ink);
 		font-family: var(--font-mono);
+	}
+
+	.gap-readout strong {
 		font-size: 9px;
 	}
 
-	.comparison-row > span.negative {
-		color: var(--accent-strong);
+	.gap-readout small {
+		color: var(--text-secondary);
+		font-size: 10px;
+	}
+
+	.gap-readout.even strong {
+		color: var(--text-tertiary);
 	}
 
 	.period-note {
-		display: flex;
-		justify-content: space-between;
-		gap: 12px;
-		padding: 9px 20px;
+		display: grid;
+		grid-template-columns: 140px minmax(0, 1fr) 110px;
+		gap: 16px;
+		align-items: start;
+		padding: 8px 20px;
 		border-top: 1px solid var(--frame);
 		color: var(--text-tertiary);
 		font-family: var(--font-mono);
 		font-size: 8px;
 	}
 
-	@media (max-width: 760px) {
+	.period-note > strong {
+		font-size: 8px;
+	}
+
+	.period-note > div {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 12px;
+	}
+
+	.period-note > div span:last-child {
+		text-align: right;
+	}
+
+	@container (max-width: 680px) {
 		.compare-heading {
 			grid-template-columns: 40px 1fr;
 		}
@@ -333,61 +529,75 @@
 			grid-column: 2;
 		}
 
+		.compare-selectors {
+			grid-template-columns: 1fr;
+			gap: 8px;
+			padding-inline: 16px;
+		}
+
+		.compare-selectors > strong,
+		.selector-note {
+			display: none;
+		}
+
+		.comparison-table {
+			padding-inline: 16px;
+		}
+
 		.comparison-head {
+			grid-template-columns: 1fr;
+		}
+
+		.comparison-head > span {
 			display: none;
 		}
 
 		.comparison-row {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
+			grid-template-columns: minmax(0, 1fr) auto;
 			grid-template-areas:
-				'metric metric'
-				'left right'
-				'gap gap';
-			gap: 9px 12px;
-			padding: 13px 0;
+				'metric gap'
+				'pair pair';
+			gap: 8px 12px;
+			padding: 12px 0;
 		}
 
 		.comparison-row > strong {
 			grid-area: metric;
 		}
 
-		.comparison-row > button:nth-child(2) {
-			grid-area: left;
+		.metric-pair {
+			grid-area: pair;
 		}
 
-		.comparison-row > button:nth-child(3) {
-			grid-area: right;
-		}
-
-		.comparison-row > span {
+		.gap-readout {
 			grid-area: gap;
-		}
-
-		.comparison-row button::before {
-			color: var(--text-tertiary);
-			font-size: 8px;
-			font-weight: 750;
-			content: attr(data-firm);
-		}
-	}
-
-	@media (max-width: 480px) {
-		.compare-selectors {
-			grid-template-columns: 1fr;
-		}
-
-		.versus {
-			display: none;
+			text-align: right;
 		}
 
 		.period-note {
-			align-items: flex-start;
-			flex-direction: column;
+			grid-template-columns: 1fr;
+			gap: 4px;
+			padding-inline: 16px;
+		}
+	}
+
+	@container (max-width: 420px) {
+		.selector-pair {
+			gap: 8px;
+		}
+
+		.versus {
+			font-size: 10px;
+		}
+
+		.period-note > div {
+			gap: 8px;
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.comparison-row button i {
+		.difference-segment,
+		.comparison-marker {
 			transition: none;
 		}
 	}
