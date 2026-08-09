@@ -47,6 +47,13 @@
 	import { FIRM_COLORS, FIRMS, currencyShort, fullNumber, percent } from '$lib/data/format';
 	import type { DashboardData, FirmName, SeriesPoint } from '$lib/data/types';
 
+	const pageTitle = 'FirmScope — The Big Four, compared';
+	const pageDescription =
+		'Explore evidence-backed comparisons of Deloitte, PwC, EY and KPMG across scale, growth, business mix, geography and workforce.';
+	const siteUrl = 'https://eliaboutorabi.github.io/big4dash/';
+	const socialImageUrl = `${siteUrl}big4dash.gif`;
+	const socialImageAlt = 'Animated walkthrough of the FirmScope Big Four intelligence dashboard';
+
 	let { data: pageData }: PageProps = $props();
 	const data = untrack(() => pageData.dashboardData as DashboardData);
 	const rankedFirms = [...data.firms].sort((a, b) => b.revenue - a.revenue);
@@ -333,24 +340,27 @@
 </script>
 
 <svelte:head>
-	<title>FirmScope — The Big Four, compared</title>
-	<meta
-		name="description"
-		content="An evidence-first interactive comparison of Deloitte, PwC, EY and KPMG across scale, growth, business mix, geography and workforce."
-	/>
+	<title>{pageTitle}</title>
+	<meta name="description" content={pageDescription} />
+	<link rel="canonical" href={siteUrl} />
+
 	<meta property="og:type" content="website" />
 	<meta property="og:site_name" content="FirmScope" />
-	<meta property="og:title" content="FirmScope — The Big Four, compared" />
-	<meta
-		property="og:description"
-		content="Traceable comparative intelligence across the world's four largest professional-services networks."
-	/>
-	<meta name="twitter:card" content="summary" />
-	<meta name="twitter:title" content="FirmScope — The Big Four, compared" />
-	<meta
-		name="twitter:description"
-		content="Evidence-first visual intelligence for Deloitte, PwC, EY and KPMG."
-	/>
+	<meta property="og:title" content={pageTitle} />
+	<meta property="og:description" content={pageDescription} />
+	<meta property="og:url" content={siteUrl} />
+	<meta property="og:image" content={socialImageUrl} />
+	<meta property="og:image:secure_url" content={socialImageUrl} />
+	<meta property="og:image:type" content="image/gif" />
+	<meta property="og:image:width" content="900" />
+	<meta property="og:image:height" content="516" />
+	<meta property="og:image:alt" content={socialImageAlt} />
+
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={pageTitle} />
+	<meta name="twitter:description" content={pageDescription} />
+	<meta name="twitter:image" content={socialImageUrl} />
+	<meta name="twitter:image:alt" content={socialImageAlt} />
 </svelte:head>
 
 <div class="app-shell">

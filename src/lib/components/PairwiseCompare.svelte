@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ArrowDownRight, ArrowUpRight, GitCompareArrows } from '@lucide/svelte';
+	import { GitCompareArrows } from '@lucide/svelte';
 	import { FIRM_COLORS, FIRMS, currencyShort, fullNumber, percent } from '$lib/data/format';
 	import type { FirmName, FirmSummary } from '$lib/data/types';
 
@@ -49,98 +49,142 @@
 		}
 	] as const;
 
-	function choose(side: 'left' | 'right', firm: FirmName) {
-		if (side === 'left') {
-			if (firm === rightFirm) rightFirm = leftFirm;
-			leftFirm = firm;
-		} else {
-			if (firm === leftFirm) leftFirm = rightFirm;
-			rightFirm = firm;
-		}
+	type Metric = (typeof metrics)[number];
+
+	function value(firm: FirmSummary, key: Metric['key']) {
+		return firm[key];
 	}
 
-	function value(firm: FirmSummary, key: (typeof metrics)[number]['key']) {
-		return firm[key];
+	function formatGap(metric: Metric, delta: number) {
+		const gap = Math.abs(delta);
+		if (metric.key === 'revenue') return currencyShort(gap, 1);
+		if (metric.key === 'revenuePerPerson') return currencyShort(gap, 0);
+		if (metric.key === 'people') return fullNumber(gap);
+		return `${gap.toFixed(1)} pts`;
 	}
 </script>
 
 <div class="pairwise-compare">
-	<div class="compare-heading">
+	<header class="compare-heading">
 		<div class="compare-symbol"><GitCompareArrows size={18} aria-hidden="true" /></div>
 		<div>
 			<span>Pairwise workbench</span>
-			<strong>Put any two networks under the same lens.</strong>
+			<strong>Read the two networks as a vertical ledger.</strong>
 		</div>
-		<p>Bars compare direction and magnitude; each value opens its supporting record.</p>
-	</div>
+		<p>Each metric stacks the firms on one scale; every reported value opens its source record.</p>
+	</header>
 
-	<div class="compare-selectors">
-		<label>
-			<span>Network A</span>
-			<select
-				value={leftFirm}
-				aria-label="Choose first network"
-				onchange={(event) => choose('left', event.currentTarget.value as FirmName)}
-			>
-				{#each FIRMS as firm (firm)}<option value={firm}>{firm}</option>{/each}
+	<div class="network-controls">
+		<label class="network-control" style:--firm-color={FIRM_COLORS[leftFirm]}>
+			<span class="network-label">
+				<i></i>
+				<span><small>Upper row</small><strong>Network A</strong></span>
+			</span>
+			<select bind:value={leftFirm} aria-label="Choose first network">
+				{#each FIRMS as firm (firm)}
+					<option value={firm} disabled={firm === rightFirm}>{firm}</option>
+				{/each}
 			</select>
+			<span class="network-period">{left.periodStart} → {left.periodEnd}</span>
 		</label>
-		<div class="versus">versus</div>
-		<label>
-			<span>Network B</span>
-			<select
-				value={rightFirm}
-				aria-label="Choose second network"
-				onchange={(event) => choose('right', event.currentTarget.value as FirmName)}
-			>
-				{#each FIRMS as firm (firm)}<option value={firm}>{firm}</option>{/each}
+
+		<div class="vertical-versus" aria-hidden="true"><span>versus</span></div>
+
+		<label class="network-control" style:--firm-color={FIRM_COLORS[rightFirm]}>
+			<span class="network-label">
+				<i></i>
+				<span><small>Lower row</small><strong>Network B</strong></span>
+			</span>
+			<select bind:value={rightFirm} aria-label="Choose second network">
+				{#each FIRMS as firm (firm)}
+					<option value={firm} disabled={firm === leftFirm}>{firm}</option>
+				{/each}
 			</select>
+			<span class="network-period">{right.periodStart} → {right.periodEnd}</span>
 		</label>
 	</div>
 
 	<div class="comparison-table">
-		<div class="comparison-head">
-			<span>Measure</span>
-			<strong style:--firm-color={FIRM_COLORS[leftFirm]}>{leftFirm}</strong>
-			<strong style:--firm-color={FIRM_COLORS[rightFirm]}>{rightFirm}</strong>
-			<span>Gap</span>
+		<div class="ledger-heading">
+			<div>
+				<strong>Vertical comparison ledger</strong>
+				<span>Adjacent endpoints make narrow differences easier to judge.</span>
+			</div>
+			<span>Click any row for evidence</span>
 		</div>
+
 		{#each metrics as metric (metric.key)}
 			{@const leftValue = value(left, metric.key)}
 			{@const rightValue = value(right, metric.key)}
-			{@const maximum = Math.max(leftValue, rightValue)}
+			{@const maximum = Math.max(leftValue, rightValue, 1)}
 			{@const delta = leftValue - rightValue}
-			<div class="comparison-row">
-				<strong>{metric.label}</strong>
-				<button data-firm={leftFirm} onclick={() => onselect(metric.evidence(left))}>
-					<span>{metric.format(leftValue)}</span>
-					<i style:--bar-scale={leftValue / maximum} style:background={FIRM_COLORS[leftFirm]}></i>
-				</button>
-				<button data-firm={rightFirm} onclick={() => onselect(metric.evidence(right))}>
-					<span>{metric.format(rightValue)}</span>
-					<i style:--bar-scale={rightValue / maximum} style:background={FIRM_COLORS[rightFirm]}></i>
-				</button>
-				<span class:negative={delta < 0}>
-					{#if delta >= 0}<ArrowUpRight size={12} />{:else}<ArrowDownRight size={12} />{/if}
-					{metric.key === 'revenue' || metric.key === 'revenuePerPerson'
-						? currencyShort(Math.abs(delta), metric.key === 'revenuePerPerson' ? 0 : 1)
-						: metric.key === 'people'
-							? fullNumber(Math.abs(delta))
-							: `${Math.abs(delta).toFixed(1)} pts`}
-				</span>
-			</div>
+			<section class="comparison-row">
+				<div class="metric-heading">
+					<strong>{metric.label}</strong>
+					<span class="gap-readout" class:even={delta === 0}>
+						{#if delta === 0}
+							Even
+						{:else}
+							<strong>{delta > 0 ? leftFirm : rightFirm}</strong>
+							<span>leads by {formatGap(metric, delta)}</span>
+						{/if}
+					</span>
+				</div>
+
+				<div class="firm-stack">
+					<button
+						class="firm-row"
+						class:winner={leftValue > rightValue}
+						data-firm={leftFirm}
+						style:--firm-color={FIRM_COLORS[leftFirm]}
+						style:--bar-scale={leftValue / maximum}
+						onclick={() => onselect(metric.evidence(left))}
+						aria-label={`Open ${leftFirm} ${metric.label} evidence: ${metric.format(leftValue)}`}
+					>
+						<span class="firm-identity">
+							<i></i>
+							<span><small>Network A</small><strong>{leftFirm}</strong></span>
+						</span>
+						<span class="bar-track" aria-hidden="true"><i></i></span>
+						<strong class="metric-value">{metric.format(leftValue)}</strong>
+						<small class="evidence-cue">View record</small>
+					</button>
+
+					<button
+						class="firm-row"
+						class:winner={rightValue > leftValue}
+						data-firm={rightFirm}
+						style:--firm-color={FIRM_COLORS[rightFirm]}
+						style:--bar-scale={rightValue / maximum}
+						onclick={() => onselect(metric.evidence(right))}
+						aria-label={`Open ${rightFirm} ${metric.label} evidence: ${metric.format(rightValue)}`}
+					>
+						<span class="firm-identity">
+							<i></i>
+							<span><small>Network B</small><strong>{rightFirm}</strong></span>
+						</span>
+						<span class="bar-track" aria-hidden="true"><i></i></span>
+						<strong class="metric-value">{metric.format(rightValue)}</strong>
+						<small class="evidence-cue">View record</small>
+					</button>
+				</div>
+			</section>
 		{/each}
 	</div>
 
-	<div class="period-note">
-		<span>{leftFirm}: {left.periodStart} → {left.periodEnd}</span>
-		<span>{rightFirm}: {right.periodStart} → {right.periodEnd}</span>
-	</div>
+	<footer class="comparison-note">
+		<strong>How to read</strong>
+		<span
+			>Bars share a scale within each metric only. Compare exact values—not bar lengths—across
+			metrics.</span
+		>
+	</footer>
 </div>
 
 <style>
 	.pairwise-compare {
-		margin-top: 22px;
+		container-type: inline-size;
+		margin-top: 24px;
 		border: 1.5px solid var(--frame);
 		background: var(--surface-base);
 		box-shadow: var(--shadow-brutal-sm);
@@ -149,9 +193,9 @@
 	.compare-heading {
 		display: grid;
 		grid-template-columns: 40px minmax(240px, 1fr) minmax(260px, 0.8fr);
-		gap: 13px;
+		gap: 12px;
 		align-items: center;
-		padding: 17px 20px;
+		padding: 16px 20px;
 		border-bottom: 1px solid var(--frame);
 		background: var(--inverse-surface);
 		color: var(--inverse-text);
@@ -168,7 +212,7 @@
 
 	.compare-heading > div:nth-child(2) {
 		display: grid;
-		gap: 2px;
+		gap: 4px;
 	}
 
 	.compare-heading span {
@@ -182,101 +226,188 @@
 	}
 
 	.compare-heading p {
+		max-width: 58ch;
 		margin: 0;
 		color: var(--text-on-dark-muted);
 		font-size: 10px;
 		line-height: 1.5;
 	}
 
-	.compare-selectors {
-		display: grid;
-		grid-template-columns: 1fr auto 1fr;
-		gap: 13px;
-		align-items: end;
-		padding: 13px 20px;
-		border-bottom: 1px solid var(--border-subtle);
+	.network-controls {
+		padding: 16px 20px;
+		border-bottom: 1px solid var(--frame);
 		background: var(--surface-muted);
 	}
 
-	.compare-selectors label {
+	.network-control {
 		display: grid;
-		gap: 5px;
+		grid-template-columns: 132px minmax(220px, 1fr) minmax(180px, auto);
+		gap: 16px;
+		align-items: center;
+		min-height: 56px;
 	}
 
-	.compare-selectors label span {
+	.network-label,
+	.firm-identity {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		min-width: 0;
+	}
+
+	.network-label > i,
+	.firm-identity > i {
+		display: block;
+		width: 10px;
+		height: 10px;
+		flex: 0 0 auto;
+		background: var(--firm-color);
+		box-shadow: 0 0 0 1px var(--frame);
+	}
+
+	.network-label > span,
+	.firm-identity > span {
+		display: grid;
+		gap: 4px;
+		min-width: 0;
+	}
+
+	.network-label small,
+	.firm-identity small {
 		color: var(--text-tertiary);
-		font-size: 9px;
-		font-weight: 750;
+		font-family: var(--font-mono);
+		font-size: 8px;
+		font-weight: 650;
+	}
+
+	.network-label strong,
+	.firm-identity strong {
+		overflow: hidden;
+		color: var(--ink);
+		font-size: 10px;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	select {
 		width: 100%;
-		height: 36px;
-		padding: 0 10px;
+		height: 44px;
+		padding: 0 12px;
 		border: 1px solid var(--frame);
 		border-radius: 0;
 		background: var(--surface-base);
 		color: var(--ink);
-		font-size: 11px;
+		font-size: 12px;
 		font-weight: 800;
 	}
 
-	.versus {
-		padding-bottom: 10px;
+	.network-period {
+		color: var(--text-tertiary);
+		font-family: var(--font-mono);
+		font-size: 8px;
+		text-align: right;
+	}
+
+	.vertical-versus {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		height: 24px;
 		color: var(--text-tertiary);
 		font-family: var(--font-display);
+		font-size: 11px;
 		font-style: italic;
-		font-size: 13px;
+	}
+
+	.vertical-versus::before,
+	.vertical-versus::after {
+		height: 1px;
+		flex: 1;
+		background: var(--border-subtle);
+		content: '';
 	}
 
 	.comparison-table {
-		padding: 10px 20px 8px;
+		padding: 0 20px 16px;
 	}
 
-	.comparison-head,
-	.comparison-row {
+	.ledger-heading {
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: 24px;
+		padding: 16px 0 12px;
+	}
+
+	.ledger-heading > div {
 		display: grid;
-		grid-template-columns: 140px repeat(2, minmax(130px, 1fr)) 115px;
-		gap: 14px;
-		align-items: center;
+		gap: 4px;
 	}
 
-	.comparison-head {
-		min-height: 30px;
+	.ledger-heading strong {
+		font-size: 11px;
+	}
+
+	.ledger-heading span {
 		color: var(--text-tertiary);
 		font-size: 9px;
 	}
 
-	.comparison-head strong {
-		position: relative;
-		padding-left: 11px;
-		color: var(--ink);
-		font-size: 10px;
-	}
-
-	.comparison-head strong::before {
-		position: absolute;
-		top: 4px;
-		left: 0;
-		width: 6px;
-		height: 6px;
-		background: var(--firm-color);
-		content: '';
+	.ledger-heading > span {
+		font-family: var(--font-mono);
+		text-align: right;
 	}
 
 	.comparison-row {
-		min-height: 48px;
+		padding: 16px 0;
 		border-top: 1px solid var(--border-subtle);
 	}
 
-	.comparison-row > strong {
-		font-size: 10px;
+	.metric-heading {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+		margin-bottom: 12px;
 	}
 
-	.comparison-row button {
+	.metric-heading > strong {
+		color: var(--ink);
+		font-size: 12px;
+	}
+
+	.gap-readout {
+		display: flex;
+		align-items: baseline;
+		gap: 8px;
+		color: var(--text-secondary);
+		font-family: var(--font-mono);
+		font-size: 9px;
+		text-align: right;
+	}
+
+	.gap-readout > strong {
+		color: var(--ink);
+		font-size: 9px;
+	}
+
+	.gap-readout.even {
+		color: var(--text-tertiary);
+	}
+
+	.firm-stack {
 		display: grid;
-		gap: 5px;
-		padding: 0;
+		gap: 4px;
+	}
+
+	.firm-row {
+		display: grid;
+		grid-template-columns: minmax(112px, 140px) minmax(160px, 1fr) minmax(80px, 112px) 64px;
+		gap: 12px;
+		align-items: center;
+		width: 100%;
+		min-height: 48px;
+		padding: 8px;
 		border: 0;
 		background: transparent;
 		color: var(--ink);
@@ -284,47 +415,71 @@
 		cursor: pointer;
 	}
 
-	.comparison-row button span {
-		font-family: var(--font-mono);
-		font-size: 11px;
-		font-weight: 750;
+	.firm-row:hover,
+	.firm-row:focus-visible {
+		background: color-mix(in oklab, var(--firm-color) 9%, transparent);
+		outline: 1px solid var(--firm-color);
+		outline-offset: -1px;
 	}
 
-	.comparison-row button i {
+	.firm-row.winner .metric-value {
+		font-weight: 850;
+	}
+
+	.firm-row:not(.winner) .bar-track > i {
+		opacity: 0.72;
+	}
+
+	.bar-track {
+		position: relative;
 		display: block;
-		width: 100%;
-		height: 4px;
-		min-width: 3px;
-		transform: scaleX(var(--bar-scale));
-		transform-origin: left;
-		transition: transform 220ms var(--ease-out);
+		height: 10px;
+		overflow: hidden;
+		background: var(--surface-muted);
+		box-shadow: inset 0 0 0 1px var(--border-subtle);
 	}
 
-	.comparison-row > span {
-		display: flex;
-		align-items: center;
-		gap: 5px;
-		color: var(--success);
+	.bar-track > i {
+		display: block;
+		width: max(2px, calc(var(--bar-scale) * 100%));
+		height: 100%;
+		background: var(--firm-color);
+		transition: width 220ms var(--ease-out);
+	}
+
+	.metric-value {
 		font-family: var(--font-mono);
-		font-size: 9px;
+		font-size: 12px;
+		font-weight: 750;
+		text-align: right;
+		white-space: nowrap;
 	}
 
-	.comparison-row > span.negative {
-		color: var(--accent-strong);
+	.evidence-cue {
+		color: var(--text-tertiary);
+		font-family: var(--font-mono);
+		font-size: 8px;
+		text-align: right;
 	}
 
-	.period-note {
-		display: flex;
-		justify-content: space-between;
-		gap: 12px;
-		padding: 9px 20px;
+	.comparison-note {
+		display: grid;
+		grid-template-columns: 132px minmax(0, 1fr);
+		gap: 16px;
+		padding: 12px 20px;
 		border-top: 1px solid var(--frame);
 		color: var(--text-tertiary);
+		font-size: 9px;
+		line-height: 1.5;
+	}
+
+	.comparison-note strong {
+		color: var(--text-secondary);
 		font-family: var(--font-mono);
 		font-size: 8px;
 	}
 
-	@media (max-width: 760px) {
+	@container (max-width: 720px) {
 		.compare-heading {
 			grid-template-columns: 40px 1fr;
 		}
@@ -333,61 +488,98 @@
 			grid-column: 2;
 		}
 
-		.comparison-head {
+		.network-controls,
+		.comparison-table {
+			padding-inline: 16px;
+		}
+
+		.network-control {
+			grid-template-columns: 104px minmax(0, 1fr);
+			gap: 12px;
+		}
+
+		.network-period {
+			grid-column: 2;
+			text-align: left;
+		}
+
+		.firm-row {
+			grid-template-columns: minmax(96px, 120px) minmax(100px, 1fr) auto;
+		}
+
+		.evidence-cue {
 			display: none;
-		}
-
-		.comparison-row {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-			grid-template-areas:
-				'metric metric'
-				'left right'
-				'gap gap';
-			gap: 9px 12px;
-			padding: 13px 0;
-		}
-
-		.comparison-row > strong {
-			grid-area: metric;
-		}
-
-		.comparison-row > button:nth-child(2) {
-			grid-area: left;
-		}
-
-		.comparison-row > button:nth-child(3) {
-			grid-area: right;
-		}
-
-		.comparison-row > span {
-			grid-area: gap;
-		}
-
-		.comparison-row button::before {
-			color: var(--text-tertiary);
-			font-size: 8px;
-			font-weight: 750;
-			content: attr(data-firm);
 		}
 	}
 
-	@media (max-width: 480px) {
-		.compare-selectors {
+	@container (max-width: 440px) {
+		.compare-heading {
+			padding-inline: 16px;
+		}
+
+		.compare-heading p {
+			grid-column: 1 / -1;
+		}
+
+		.network-control {
 			grid-template-columns: 1fr;
+			gap: 8px;
+			padding: 4px 0;
 		}
 
-		.versus {
-			display: none;
+		.network-period {
+			grid-column: auto;
 		}
 
-		.period-note {
+		.ledger-heading {
 			align-items: flex-start;
 			flex-direction: column;
+			gap: 8px;
+		}
+
+		.ledger-heading > span {
+			text-align: left;
+		}
+
+		.metric-heading {
+			align-items: flex-start;
+			flex-direction: column;
+			gap: 4px;
+		}
+
+		.gap-readout {
+			text-align: left;
+		}
+
+		.firm-row {
+			grid-template-columns: minmax(92px, 0.8fr) minmax(0, 1.2fr);
+			grid-template-areas:
+				'identity value'
+				'bar bar';
+			gap: 8px 12px;
+		}
+
+		.firm-identity {
+			grid-area: identity;
+		}
+
+		.bar-track {
+			grid-area: bar;
+		}
+
+		.metric-value {
+			grid-area: value;
+		}
+
+		.comparison-note {
+			grid-template-columns: 1fr;
+			gap: 4px;
+			padding-inline: 16px;
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.comparison-row button i {
+		.bar-track > i {
 			transition: none;
 		}
 	}

@@ -4,6 +4,8 @@ An evidence-first interactive dashboard comparing Deloitte, PwC, EY and KPMG acr
 
 The interface is designed as a research product rather than a static report. Every headline, chart point and composition segment can open the underlying observation, source excerpt, reporting period, locator, quality flag and comparability score.
 
+![FirmScope interactive Big Four intelligence dashboard](./static/big4dash.gif)
+
 ## Highlights
 
 - Revenue mosaic, reporting-calendar comparison and fifteen-year indexed growth race
